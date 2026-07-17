@@ -1,7 +1,7 @@
 using PeopleHub.Domain.Common;
 using PeopleHub.Domain.Enums;
 
-namespace PeopleHub.Domain.Entities;
+namespace PeopleHub.Domain.Aggregates.User;
 
 public sealed class UserRole : Entity
 {

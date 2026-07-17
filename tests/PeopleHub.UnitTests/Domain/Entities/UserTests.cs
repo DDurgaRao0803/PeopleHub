@@ -1,4 +1,4 @@
-using PeopleHub.Domain.Entities;
+using PeopleHub.Domain.Aggregates.User;
 using PeopleHub.Domain.Enums;
 using PeopleHub.Domain.Exceptions;
 using PeopleHub.Domain.ValueObjects;

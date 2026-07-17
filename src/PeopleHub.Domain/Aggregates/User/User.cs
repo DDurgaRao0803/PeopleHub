@@ -3,7 +3,7 @@ using PeopleHub.Domain.Enums;
 using PeopleHub.Domain.ValueObjects;
 using PeopleHub.Domain.Exceptions;
 
-namespace PeopleHub.Domain.Entities;
+namespace PeopleHub.Domain.Aggregates.User;
 
 public sealed class User : AuditableEntity
 {

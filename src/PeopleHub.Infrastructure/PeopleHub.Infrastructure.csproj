@@ -4,6 +4,8 @@
     <ProjectReference Include="..\PeopleHub.Application\PeopleHub.Application.csproj" />
     <ProjectReference Include="..\PeopleHub.Domain\PeopleHub.Domain.csproj" />
     <ProjectReference Include="..\PeopleHub.Common\PeopleHub.Common.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
   </ItemGroup>
 
   <PropertyGroup>
