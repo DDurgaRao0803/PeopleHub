@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\PeopleHub.Application\PeopleHub.Application.csproj" />
+    <ProjectReference Include="..\PeopleHub.Domain\PeopleHub.Domain.csproj" />
+    <ProjectReference Include="..\PeopleHub.Common\PeopleHub.Common.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
