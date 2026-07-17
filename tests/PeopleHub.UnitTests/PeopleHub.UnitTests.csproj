@@ -29,4 +29,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PeopleHub.Domain\PeopleHub.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
