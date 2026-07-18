@@ -1,4 +1,5 @@
 using PeopleHub.Contracts.Authentication;
+using PeopleHub.Contracts.Users;
 
 namespace PeopleHub.Application.Authentication;
 
@@ -18,5 +19,9 @@ public interface IAuthenticationService
 
     Task LogoutAsync(
     LogoutRequest request,
+    CancellationToken cancellationToken = default);
+
+    Task<CurrentUserResponse> GetCurrentUserAsync(
+    Guid userId,
     CancellationToken cancellationToken = default);
 }
