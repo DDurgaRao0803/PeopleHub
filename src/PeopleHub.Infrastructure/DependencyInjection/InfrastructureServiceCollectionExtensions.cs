@@ -13,6 +13,8 @@ using PeopleHub.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using PeopleHub.Application.Users;
+using PeopleHub.Infrastructure.Users;
 
 namespace PeopleHub.Infrastructure.DependencyInjection;
 
@@ -81,6 +83,7 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         services.AddScoped<IProviderRepository, ProviderRepository>();
         services.AddScoped<IServiceCategoryRepository, ServiceCategoryRepository>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IUserService, UserService>();
         services.AddSingleton<IRefreshTokenGenerator, RefreshTokenGenerator>();
 
         return services;

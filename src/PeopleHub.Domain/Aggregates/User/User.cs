@@ -13,7 +13,7 @@ public sealed class User : AuditableEntity
     private User()
     {
         FirstName = null!;
-        LastName = null!;
+        LastName = null!;   
         PasswordHash = null!;
         Email = null!;
         PhoneNumber = null!;
@@ -168,6 +168,14 @@ public sealed class User : AuditableEntity
 
         _refreshTokens.Remove(refreshToken);
     }
+
+    public void Update(
+    string firstName,
+    string lastName)
+{
+    FirstName = firstName;
+    LastName = lastName;
+}
 
     public RefreshToken? GetRefreshToken(string tokenHash)
     {

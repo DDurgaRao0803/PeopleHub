@@ -29,18 +29,11 @@ public async Task<IActionResult> Register(
     [FromBody] RegisterRequest request,
     CancellationToken cancellationToken)
 {
-    try
-    {
-        await _authenticationService.RegisterAsync(
-            request,
-            cancellationToken);
+    await _authenticationService.RegisterAsync(
+        request,
+        cancellationToken);
 
-        return StatusCode(StatusCodes.Status201Created);
-    }
-    catch (InvalidOperationException ex)
-    {
-        return Conflict(new { message = ex.Message });
-    }
+    return StatusCode(StatusCodes.Status201Created);
 }
 
     [HttpPost("login")]
@@ -125,14 +118,6 @@ public IActionResult Me()
     });
 }
 
-[Authorize(Roles = "Admin")]
-[HttpGet("admin")]
-public IActionResult AdminOnly()
-{
-    return Ok(new
-    {
-        Message = "Welcome Admin!"
-    });
-}
+
 
 }

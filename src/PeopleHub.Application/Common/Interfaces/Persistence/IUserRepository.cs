@@ -1,4 +1,5 @@
 using PeopleHub.Domain.Aggregates.User;
+using PeopleHub.Contracts.Users;
 
 namespace PeopleHub.Application.Common.Interfaces.Persistence;
 
@@ -7,6 +8,10 @@ public interface IUserRepository
     Task<User?> GetByIdAsync(
         Guid id,
         CancellationToken cancellationToken = default);
+
+    Task<(IReadOnlyList<User> Users, int TotalCount)> GetPagedAsync(
+    GetUsersRequest request,
+    CancellationToken cancellationToken = default);
 
     Task<User?> GetByEmailAsync(
         string email,

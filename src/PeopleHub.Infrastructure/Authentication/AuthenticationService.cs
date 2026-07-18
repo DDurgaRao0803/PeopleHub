@@ -6,7 +6,6 @@ using PeopleHub.Contracts.Authentication;
 using PeopleHub.Domain.Aggregates.User;
 using PeopleHub.Domain.ValueObjects;
 using PeopleHub.Infrastructure.Persistence.Context;
-using PeopleHub.Contracts.Users;
 
 namespace PeopleHub.Infrastructure.Authentication;
 
@@ -243,24 +242,5 @@ public sealed class AuthenticationService : IAuthenticationService
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<CurrentUserResponse> GetCurrentUserAsync(
-    Guid userId,
-    CancellationToken cancellationToken = default)
-{
-    var user = await _userRepository.GetByIdAsync(
-        userId,
-        cancellationToken);
-
-    if (user is null)
-    {
-        throw new KeyNotFoundException("User not found.");
-    }
-
-    return new CurrentUserResponse(
-        user.Id,
-        user.FirstName,
-        user.LastName,
-        user.Email.Value,
-        user.Role.ToString());
-}
+    
 }
