@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using PeopleHub.Application.Authentication;
 using PeopleHub.Contracts.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+
 
 namespace PeopleHub.API.Controllers;
 
@@ -26,11 +29,18 @@ public async Task<IActionResult> Register(
     [FromBody] RegisterRequest request,
     CancellationToken cancellationToken)
 {
-    await _authenticationService.RegisterAsync(
-        request,
-        cancellationToken);
+    try
+    {
+        await _authenticationService.RegisterAsync(
+            request,
+            cancellationToken);
 
-    return StatusCode(StatusCodes.Status201Created);
+        return StatusCode(StatusCodes.Status201Created);
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Conflict(new { message = ex.Message });
+    }
 }
 
     [HttpPost("login")]
@@ -42,11 +52,18 @@ public async Task<ActionResult<LoginResponse>> Login(
     [FromBody] LoginRequest request,
     CancellationToken cancellationToken)
 {
-    var response = await _authenticationService.LoginAsync(
-        request,
-        cancellationToken);
+    try
+    {
+        var response = await _authenticationService.LoginAsync(
+            request,
+            cancellationToken);
 
-    return Ok(response);
+        return Ok(response);
+    }
+    catch (UnauthorizedAccessException)
+    {
+        return Unauthorized(new { message = "Invalid email or password." });
+    }
 }
 
 [HttpPost("refresh")]
@@ -58,11 +75,21 @@ public async Task<ActionResult<RefreshTokenResponse>> Refresh(
     [FromBody] RefreshTokenRequest request,
     CancellationToken cancellationToken)
 {
-    var response = await _authenticationService.RefreshTokenAsync(
-        request,
-        cancellationToken);
+    try
+    {
+        var response = await _authenticationService.RefreshTokenAsync(
+            request,
+            cancellationToken);
 
-    return Ok(response);
+        return Ok(response);
+    }
+    catch (UnauthorizedAccessException ex)
+    {
+        return Unauthorized(new
+        {
+            message = ex.Message
+        });
+    }
 }
 
 [HttpPost("logout")]
@@ -76,4 +103,36 @@ public async Task<IActionResult> Logout(
 
     return NoContent();
 }
+
+[Authorize]
+[HttpGet("me")]
+[ProducesResponseType(StatusCodes.Status200OK)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+public IActionResult Me()
+{
+    return Ok(new
+    {
+        UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                 ?? User.FindFirstValue(JwtRegisteredClaimNames.Sub),
+
+        Email = User.FindFirstValue(ClaimTypes.Email),
+
+        Claims = User.Claims.Select(c => new
+        {
+            c.Type,
+            c.Value
+        })
+    });
+}
+
+[Authorize(Roles = "Admin")]
+[HttpGet("admin")]
+public IActionResult AdminOnly()
+{
+    return Ok(new
+    {
+        Message = "Welcome Admin!"
+    });
+}
+
 }
