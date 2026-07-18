@@ -51,6 +51,8 @@ public sealed class User : AuditableEntity
 
     public PhoneNumber PhoneNumber { get; private set; }
 
+    public Role Role { get; private set; } = Role.User;
+
     public UserStatus Status { get; private set; }
 
     public bool IsEmailVerified { get; private set; }

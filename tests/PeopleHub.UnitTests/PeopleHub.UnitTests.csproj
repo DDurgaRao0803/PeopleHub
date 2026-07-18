@@ -31,6 +31,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\PeopleHub.Domain\PeopleHub.Domain.csproj" />
+    <ProjectReference Include="..\..\src\PeopleHub.Application\PeopleHub.Application.csproj" />
+    <ProjectReference Include="..\..\src\PeopleHub.Contracts\PeopleHub.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\PeopleHub.API\PeopleHub.API.csproj" />
   </ItemGroup>
 
 </Project>

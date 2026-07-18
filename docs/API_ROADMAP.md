@@ -15,13 +15,34 @@ Legend
 | Feature | Status |
 |----------|--------|
 | Register | ✅ |
-| Login | ⬜ |
-| Refresh Token | ⬜ |
-| Logout | ⬜ |
+| Login | ✅ |
+| JWT Authentication | ✅ |
+| JWT Authorization | ✅ |
+| Refresh Token | ✅ |
+| Refresh Token Rotation | ✅ |
+| Logout | ✅ |
 | Forgot Password | ⬜ |
 | Reset Password | ⬜ |
 | Change Password | ⬜ |
 | OTP | ⬜ |
+| Role-Based Access Control (RBAC) | ✅ |
+| Admin Authorization | ✅ |
+
+**Completed**
+
+- User Registration
+- Password Hashing
+- Login
+- JWT Access Token
+- Refresh Token
+- Refresh Token Rotation
+- Refresh Token Revocation
+- Logout
+- `/api/auth/me`
+- Role Claim in JWT
+- Admin-only endpoint
+- User → 403 Forbidden
+- Admin → 200 OK
 
 ---
 
@@ -29,9 +50,11 @@ Legend
 
 | Feature | Status |
 |----------|--------|
-| Get Profile | ⬜ |
+| Get Current User | ⬜ |
+| Get User By Id | ⬜ |
+| Get All Users | ⬜ |
 | Update Profile | ⬜ |
-| Delete Account | ⬜ |
+| Delete User | ⬜ |
 | Upload Profile Image | ⬜ |
 
 ---
@@ -132,7 +155,7 @@ Legend
 | Health Checks | ⬜ |
 | API Versioning | ⬜ |
 | Serilog | ⬜ |
-| Swagger Security | ⬜ |
+| Swagger Security | ✅ |
 
 ---
 
@@ -155,3 +178,17 @@ Legend
 | Provider Search | ⬜ |
 | Booking | ⬜ |
 | Notifications | ⬜ |
+
+---
+
+# Current Milestone
+
+🎯 **User Management Module**
+
+Planned order:
+
+1. Get Current User
+2. Get User By Id
+3. Get All Users (Admin)
+4. Update User
+5. Delete User (Admin)

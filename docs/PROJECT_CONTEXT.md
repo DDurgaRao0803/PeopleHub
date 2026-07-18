@@ -2,10 +2,8 @@
 
 > **Purpose**
 >
-> This document is the single source of truth for the PeopleHub project.
->
-> When continuing this project in a new ChatGPT conversation, upload this document first.
-> The assistant should use it to understand the project's architecture, current implementation status, and coding standards without recreating completed work.
+> Upload this document when starting a new ChatGPT conversation.
+> It contains the current architecture, completed implementation, coding standards, and the next milestone.
 
 ---
 
@@ -13,7 +11,7 @@
 
 PeopleHub is a production-grade service marketplace platform built using Clean Architecture.
 
-The platform connects customers with service providers and will support provider management, intelligent SmartMatch, bookings, notifications, messaging, authentication, and administration.
+The platform connects customers with service providers and will support provider management, SmartMatch, bookings, notifications, messaging, authentication, and administration.
 
 ---
 
@@ -24,19 +22,20 @@ The platform connects customers with service providers and will support provider
 - ASP.NET Core 9
 - .NET 9
 - Entity Framework Core 9
-- SQL Server 2022
+- SQL Server 2022 (Docker)
 
 ## Architecture
 
 - Clean Architecture
 - Repository Pattern
 - Service Layer
+- Unit of Work
 
 ## Security
 
 - JWT Authentication
-- Refresh Tokens (Planned)
-- OTP Authentication (Planned)
+- Refresh Tokens
+- Role-Based Authorization (RBAC)
 
 ## Validation
 
@@ -46,19 +45,11 @@ The platform connects customers with service providers and will support provider
 
 - Serilog
 
-## Realtime
-
-- SignalR
-
 ## API
 
 - Swagger / OpenAPI
 - API Versioning
 - Health Checks
-
-## Deployment
-
-- Azure
 
 ## Frontend
 
@@ -79,7 +70,6 @@ PeopleHub
 ├── src
 │   ├── PeopleHub.API
 │   ├── PeopleHub.Application
-│   ├── PeopleHub.Common
 │   ├── PeopleHub.Contracts
 │   ├── PeopleHub.Domain
 │   ├── PeopleHub.Infrastructure
@@ -92,46 +82,47 @@ PeopleHub
 
 # Architecture Rules
 
-The following rules must always be followed.
+Always follow these rules.
 
 ## Required
 
 - Clean Architecture
 - Repository Pattern
 - Service Layer
-- One class per file
-- One responsibility per class
+- Unit of Work
 - Explicit object mapping
-- Production-ready code only
+- Production-ready code
+- One class per file
 
-## Not Allowed
+## Never Use
 
 - MediatR
 - CQRS
 - AutoMapper
 - Generic Repository
 - Placeholder implementations
-- Dummy code
 - TODO implementations
 
 ---
 
-# Coding Standards
+# Development Workflow
 
-- Build after every implementation step.
+The assistant should always:
+
+- Start every response with a roadmap/progress block.
+- Show the exact file path before every code change.
+- Implement one logical change at a time.
+- Build after every change.
 - Fix build errors before continuing.
-- No compiler warnings.
-- Keep methods focused and readable.
-- Use dependency injection.
-- Follow SOLID principles where appropriate.
+- Preserve the existing architecture.
 
 ---
 
-# Current Project Status
+# Completed Modules
 
-## Completed
+## Domain
 
-### Domain
+Completed
 
 - Entity
 - AuditableEntity
@@ -141,67 +132,78 @@ The following rules must always be followed.
 - PhoneNumber Value Object
 - User Aggregate
 - Provider Aggregate
-- UserRole
+- Role enum
 
-### Infrastructure
+---
+
+## Infrastructure
+
+Completed
 
 - ApplicationDbContext
 - Repository Pattern
-- UnitOfWork
+- Unit Of Work
 - Entity Configurations
-
-### Security
-
 - Password Hashing
 - JWT Token Generator
-
-### Application
-
-- User Registration
-- FluentValidation
-
-### Database
-
-- SQL Server configured
-- Migration applied
-- PasswordHash added to User
+- JWT Authentication
+- JWT Authorization
 
 ---
 
-# Current Milestone
+## Authentication
 
-Authentication
+Completed
+
+- Register
+- Login
+- Password Hashing
+- JWT Access Token
+- Refresh Token
+- Refresh Token Rotation
+- Refresh Token Revocation
+- Logout
+- `/api/auth/me`
 
 ---
 
-# Current Task
+## RBAC
 
-Configure JWT Authentication in:
+Completed
 
-```
-src/PeopleHub.API/Program.cs
-```
+- Role enum
+- Role column in User
+- Role migration
+- Existing users migrated to Role = User
+- JWT Role Claim
+- `[Authorize(Roles = "Admin")]`
+- Admin endpoint
 
-After that:
+Verified
 
-1. Login
-2. Authentication Controller
-3. Swagger JWT
-4. Refresh Tokens
-5. OTP
+- User → 403 Forbidden
+- Admin → 200 OK
 
 ---
 
 # Database
 
-Database Provider
+Provider
 
-- SQL Server 2022
+- SQL Server 2022 (Docker)
 
-Latest Migration
+Latest Completed Migration
 
 ```
-AddPasswordHashToUser
+AddUserRole
+```
+
+Database Updated
+
+```sql
+UPDATE Users
+SET Role = 1
+WHERE Role = 0;
 ```
 
 ---
@@ -222,21 +224,53 @@ SUCCESS
 
 ---
 
+# Current Status
+
+Authentication & Authorization Module
+
+✅ COMPLETE
+
+---
+
+# Next Module
+
+User Management
+
+Recommended order
+
+1. Get Current User
+2. Get User By Id
+3. Get All Users (Admin)
+4. Update User
+5. Delete User (Admin)
+
+After User Management
+
+- Global Exception Middleware
+- FluentValidation Improvements
+- Pagination
+- Filtering
+- Sorting
+- Serilog
+- Unit Tests
+- Integration Tests
+
+---
+
 # AI Working Agreement
 
 When continuing this project:
 
 - Never recreate completed work.
-- Continue from the Current Task section.
-- Preserve the existing architecture.
+- Continue from the Next Module section.
+- Keep using Clean Architecture.
 - Never introduce MediatR.
 - Never introduce CQRS.
 - Never introduce AutoMapper.
-- Always provide the exact file path before requesting code changes.
-- Implement one logical step at a time.
-- End each implementation step with a successful `dotnet build`.
-- Update this document after every major milestone.
-- Update `API_ROADMAP.md` whenever feature status changes.
+- Show the file path before each code change.
+- Make one change at a time.
+- Build after every implementation step.
+- Update both `PROJECT_CONTEXT.md` and `API_ROADMAP.md` after each completed milestone.
 
 ---
 
@@ -244,8 +278,8 @@ When continuing this project:
 
 Estimated Completion
 
-20–25%
+**30–35%**
 
 Current Focus
 
-Authentication Module
+**User Management Module**
