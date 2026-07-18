@@ -11,10 +11,11 @@ public class UserTests
     public void Constructor_Should_Set_PendingVerification_Status()
     {
         var user = new User(
-            "John",
-            "Doe",
-            Email.Create("john@example.com"),
-            PhoneNumber.Create("+919876543210"));
+    "John",
+    "Doe",
+    Email.Create("john@example.com"),
+    PhoneNumber.Create("+15551234567"),
+    "DummyPasswordHash");
 
         Assert.Equal(UserStatus.PendingVerification, user.Status);
     }
@@ -23,10 +24,11 @@ public class UserTests
     public void Activate_Should_Throw_When_Phone_Is_Not_Verified()
     {
         var user = new User(
-            "John",
-            "Doe",
-            Email.Create("john@example.com"),
-            PhoneNumber.Create("+919876543210"));
+    "John",
+    "Doe",
+    Email.Create("john@example.com"),
+    PhoneNumber.Create("+15551234567"),
+    "DummyPasswordHash");
 
         Assert.Throws<DomainException>(() => user.Activate());
     }
@@ -35,10 +37,11 @@ public class UserTests
     public void VerifyPhone_Should_Set_IsPhoneVerified()
     {
         var user = new User(
-            "John",
-            "Doe",
-            Email.Create("john@example.com"),
-            PhoneNumber.Create("+919876543210"));
+    "John",
+    "Doe",
+    Email.Create("john@example.com"),
+    PhoneNumber.Create("+15551234567"),
+    "DummyPasswordHash");
 
         user.VerifyPhone();
 
@@ -49,10 +52,11 @@ public class UserTests
     public void Activate_Should_Set_Status_To_Active()
     {
         var user = new User(
-            "John",
-            "Doe",
-            Email.Create("john@example.com"),
-            PhoneNumber.Create("+919876543210"));
+    "John",
+    "Doe",
+    Email.Create("john@example.com"),
+    PhoneNumber.Create("+15551234567"),
+    "DummyPasswordHash");
 
         user.VerifyPhone();
 

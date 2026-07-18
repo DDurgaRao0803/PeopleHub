@@ -1,44 +1,51 @@
 using PeopleHub.Domain.Common;
 using PeopleHub.Domain.Enums;
-using PeopleHub.Domain.ValueObjects;
 using PeopleHub.Domain.Exceptions;
+using PeopleHub.Domain.ValueObjects;
 
 namespace PeopleHub.Domain.Aggregates.User;
 
 public sealed class User : AuditableEntity
 {
     private readonly List<UserRole> _roles = [];
+    private readonly List<RefreshToken> _refreshTokens = [];
 
     private User()
-{
-    FirstName = null!;
-    LastName = null!;
-    Email = null!;
-    PhoneNumber = null!;
-}
+    {
+        FirstName = null!;
+        LastName = null!;
+        PasswordHash = null!;
+        Email = null!;
+        PhoneNumber = null!;
+    }
 
     public User(
-    string firstName,
-    string lastName,
-    Email email,
-    PhoneNumber phoneNumber)
-{
-    ArgumentException.ThrowIfNullOrWhiteSpace(firstName);
-    ArgumentException.ThrowIfNullOrWhiteSpace(lastName);
-    ArgumentNullException.ThrowIfNull(email);
-    ArgumentNullException.ThrowIfNull(phoneNumber);
+        string firstName,
+        string lastName,
+        Email email,
+        PhoneNumber phoneNumber,
+        string passwordHash)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(firstName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(lastName);
+        ArgumentNullException.ThrowIfNull(email);
+        ArgumentNullException.ThrowIfNull(phoneNumber);
+        ArgumentException.ThrowIfNullOrWhiteSpace(passwordHash);
 
-    FirstName = firstName.Trim();
-    LastName = lastName.Trim();
-    Email = email;
-    PhoneNumber = phoneNumber;
+        FirstName = firstName.Trim();
+        LastName = lastName.Trim();
+        Email = email;
+        PhoneNumber = phoneNumber;
+        PasswordHash = passwordHash;
 
-    Status = UserStatus.PendingVerification;
-}
+        Status = UserStatus.PendingVerification;
+    }
 
     public string FirstName { get; private set; }
 
     public string LastName { get; private set; }
+
+    public string PasswordHash { get; private set; }
 
     public Email Email { get; private set; }
 
@@ -54,16 +61,19 @@ public sealed class User : AuditableEntity
 
     public IReadOnlyCollection<UserRole> Roles => _roles.AsReadOnly();
 
-    public void Activate()
-{
-    if (!IsPhoneVerified)
-    {
-        throw new DomainException(
-            "A user cannot be activated until the phone number is verified.");
-    }
+    public IReadOnlyCollection<RefreshToken> RefreshTokens =>
+        _refreshTokens.AsReadOnly();
 
-    Status = UserStatus.Active;
-}
+    public void Activate()
+    {
+        if (!IsPhoneVerified)
+        {
+            throw new DomainException(
+                "A user cannot be activated until the phone number is verified.");
+        }
+
+        Status = UserStatus.Active;
+    }
 
     public void Suspend()
     {
@@ -76,38 +86,45 @@ public sealed class User : AuditableEntity
     }
 
     public void VerifyPhone()
-{
-    if (IsPhoneVerified)
     {
-        return;
+        if (IsPhoneVerified)
+        {
+            return;
+        }
+
+        IsPhoneVerified = true;
     }
 
-    IsPhoneVerified = true;
-}
-
     public void Deactivate()
-{
-    Status = UserStatus.Inactive;
-}
+    {
+        Status = UserStatus.Inactive;
+    }
 
-public void MarkAsDeleted()
-{
-    Status = UserStatus.Deleted;
-}
+    public void MarkAsDeleted()
+    {
+        Status = UserStatus.Deleted;
+    }
 
-public void ChangeFirstName(string firstName)
-{
-    ArgumentException.ThrowIfNullOrWhiteSpace(firstName);
+    public void ChangeFirstName(string firstName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(firstName);
 
-    FirstName = firstName.Trim();
-}
+        FirstName = firstName.Trim();
+    }
 
-public void ChangeLastName(string lastName)
-{
-    ArgumentException.ThrowIfNullOrWhiteSpace(lastName);
+    public void ChangeLastName(string lastName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(lastName);
 
-    LastName = lastName.Trim();
-}
+        LastName = lastName.Trim();
+    }
+
+    public void ChangePassword(string passwordHash)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(passwordHash);
+
+        PasswordHash = passwordHash;
+    }
 
     public void UpdateLastLogin()
     {
@@ -134,5 +151,45 @@ public void ChangeLastName(string lastName)
         }
 
         _roles.Remove(existingRole);
+    }
+
+    public void AddRefreshToken(RefreshToken refreshToken)
+    {
+        ArgumentNullException.ThrowIfNull(refreshToken);
+
+        _refreshTokens.Add(refreshToken);
+    }
+
+    public void RemoveRefreshToken(RefreshToken refreshToken)
+    {
+        ArgumentNullException.ThrowIfNull(refreshToken);
+
+        _refreshTokens.Remove(refreshToken);
+    }
+
+    public RefreshToken? GetRefreshToken(string tokenHash)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(tokenHash);
+
+        return _refreshTokens.FirstOrDefault(
+            x => x.TokenHash == tokenHash);
+    }
+
+    public void RevokeRefreshToken(string tokenHash)
+    {
+        var refreshToken = GetRefreshToken(tokenHash);
+
+        if (refreshToken is null)
+        {
+            return;
+        }
+
+        refreshToken.Revoke();
+    }
+
+    public void RemoveExpiredRefreshTokens()
+    {
+        _refreshTokens.RemoveAll(
+            x => x.IsExpired || x.IsRevoked);
     }
 }

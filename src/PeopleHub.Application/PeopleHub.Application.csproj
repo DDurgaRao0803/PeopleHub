@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\PeopleHub.Domain\PeopleHub.Domain.csproj" />
-    <ProjectReference Include="..\PeopleHub.Contracts\PeopleHub.Contracts.csproj" />
-    <ProjectReference Include="..\PeopleHub.Common\PeopleHub.Common.csproj" />
-  </ItemGroup>
+  <ProjectReference Include="..\PeopleHub.Domain\PeopleHub.Domain.csproj" />
+  <ProjectReference Include="..\PeopleHub.Common\PeopleHub.Common.csproj" />
+  <ProjectReference Include="..\PeopleHub.Contracts\PeopleHub.Contracts.csproj" />
+
+  <PackageReference Include="FluentValidation" />
+</ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>

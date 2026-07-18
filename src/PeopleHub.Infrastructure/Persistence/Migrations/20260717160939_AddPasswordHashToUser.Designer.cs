@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PeopleHub.Infrastructure.Persistence.Context;
 
@@ -11,9 +12,11 @@ using PeopleHub.Infrastructure.Persistence.Context;
 namespace PeopleHub.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260717160939_AddPasswordHashToUser")]
+    partial class AddPasswordHashToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -189,39 +192,6 @@ namespace PeopleHub.Infrastructure.Persistence.Migrations
                     b.ToTable("ServiceCategories", (string)null);
                 });
 
-            modelBuilder.Entity("PeopleHub.Domain.Aggregates.User.RefreshToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpiresAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("RevokedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TokenHash")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TokenHash")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshTokens", (string)null);
-                });
-
             modelBuilder.Entity("PeopleHub.Domain.Aggregates.User.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -312,15 +282,6 @@ namespace PeopleHub.Infrastructure.Persistence.Migrations
                     b.Navigation("ServiceCategory");
                 });
 
-            modelBuilder.Entity("PeopleHub.Domain.Aggregates.User.RefreshToken", b =>
-                {
-                    b.HasOne("PeopleHub.Domain.Aggregates.User.User", null)
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("PeopleHub.Domain.Aggregates.User.User", b =>
                 {
                     b.OwnsOne("PeopleHub.Domain.ValueObjects.Email", "Email", b1 =>
@@ -390,8 +351,6 @@ namespace PeopleHub.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("PeopleHub.Domain.Aggregates.User.User", b =>
                 {
-                    b.Navigation("RefreshTokens");
-
                     b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618

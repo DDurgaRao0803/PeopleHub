@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PeopleHub.Domain.Aggregates.User;
 
+
 namespace PeopleHub.Infrastructure.Persistence.Configurations;
 
 public sealed class UserConfiguration : IEntityTypeConfiguration<User>
@@ -19,6 +20,10 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.LastName)
             .HasMaxLength(100)
             .IsRequired();
+
+        builder.Property(x => x.PasswordHash)
+    .HasMaxLength(500)
+    .IsRequired();    
 
         builder.Property(x => x.Status)
             .IsRequired();
@@ -55,5 +60,14 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne()
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Navigation(u => u.RefreshTokens)
+    .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+        builder
+    .HasMany(u => u.RefreshTokens)
+    .WithOne()
+    .HasForeignKey(rt => rt.UserId)
+    .OnDelete(DeleteBehavior.Cascade);
     }
 }

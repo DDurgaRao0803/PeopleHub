@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using PeopleHub.Domain.Aggregates.Provider;
 using PeopleHub.Domain.Aggregates.User;
+using PeopleHub.Application.Common.Interfaces.Persistence;
 
 namespace PeopleHub.Infrastructure.Persistence.Context;
 
-public sealed class ApplicationDbContext : DbContext
+public sealed class ApplicationDbContext
+    : DbContext, IUnitOfWork
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
@@ -22,6 +24,8 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<ProviderVerification> ProviderVerifications => Set<ProviderVerification>();
 
     public DbSet<ServiceCategory> ServiceCategories => Set<ServiceCategory>();
+
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

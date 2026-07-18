@@ -6,22 +6,27 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!-- NuGet Packages -->
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 
+  <!-- Project References + EF Packages -->
   <ItemGroup>
     <ProjectReference Include="..\PeopleHub.Application\PeopleHub.Application.csproj" />
     <ProjectReference Include="..\PeopleHub.Contracts\PeopleHub.Contracts.csproj" />
     <ProjectReference Include="..\PeopleHub.Common\PeopleHub.Common.csproj" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
-    <PrivateAssets>all</PrivateAssets>
-    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-</PackageReference>
 
-<PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
-    <PrivateAssets>all</PrivateAssets>
-</PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

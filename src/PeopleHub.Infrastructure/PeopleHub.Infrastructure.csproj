@@ -4,8 +4,13 @@
     <ProjectReference Include="..\PeopleHub.Application\PeopleHub.Application.csproj" />
     <ProjectReference Include="..\PeopleHub.Domain\PeopleHub.Domain.csproj" />
     <ProjectReference Include="..\PeopleHub.Common\PeopleHub.Common.csproj" />
+    <ProjectReference Include="..\PeopleHub.Contracts\PeopleHub.Contracts.csproj" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
 <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+<PackageReference Include="Microsoft.Extensions.Identity.Core" />
+<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+
   </ItemGroup>
 
   <PropertyGroup>
