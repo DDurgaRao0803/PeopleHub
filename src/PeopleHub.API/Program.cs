@@ -39,7 +39,15 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructure(
+    builder.Configuration,
+    options =>
+    {
+        if (builder.Environment.IsEnvironment("Testing"))
+        {
+            // Leave empty - the integration test host will configure the provider.
+        }
+    });
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -47,6 +55,8 @@ var app = builder.Build();
 // Configure middleware pipeline
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }

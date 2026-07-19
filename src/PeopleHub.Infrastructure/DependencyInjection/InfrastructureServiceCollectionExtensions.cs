@@ -81,12 +81,12 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 {
     if (configureDbContext is not null)
     {
+        // Tests completely control the provider.
         configureDbContext(options);
+        return;
     }
-    else
-    {
-        options.UseSqlServer(connectionString);
-    }
+
+    options.UseSqlServer(connectionString);
 });
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -102,6 +102,7 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         services.AddSingleton<IRefreshTokenGenerator, RefreshTokenGenerator>();
         services.AddScoped<IProviderProfileService, ProviderProfileService>();
         services.AddScoped<IProviderVerificationService, ProviderVerificationService>();
+        services.AddScoped<IServiceCategoryService, ServiceCategoryService>();
         
 
         return services;

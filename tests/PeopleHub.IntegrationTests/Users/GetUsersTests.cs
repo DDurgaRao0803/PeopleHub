@@ -15,12 +15,12 @@ public sealed class GetUsersTests
     }
 
     [Fact]
-    public async Task GetUsers_WithoutAuthentication_ShouldReturnUnauthorized()
-    {
-        // Act
-        var response = await _client.GetAsync("/api/users");
+public async Task GetUsers_WithoutAuthentication_ShouldReturnUnauthorized()
+{
+    _client.DefaultRequestHeaders.Add("X-Test-Anonymous", "true");
 
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
-    }
+    var response = await _client.GetAsync("/api/users");
+
+    response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+}
 }

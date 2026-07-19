@@ -9,7 +9,7 @@ namespace PeopleHub.IntegrationTests.Infrastructure;
 public sealed class TestAuthenticationHandler
     : AuthenticationHandler<AuthenticationSchemeOptions>
 {
-    public const string Scheme = "Test";
+    public new const string Scheme = "Test";
 
     public TestAuthenticationHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
@@ -20,29 +20,29 @@ public sealed class TestAuthenticationHandler
     }
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+{
+    // Simulate anonymous user for selected tests
+    if (Request.Headers.ContainsKey("X-Test-Anonymous"))
     {
-        var claims = new[]
-        {
-            new Claim(
-                ClaimTypes.NameIdentifier,
-                "11111111-1111-1111-1111-111111111111"),
-
-            new Claim(
-                ClaimTypes.Name,
-                "Integration Test User")
-        };
-
-        var identity = new ClaimsIdentity(
-            claims,
-            Scheme);
-
-        var principal = new ClaimsPrincipal(identity);
-
-        var ticket = new AuthenticationTicket(
-            principal,
-            Scheme);
-
-        return Task.FromResult(
-            AuthenticateResult.Success(ticket));
+        return Task.FromResult(AuthenticateResult.NoResult());
     }
+
+    var claims = new[]
+    {
+        new Claim(ClaimTypes.NameIdentifier,
+            "11111111-1111-1111-1111-111111111111"),
+
+        new Claim(ClaimTypes.Name,
+            "Integration Test User"),
+
+        new Claim(ClaimTypes.Role,
+            "Admin")
+    };
+
+    var identity = new ClaimsIdentity(claims, Scheme);
+    var principal = new ClaimsPrincipal(identity);
+    var ticket = new AuthenticationTicket(principal, Scheme);
+
+    return Task.FromResult(AuthenticateResult.Success(ticket));
+}
 }
