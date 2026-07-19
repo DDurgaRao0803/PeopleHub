@@ -21,6 +21,6 @@ public sealed class GetUsersTests
         var response = await _client.GetAsync("/api/users");
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 }

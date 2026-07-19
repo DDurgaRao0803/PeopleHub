@@ -50,25 +50,53 @@ Legend
 
 | Feature | Status |
 |----------|--------|
-| Get Current User | ⬜ |
-| Get User By Id | ⬜ |
-| Get All Users | ⬜ |
-| Update Profile | ⬜ |
-| Delete User | ⬜ |
+| Get Current User | ✅ |
+| Get User By Id | ✅ |
+| Get All Users | ✅ |
+| Update User | ✅ |
+| Delete User | ✅ |
 | Upload Profile Image | ⬜ |
 
 ---
 
-# Providers
+# Provider Profile
 
 | Feature | Status |
 |----------|--------|
-| Create Provider | ⬜ |
-| Update Provider | ⬜ |
-| Delete Provider | ⬜ |
-| Get Provider | ⬜ |
-| Search Providers | ⬜ |
-| Provider Verification | ⬜ |
+| Create Provider Profile | ✅ |
+| Update Provider Profile | ✅ |
+| Delete Provider Profile | ✅ |
+| Get Provider Profile | ✅ |
+| Provider Profile Tests | ✅ |
+
+---
+
+# Provider Verification
+
+| Feature | Status |
+|----------|--------|
+| Create Verification | ✅ |
+| Get Verification | ✅ |
+| Delete Verification | ✅ |
+| Repository | ✅ |
+| Service | ✅ |
+| Controller | ✅ |
+| Unit Tests | ✅ |
+| Integration Tests | ✅ |
+| Approve Verification | ⬜ |
+| Reject Verification | ⬜ |
+
+---
+
+# Provider Services
+
+| Feature | Status |
+|----------|--------|
+| Create Service | ⬜ |
+| Update Service | ⬜ |
+| Delete Service | ⬜ |
+| Get Service | ⬜ |
+| List Provider Services | ⬜ |
 
 ---
 
@@ -83,13 +111,26 @@ Legend
 
 ---
 
+# Provider Availability
+
+| Feature | Status |
+|----------|--------|
+| Weekly Schedule | ⬜ |
+| Time Slots | ⬜ |
+| Holidays | ⬜ |
+| Leave Dates | ⬜ |
+
+---
+
 # Bookings
 
 | Feature | Status |
 |----------|--------|
 | Create Booking | ⬜ |
-| Update Booking | ⬜ |
+| Accept Booking | ⬜ |
+| Reject Booking | ⬜ |
 | Cancel Booking | ⬜ |
+| Complete Booking | ⬜ |
 | Booking History | ⬜ |
 
 ---
@@ -144,6 +185,7 @@ Legend
 | Dashboard | ⬜ |
 | User Management | ⬜ |
 | Provider Management | ⬜ |
+| Provider Verification Review | ⬜ |
 | Audit Logs | ⬜ |
 
 ---
@@ -183,12 +225,34 @@ Legend
 
 # Current Milestone
 
-🎯 **User Management Module**
+🎯 **Provider Services Module**
 
-Planned order:
+Planned order
 
-1. Get Current User
-2. Get User By Id
-3. Get All Users (Admin)
-4. Update User
-5. Delete User (Admin)
+1. Service Categories
+2. Provider Services
+3. Provider Availability
+4. Booking Module
+
+---
+
+# Latest Build
+
+```
+dotnet build
+```
+
+Status
+
+```
+SUCCESS
+```
+
+---
+
+# Latest Test Results
+
+```
+28 Passed
+0 Failed
+```

@@ -7,8 +7,11 @@ public abstract class IntegrationTestBase
     protected readonly CustomWebApplicationFactory Factory;
 
     protected IntegrationTestBase(CustomWebApplicationFactory factory)
-    {
-        Factory = factory;
-        Client = factory.CreateClient();
-    }
+{
+    Factory = factory;
+
+    Factory.ResetDatabase();
+
+    Client = factory.CreateClient();
+}
 }

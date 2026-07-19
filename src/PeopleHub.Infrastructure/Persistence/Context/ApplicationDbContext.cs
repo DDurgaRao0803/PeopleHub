@@ -3,6 +3,7 @@ using PeopleHub.Domain.Aggregates.Provider;
 using PeopleHub.Domain.Aggregates.User;
 using PeopleHub.Application.Common.Interfaces.Persistence;
 
+
 namespace PeopleHub.Infrastructure.Persistence.Context;
 
 public sealed class ApplicationDbContext

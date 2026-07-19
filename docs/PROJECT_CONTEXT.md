@@ -1,9 +1,7 @@
 # PeopleHub Project Context
 
-> **Purpose**
->
 > Upload this document when starting a new ChatGPT conversation.
-> It contains the current architecture, completed implementation, coding standards, and the next milestone.
+> It contains the current architecture, implementation status, coding standards, and development workflow.
 
 ---
 
@@ -11,7 +9,7 @@
 
 PeopleHub is a production-grade service marketplace platform built using Clean Architecture.
 
-The platform connects customers with service providers and will support provider management, SmartMatch, bookings, notifications, messaging, authentication, and administration.
+The platform connects customers with verified service providers and will support provider services, bookings, SmartMatch, messaging, notifications, payments, and administration.
 
 ---
 
@@ -22,7 +20,7 @@ The platform connects customers with service providers and will support provider
 - ASP.NET Core 9
 - .NET 9
 - Entity Framework Core 9
-- SQL Server 2022 (Docker)
+- SQL Server 2022
 
 ## Architecture
 
@@ -41,15 +39,15 @@ The platform connects customers with service providers and will support provider
 
 - FluentValidation
 
-## Logging
+## Testing
 
-- Serilog
+- xUnit
+- Integration Tests
+- SQLite In-Memory Database
 
 ## API
 
 - Swagger / OpenAPI
-- API Versioning
-- Health Checks
 
 ## Frontend
 
@@ -73,9 +71,12 @@ PeopleHub
 │   ├── PeopleHub.Contracts
 │   ├── PeopleHub.Domain
 │   ├── PeopleHub.Infrastructure
+│   ├── PeopleHub.Common
 │   └── PeopleHub.SmartMatch
 │
 └── tests
+    ├── PeopleHub.UnitTests
+    └── PeopleHub.IntegrationTests
 ```
 
 ---
@@ -90,9 +91,12 @@ Always follow these rules.
 - Repository Pattern
 - Service Layer
 - Unit of Work
+- EF Core
 - Explicit object mapping
-- Production-ready code
 - One class per file
+- Constructor Injection
+- Async APIs
+- CancellationToken support
 
 ## Never Use
 
@@ -107,45 +111,30 @@ Always follow these rules.
 
 # Development Workflow
 
-The assistant should always:
+Always:
 
-- Start every response with a roadmap/progress block.
-- Show the exact file path before every code change.
-- Implement one logical change at a time.
-- Build after every change.
-- Fix build errors before continuing.
-- Preserve the existing architecture.
+1. Start every response with a roadmap.
+2. Show the exact file path before every code change.
+3. Implement one logical change at a time.
+4. Build after every change.
+5. Fix build errors before continuing.
+6. Run tests after completing a feature.
+7. Preserve the existing architecture.
+8. Update both PROJECT_CONTEXT.md and API_ROADMAP.md after each milestone.
 
 ---
 
 # Completed Modules
 
-## Domain
-
-Completed
-
-- Entity
-- AuditableEntity
-- ValueObject
-- DomainException
-- Email Value Object
-- PhoneNumber Value Object
-- User Aggregate
-- Provider Aggregate
-- Role enum
-
----
-
 ## Infrastructure
 
 Completed
 
-- ApplicationDbContext
 - Repository Pattern
-- Unit Of Work
+- Unit of Work
+- EF Core
+- ApplicationDbContext
 - Entity Configurations
-- Password Hashing
-- JWT Token Generator
 - JWT Authentication
 - JWT Authorization
 
@@ -157,11 +146,8 @@ Completed
 
 - Register
 - Login
-- Password Hashing
-- JWT Access Token
 - Refresh Token
 - Refresh Token Rotation
-- Refresh Token Revocation
 - Logout
 - `/api/auth/me`
 
@@ -172,38 +158,71 @@ Completed
 Completed
 
 - Role enum
-- Role column in User
-- Role migration
-- Existing users migrated to Role = User
 - JWT Role Claim
-- `[Authorize(Roles = "Admin")]`
-- Admin endpoint
+- Admin Authorization
+- Protected Admin APIs
 
 Verified
 
-- User → 403 Forbidden
-- Admin → 200 OK
+- User → 403
+- Admin → 200
 
 ---
 
-# Database
+## User Management
 
-Provider
+Completed
 
-- SQL Server 2022 (Docker)
+- Create User
+- Get Current User
+- Get User By Id
+- Get All Users
+- Update User
+- Delete User
 
-Latest Completed Migration
+---
+
+## Provider Profile
+
+Completed
+
+- Create
+- Get
+- Update
+- Delete
+
+Repository, Service, Controller, Unit Tests, Integration Tests completed.
+
+---
+
+## Provider Verification
+
+Completed
+
+- Domain Entity
+- Repository
+- Service
+- Dependency Injection
+- Controller
+- Unit Tests
+- Integration Tests
+
+---
+
+# Testing
+
+Completed
+
+- xUnit
+- Integration Tests
+- SQLite In-Memory
+- Database Reset between Tests
+
+Current Status
 
 ```
-AddUserRole
-```
-
-Database Updated
-
-```sql
-UPDATE Users
-SET Role = 1
-WHERE Role = 0;
+28 Tests Passed
+0 Failed
 ```
 
 ---
@@ -224,36 +243,15 @@ SUCCESS
 
 ---
 
-# Current Status
+# Current Progress
 
-Authentication & Authorization Module
+Estimated Completion
 
-✅ COMPLETE
+**45%**
 
----
+Current Focus
 
-# Next Module
-
-User Management
-
-Recommended order
-
-1. Get Current User
-2. Get User By Id
-3. Get All Users (Admin)
-4. Update User
-5. Delete User (Admin)
-
-After User Management
-
-- Global Exception Middleware
-- FluentValidation Improvements
-- Pagination
-- Filtering
-- Sorting
-- Serilog
-- Unit Tests
-- Integration Tests
+**Provider Services Module**
 
 ---
 
@@ -262,24 +260,13 @@ After User Management
 When continuing this project:
 
 - Never recreate completed work.
-- Continue from the Next Module section.
-- Keep using Clean Architecture.
+- Continue from the Current Focus section.
+- Follow Repository → Service → Controller → Tests.
 - Never introduce MediatR.
 - Never introduce CQRS.
 - Never introduce AutoMapper.
-- Show the file path before each code change.
-- Make one change at a time.
-- Build after every implementation step.
-- Update both `PROJECT_CONTEXT.md` and `API_ROADMAP.md` after each completed milestone.
-
----
-
-# Progress
-
-Estimated Completion
-
-**30–35%**
-
-Current Focus
-
-**User Management Module**
+- Never introduce Generic Repository.
+- Show file paths before every code change.
+- Build after every logical change.
+- Maintain passing builds and tests.
+- Keep the implementation consistent with the existing codebase.

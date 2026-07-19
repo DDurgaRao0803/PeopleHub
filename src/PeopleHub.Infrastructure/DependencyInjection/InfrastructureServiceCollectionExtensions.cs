@@ -15,14 +15,20 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using PeopleHub.Application.Users;
 using PeopleHub.Infrastructure.Users;
+using PeopleHub.Application.Providers;
+using PeopleHub.Infrastructure.Providers;
+using PeopleHub.Application.Interfaces.Repositories;
+
+
 
 namespace PeopleHub.Infrastructure.DependencyInjection;
 
 public static class InfrastructureServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    this IServiceCollection services,
+    IConfiguration configuration,
+    Action<DbContextOptionsBuilder>? configureDbContext = null)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException(
@@ -72,19 +78,31 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
         
         services.AddDbContext<ApplicationDbContext>(options =>
-        {
-            options.UseSqlServer(connectionString);
-        });
+{
+    if (configureDbContext is not null)
+    {
+        configureDbContext(options);
+    }
+    else
+    {
+        options.UseSqlServer(connectionString);
+    }
+});
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IProviderProfileRepository, ProviderProfileRepository>();
+        services.AddScoped<IProviderVerificationRepository, ProviderVerificationRepository>();
         services.AddScoped<IProviderRepository, ProviderRepository>();
         services.AddScoped<IServiceCategoryRepository, ServiceCategoryRepository>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IUserService, UserService>();
         services.AddSingleton<IRefreshTokenGenerator, RefreshTokenGenerator>();
+        services.AddScoped<IProviderProfileService, ProviderProfileService>();
+        services.AddScoped<IProviderVerificationService, ProviderVerificationService>();
+        
 
         return services;
     }
