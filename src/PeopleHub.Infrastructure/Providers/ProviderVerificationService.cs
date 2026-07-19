@@ -1,10 +1,11 @@
 using PeopleHub.Application.Common.Interfaces.Persistence;
+using PeopleHub.Application.Interfaces.Repositories;
 using PeopleHub.Application.Providers;
 using PeopleHub.Contracts.Providers;
 using PeopleHub.Domain.Aggregates.Provider;
 using DomainGovernmentIdType = PeopleHub.Domain.Enums.GovernmentIdType;
 
-namespace PeopleHub.Application.Interfaces.Repositories;
+namespace PeopleHub.Infrastructure.Providers;
 
 
 public sealed class ProviderVerificationService : IProviderVerificationService
@@ -66,18 +67,15 @@ public sealed class ProviderVerificationService : IProviderVerificationService
     }
 
     public async Task<ProviderVerificationResponse?> GetByProviderProfileIdAsync(
-        Guid providerProfileId,
-        CancellationToken cancellationToken = default)
-    {
-        var verification =
-            await _verificationRepository.GetByProviderProfileIdAsync(
-                providerProfileId,
-                cancellationToken);
+    Guid providerProfileId,
+    CancellationToken cancellationToken = default)
+{
+    var verification = await _verificationRepository.GetByProviderProfileIdAsync(
+        providerProfileId,
+        cancellationToken);
 
-        return verification is null
-            ? null
-            : Map(verification);
-    }
+    return verification is null ? null : Map(verification);
+}
 
     public async Task DeleteAsync(
         Guid providerProfileId,

@@ -12,6 +12,9 @@ public interface IProviderProfileRepository
         Guid userId,
         CancellationToken cancellationToken = default);
 
+        Task<IReadOnlyList<ProviderProfile>> GetAllAsync(
+    CancellationToken cancellationToken = default);
+
     Task AddAsync(
         ProviderProfile providerProfile,
         CancellationToken cancellationToken = default);

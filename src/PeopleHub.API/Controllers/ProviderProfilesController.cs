@@ -20,38 +20,44 @@ public sealed class ProviderProfilesController : ControllerBase
     }
 
     [HttpPost]
-public async Task<ActionResult<ProviderProfileResponse>> Create(
-    CreateProviderProfileRequest request,
-    CancellationToken cancellationToken)
-{
-    var userId = GetUserId();
-
-    try
+    public async Task<ActionResult<ProviderProfileResponse>> Create(
+        CreateProviderProfileRequest request,
+        CancellationToken cancellationToken)
     {
-        var response = await _providerProfileService.CreateAsync(
-            userId,
-            request,
-            cancellationToken);
-
-        return CreatedAtAction(
-            nameof(Get),
-            null,
-            response);
-    }
-    catch (InvalidOperationException ex)
-    {
-        return BadRequest(new
+        if (!TryGetUserId(out var userId))
         {
-            message = ex.Message
-        });
+            return Unauthorized();
+        }
+
+        try
+        {
+            var response = await _providerProfileService.CreateAsync(
+                userId,
+                request,
+                cancellationToken);
+
+            return CreatedAtAction(
+                nameof(Get),
+                null,
+                response);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new
+            {
+                message = ex.Message
+            });
+        }
     }
-}
 
     [HttpGet]
     public async Task<ActionResult<ProviderProfileResponse>> Get(
         CancellationToken cancellationToken)
     {
-        var userId = GetUserId();
+        if (!TryGetUserId(out var userId))
+        {
+            return Unauthorized();
+        }
 
         var profile = await _providerProfileService.GetByUserIdAsync(
             userId,
@@ -70,7 +76,10 @@ public async Task<ActionResult<ProviderProfileResponse>> Create(
         UpdateProviderProfileRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = GetUserId();
+        if (!TryGetUserId(out var userId))
+        {
+            return Unauthorized();
+        }
 
         var response = await _providerProfileService.UpdateAsync(
             userId,
@@ -84,7 +93,10 @@ public async Task<ActionResult<ProviderProfileResponse>> Create(
     public async Task<IActionResult> Delete(
         CancellationToken cancellationToken)
     {
-        var userId = GetUserId();
+        if (!TryGetUserId(out var userId))
+        {
+            return Unauthorized();
+        }
 
         await _providerProfileService.DeleteAsync(
             userId,
@@ -93,15 +105,10 @@ public async Task<ActionResult<ProviderProfileResponse>> Create(
         return NoContent();
     }
 
-    private Guid GetUserId()
+    private bool TryGetUserId(out Guid userId)
     {
         var value = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (!Guid.TryParse(value, out var userId))
-        {
-            throw new UnauthorizedAccessException("User identifier is missing.");
-        }
-
-        return userId;
+        return Guid.TryParse(value, out userId);
     }
 }

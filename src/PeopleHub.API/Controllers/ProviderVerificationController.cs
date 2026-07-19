@@ -20,9 +20,9 @@ public sealed class ProviderVerificationController : ControllerBase
 
     [HttpPost("{providerProfileId:guid}")]
     public async Task<ActionResult<ProviderVerificationResponse>> Create(
-        Guid providerProfileId,
-        CreateProviderVerificationRequest request,
-        CancellationToken cancellationToken)
+    Guid providerProfileId,
+    [FromBody] CreateProviderVerificationRequest request,
+    CancellationToken cancellationToken)
     {
         try
         {

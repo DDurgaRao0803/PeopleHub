@@ -62,4 +62,13 @@ public sealed class ProviderProfileRepository : IProviderProfileRepository
 
         return Task.CompletedTask;
     }
+
+    public async Task<IReadOnlyList<ProviderProfile>> GetAllAsync(
+    CancellationToken cancellationToken = default)
+{
+    return await _dbContext.ProviderProfiles
+        .Include(p => p.Skills)
+        .AsNoTracking()
+        .ToListAsync(cancellationToken);
+}
 }
