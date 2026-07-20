@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using PeopleHub.Domain.Aggregates.Provider;
 using PeopleHub.Domain.Aggregates.User;
 using PeopleHub.Application.Common.Interfaces.Persistence;
+using PeopleHub.Domain.Entities;
 
 
 namespace PeopleHub.Infrastructure.Persistence.Context;
@@ -29,6 +30,8 @@ public sealed class ApplicationDbContext
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
     public DbSet<ProviderAvailability> ProviderAvailabilities => Set<ProviderAvailability>();
+
+    public DbSet<ServiceRequest> ServiceRequests => Set<ServiceRequest>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

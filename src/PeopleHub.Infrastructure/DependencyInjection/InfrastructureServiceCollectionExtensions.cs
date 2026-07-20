@@ -19,6 +19,7 @@ using PeopleHub.Application.Providers;
 using PeopleHub.Infrastructure.Providers;
 using PeopleHub.Application.Interfaces.Repositories;
 using Microsoft.Extensions.Logging;
+using PeopleHub.Domain.Interfaces.Repositories;
 
 
 
@@ -108,6 +109,7 @@ options.LogTo(Console.WriteLine, LogLevel.Information);
         services.AddScoped<IProviderProfileService, ProviderProfileService>();
         services.AddScoped<IProviderVerificationService, ProviderVerificationService>();
         services.AddScoped<IServiceCategoryService, ServiceCategoryService>();
+        services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
         
 
         return services;
