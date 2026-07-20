@@ -1,6 +1,6 @@
 using PeopleHub.Contracts.Providers.Verification;
 
-namespace PeopleHub.Application.Providers;
+namespace PeopleHub.Application.Providers.Verification;
 
 public interface IProviderVerificationService
 {

@@ -1,7 +1,6 @@
 using PeopleHub.Contracts.Providers.Profiles;
-using PeopleHub.Contracts.Providers.Availability;
 
-namespace PeopleHub.Application.Providers;
+namespace PeopleHub.Application.Providers.Profiles;
 
 public interface IProviderProfileService
 {
@@ -23,23 +22,4 @@ public interface IProviderProfileService
         Guid userId,
         CancellationToken cancellationToken = default);
 
-    Task<IReadOnlyList<ProviderAvailabilityResponse>> GetAvailabilityAsync(
-        Guid providerProfileId,
-        CancellationToken cancellationToken = default);
-
-    Task<ProviderAvailabilityResponse> AddAvailabilityAsync(
-        Guid providerProfileId,
-        CreateProviderAvailabilityRequest request,
-        CancellationToken cancellationToken = default);
-
-    Task<ProviderAvailabilityResponse> UpdateAvailabilityAsync(
-        Guid providerProfileId,
-        Guid availabilityId,
-        UpdateProviderAvailabilityRequest request,
-        CancellationToken cancellationToken = default);
-
-    Task DeleteAvailabilityAsync(
-        Guid providerProfileId,
-        Guid availabilityId,
-        CancellationToken cancellationToken = default);
 }

@@ -1,6 +1,6 @@
 using PeopleHub.Contracts.Providers.ServiceRequests;
 
-namespace PeopleHub.Application.Providers;
+namespace PeopleHub.Application.Providers.ServiceRequests;
 
 public interface IServiceRequestService
 {

@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using PeopleHub.API.Controllers;
-using PeopleHub.Application.Providers;
-using PeopleHub.Contracts.Providers.Profiles;
+using PeopleHub.Application.Providers.Profiles;
+using PeopleHub.Application.Providers.Availability;
 using PeopleHub.Contracts.Providers.Availability;
+using PeopleHub.Contracts.Providers.Profiles;
+using System.Security.Claims;
 
 namespace PeopleHub.UnitTests;
 
@@ -14,7 +15,8 @@ public class ProviderProfilesControllerTests
     public async Task Get_ReturnsNotFound_WhenProfileDoesNotExist()
     {
         var controller = new ProviderProfilesController(
-            new ProfileNotFoundService());
+            new ProfileNotFoundService(),
+            new AvailabilitySuccessService());
 
         controller.ControllerContext = new ControllerContext
         {
@@ -39,7 +41,8 @@ public class ProviderProfilesControllerTests
     public async Task Create_ReturnsCreated_WhenProfileIsCreated()
     {
         var controller = new ProviderProfilesController(
-            new SuccessfulProviderProfileService());
+            new SuccessfulProviderProfileService(),
+            new AvailabilitySuccessService());
 
         controller.ControllerContext = new ControllerContext
         {
@@ -77,6 +80,7 @@ public class ProviderProfilesControllerTests
     public async Task AddAvailability_ReturnsOk_WhenRequestIsValid()
     {
         var controller = new ProviderProfilesController(
+            new ProfileNotFoundService(),
             new AvailabilitySuccessService());
 
         var request = new CreateProviderAvailabilityRequest(
@@ -90,6 +94,7 @@ public class ProviderProfilesControllerTests
             CancellationToken.None);
 
         var ok = Assert.IsType<OkObjectResult>(result.Result);
+
         var response = Assert.IsType<ProviderAvailabilityResponse>(ok.Value);
 
         Assert.Equal(request.DayOfWeek, response.DayOfWeek);
@@ -118,30 +123,6 @@ public class ProviderProfilesControllerTests
 
         public Task DeleteAsync(
             Guid userId,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
-
-        public Task<ProviderAvailabilityResponse> AddAvailabilityAsync(
-            Guid providerProfileId,
-            CreateProviderAvailabilityRequest request,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
-
-        public Task<ProviderAvailabilityResponse> UpdateAvailabilityAsync(
-            Guid providerProfileId,
-            Guid availabilityId,
-            UpdateProviderAvailabilityRequest request,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
-
-        public Task DeleteAvailabilityAsync(
-            Guid providerProfileId,
-            Guid availabilityId,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
-
-        public Task<IReadOnlyList<ProviderAvailabilityResponse>> GetAvailabilityAsync(
-            Guid providerProfileId,
             CancellationToken cancellationToken = default)
             => throw new NotImplementedException();
     }
@@ -178,66 +159,26 @@ public class ProviderProfilesControllerTests
             Guid userId,
             CancellationToken cancellationToken = default)
             => throw new NotImplementedException();
+    }
 
-        public Task<ProviderAvailabilityResponse> AddAvailabilityAsync(
-            Guid providerProfileId,
-            CreateProviderAvailabilityRequest request,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
-
-        public Task<ProviderAvailabilityResponse> UpdateAvailabilityAsync(
-            Guid providerProfileId,
-            Guid availabilityId,
-            UpdateProviderAvailabilityRequest request,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
-
-        public Task DeleteAvailabilityAsync(
-            Guid providerProfileId,
-            Guid availabilityId,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
-
+    private sealed class AvailabilitySuccessService : IProviderAvailabilityService
+    {
         public Task<IReadOnlyList<ProviderAvailabilityResponse>> GetAvailabilityAsync(
             Guid providerProfileId,
             CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
-    }
-
-    private sealed class AvailabilitySuccessService : IProviderProfileService
-    {
-        public Task<ProviderProfileResponse> CreateAsync(
-            Guid userId,
-            CreateProviderProfileRequest request,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
-
-        public Task<ProviderProfileResponse?> GetByUserIdAsync(
-            Guid userId,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
-
-        public Task<ProviderProfileResponse> UpdateAsync(
-            Guid userId,
-            UpdateProviderProfileRequest request,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
-
-        public Task DeleteAsync(
-            Guid userId,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+            => Task.FromResult<IReadOnlyList<ProviderAvailabilityResponse>>([]);
 
         public Task<ProviderAvailabilityResponse> AddAvailabilityAsync(
             Guid providerProfileId,
             CreateProviderAvailabilityRequest request,
             CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(new ProviderAvailabilityResponse(
-                Guid.NewGuid(),
-                request.DayOfWeek,
-                request.StartTime,
-                request.EndTime));
+            return Task.FromResult(
+                new ProviderAvailabilityResponse(
+                    Guid.NewGuid(),
+                    request.DayOfWeek,
+                    request.StartTime,
+                    request.EndTime));
         }
 
         public Task<ProviderAvailabilityResponse> UpdateAvailabilityAsync(
@@ -250,11 +191,6 @@ public class ProviderProfilesControllerTests
         public Task DeleteAvailabilityAsync(
             Guid providerProfileId,
             Guid availabilityId,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
-
-        public Task<IReadOnlyList<ProviderAvailabilityResponse>> GetAvailabilityAsync(
-            Guid providerProfileId,
             CancellationToken cancellationToken = default)
             => throw new NotImplementedException();
     }

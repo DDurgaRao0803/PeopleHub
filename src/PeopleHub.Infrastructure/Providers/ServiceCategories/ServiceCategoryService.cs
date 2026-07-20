@@ -1,8 +1,8 @@
 using PeopleHub.Application.Common.Interfaces.Persistence;
-using PeopleHub.Application.Providers;
+using PeopleHub.Application.Providers.ServiceCategories;
 using PeopleHub.Domain.Aggregates.Provider;
 
-namespace PeopleHub.Infrastructure.Providers;
+namespace PeopleHub.Infrastructure.Providers.ServiceCategories;
 
 public sealed class ServiceCategoryService : IServiceCategoryService
 {

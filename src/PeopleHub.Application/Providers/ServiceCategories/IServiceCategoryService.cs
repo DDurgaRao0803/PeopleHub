@@ -1,6 +1,6 @@
 using PeopleHub.Domain.Aggregates.Provider;
 
-namespace PeopleHub.Application.Providers;
+namespace PeopleHub.Application.Providers.ServiceCategories;
 
 public interface IServiceCategoryService
 {

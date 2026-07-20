@@ -2,7 +2,7 @@ using FluentAssertions;
 using Moq;
 using PeopleHub.Application.Common.Interfaces.Persistence;
 using PeopleHub.Domain.Aggregates.Provider;
-using PeopleHub.Infrastructure.Providers;
+using PeopleHub.Infrastructure.Providers.ServiceCategories;
 
 namespace PeopleHub.UnitTests.Providers;
 

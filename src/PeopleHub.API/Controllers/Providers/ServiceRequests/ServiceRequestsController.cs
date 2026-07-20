@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using PeopleHub.Application.Providers;
+using PeopleHub.Application.Providers.ServiceRequests;
 using PeopleHub.Contracts.Providers.ServiceRequests;
 
 namespace PeopleHub.Api.Controllers;

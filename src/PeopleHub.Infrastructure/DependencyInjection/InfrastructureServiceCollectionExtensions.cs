@@ -15,12 +15,19 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using PeopleHub.Application.Users;
 using PeopleHub.Infrastructure.Users;
-using PeopleHub.Application.Providers;
-using PeopleHub.Infrastructure.Providers;
+using PeopleHub.Application.Providers.Profiles;
+using PeopleHub.Infrastructure.Providers.Profiles;
 using PeopleHub.Application.Interfaces.Repositories;
 using Microsoft.Extensions.Logging;
 using PeopleHub.Domain.Interfaces.Repositories;
-
+using PeopleHub.Application.Providers.Availability;
+using PeopleHub.Application.Providers.Verification;
+using PeopleHub.Application.Providers.ServiceCategories;
+using PeopleHub.Application.Providers.ServiceRequests;
+using PeopleHub.Infrastructure.Providers.Availability;
+using PeopleHub.Infrastructure.Providers.Verification;
+using PeopleHub.Infrastructure.Providers.ServiceCategories;
+using PeopleHub.Infrastructure.Providers.ServiceRequests;
 
 
 namespace PeopleHub.Infrastructure.DependencyInjection;
@@ -111,7 +118,7 @@ options.LogTo(Console.WriteLine, LogLevel.Information);
         services.AddScoped<IServiceCategoryService, ServiceCategoryService>();
         services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
         services.AddScoped<IServiceRequestService, ServiceRequestService>();
-        
+        services.AddScoped<IProviderAvailabilityService, ProviderAvailabilityService>();
 
         return services;
     }

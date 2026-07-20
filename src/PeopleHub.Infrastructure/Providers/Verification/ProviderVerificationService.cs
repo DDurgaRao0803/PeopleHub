@@ -1,11 +1,11 @@
 using PeopleHub.Application.Common.Interfaces.Persistence;
 using PeopleHub.Application.Interfaces.Repositories;
-using PeopleHub.Application.Providers;
+using PeopleHub.Application.Providers.Verification;
 using PeopleHub.Contracts.Providers.Verification;
 using PeopleHub.Domain.Aggregates.Provider;
 using DomainGovernmentIdType = PeopleHub.Domain.Enums.GovernmentIdType;
 
-namespace PeopleHub.Infrastructure.Providers;
+namespace PeopleHub.Infrastructure.Providers.Verification;
 
 
 public sealed class ProviderVerificationService : IProviderVerificationService

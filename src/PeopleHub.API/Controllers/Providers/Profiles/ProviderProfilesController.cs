@@ -1,9 +1,10 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PeopleHub.Application.Providers;
+using PeopleHub.Application.Providers.Profiles;
 using PeopleHub.Contracts.Providers.Profiles;
 using PeopleHub.Contracts.Providers.Availability;
+using PeopleHub.Application.Providers.Availability;
 
 namespace PeopleHub.API.Controllers;
 
@@ -14,11 +15,15 @@ public sealed class ProviderProfilesController : ControllerBase
 {
     private readonly IProviderProfileService _providerProfileService;
 
+    private readonly IProviderAvailabilityService _providerAvailabilityService;
+
     public ProviderProfilesController(
-        IProviderProfileService providerProfileService)
-    {
-        _providerProfileService = providerProfileService;
-    }
+    IProviderProfileService providerProfileService,
+    IProviderAvailabilityService providerAvailabilityService)
+{
+    _providerProfileService = providerProfileService;
+    _providerAvailabilityService = providerAvailabilityService;
+}
 
     [HttpPost]
     public async Task<ActionResult<ProviderProfileResponse>> Create(
@@ -115,9 +120,9 @@ public sealed class ProviderProfilesController : ControllerBase
         Guid providerProfileId,
         CancellationToken cancellationToken)
     {
-        var response = await _providerProfileService.GetAvailabilityAsync(
-            providerProfileId,
-            cancellationToken);
+        var response = await _providerAvailabilityService.GetAvailabilityAsync(
+    providerProfileId,
+    cancellationToken);
 
         return Ok(response);
     }
@@ -128,10 +133,10 @@ public sealed class ProviderProfilesController : ControllerBase
         CreateProviderAvailabilityRequest request,
         CancellationToken cancellationToken)
     {
-        var response = await _providerProfileService.AddAvailabilityAsync(
-            providerProfileId,
-            request,
-            cancellationToken);
+        var response = await _providerAvailabilityService.AddAvailabilityAsync(
+    providerProfileId,
+    request,
+    cancellationToken);
 
         return Ok(response);
     }
@@ -143,11 +148,11 @@ public sealed class ProviderProfilesController : ControllerBase
         UpdateProviderAvailabilityRequest request,
         CancellationToken cancellationToken)
     {
-        var response = await _providerProfileService.UpdateAvailabilityAsync(
-            providerProfileId,
-            availabilityId,
-            request,
-            cancellationToken);
+        var response = await _providerAvailabilityService.UpdateAvailabilityAsync(
+    providerProfileId,
+    availabilityId,
+    request,
+    cancellationToken);
 
         return Ok(response);
     }
@@ -158,10 +163,10 @@ public sealed class ProviderProfilesController : ControllerBase
         Guid availabilityId,
         CancellationToken cancellationToken)
     {
-        await _providerProfileService.DeleteAvailabilityAsync(
-            providerProfileId,
-            availabilityId,
-            cancellationToken);
+        await _providerAvailabilityService.DeleteAvailabilityAsync(
+    providerProfileId,
+    availabilityId,
+    cancellationToken);
 
         return NoContent();
     }
