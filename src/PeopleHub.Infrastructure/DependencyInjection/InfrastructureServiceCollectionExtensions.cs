@@ -18,6 +18,7 @@ using PeopleHub.Infrastructure.Users;
 using PeopleHub.Application.Providers;
 using PeopleHub.Infrastructure.Providers;
 using PeopleHub.Application.Interfaces.Repositories;
+using Microsoft.Extensions.Logging;
 
 
 
@@ -87,6 +88,10 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     }
 
     options.UseSqlServer(connectionString);
+
+options.EnableSensitiveDataLogging();
+options.EnableDetailedErrors();
+options.LogTo(Console.WriteLine, LogLevel.Information);
 });
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();

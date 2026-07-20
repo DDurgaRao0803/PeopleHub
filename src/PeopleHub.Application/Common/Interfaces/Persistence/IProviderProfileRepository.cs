@@ -26,4 +26,16 @@ public interface IProviderProfileRepository
     Task DeleteAsync(
         ProviderProfile providerProfile,
         CancellationToken cancellationToken = default);
+
+    Task<ProviderProfile?> GetByIdWithAvailabilityAsync(
+    Guid id,
+    CancellationToken cancellationToken = default);
+
+Task<ProviderProfile?> GetByUserIdWithAvailabilityAsync(
+    Guid userId,
+    CancellationToken cancellationToken = default);
+
+    Task AddAvailabilityAsync(
+        ProviderAvailability availability,
+        CancellationToken cancellationToken = default);
 }

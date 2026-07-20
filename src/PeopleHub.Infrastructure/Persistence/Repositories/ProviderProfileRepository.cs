@@ -46,12 +46,21 @@ public sealed class ProviderProfileRepository : IProviderProfileRepository
     }
 
     public Task UpdateAsync(
-        ProviderProfile providerProfile,
+    ProviderProfile providerProfile,
+    CancellationToken cancellationToken = default)
+{
+    // No action required.
+    // The entity is already tracked by EF Core.
+    return Task.CompletedTask;
+}
+
+    public async Task AddAvailabilityAsync(
+        ProviderAvailability availability,
         CancellationToken cancellationToken = default)
     {
-        _dbContext.ProviderProfiles.Update(providerProfile);
-
-        return Task.CompletedTask;
+        await _dbContext.ProviderAvailabilities.AddAsync(
+            availability,
+            cancellationToken);
     }
 
     public Task DeleteAsync(
@@ -71,4 +80,29 @@ public sealed class ProviderProfileRepository : IProviderProfileRepository
         .AsNoTracking()
         .ToListAsync(cancellationToken);
 }
+
+public async Task<ProviderProfile?> GetByIdWithAvailabilityAsync(
+    Guid id,
+    CancellationToken cancellationToken = default)
+{
+    return await _dbContext.ProviderProfiles
+        .Include(p => p.Skills)
+        .Include(p => p.Availabilities)
+        .FirstOrDefaultAsync(
+            p => p.Id == id,
+            cancellationToken);
+}
+
+public async Task<ProviderProfile?> GetByUserIdWithAvailabilityAsync(
+    Guid userId,
+    CancellationToken cancellationToken = default)
+{
+    return await _dbContext.ProviderProfiles
+        .Include(p => p.Skills)
+        .Include(p => p.Availabilities)
+        .FirstOrDefaultAsync(
+            p => p.UserId == userId,
+            cancellationToken);
+}
+
 }

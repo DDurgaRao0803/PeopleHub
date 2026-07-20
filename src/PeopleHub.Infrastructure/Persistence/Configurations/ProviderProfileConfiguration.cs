@@ -32,5 +32,9 @@ public sealed class ProviderProfileConfiguration : IEntityTypeConfiguration<Prov
             .WithOne()
             .HasForeignKey(x => x.ProviderProfileId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Metadata
+            .FindNavigation(nameof(ProviderProfile.Availabilities))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }

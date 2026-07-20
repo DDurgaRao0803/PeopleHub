@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PeopleHub.Application.Providers;
 using PeopleHub.Contracts.Providers;
+using PeopleHub.Contracts.Providers.Availability;
 
 namespace PeopleHub.API.Controllers;
 
@@ -100,6 +101,66 @@ public sealed class ProviderProfilesController : ControllerBase
 
         await _providerProfileService.DeleteAsync(
             userId,
+            cancellationToken);
+
+        return NoContent();
+    }
+
+    // -------------------------
+    // Availability Endpoints
+    // -------------------------
+
+    [HttpGet("{providerProfileId:guid}/availability")]
+    public async Task<ActionResult<IReadOnlyList<ProviderAvailabilityResponse>>> GetAvailability(
+        Guid providerProfileId,
+        CancellationToken cancellationToken)
+    {
+        var response = await _providerProfileService.GetAvailabilityAsync(
+            providerProfileId,
+            cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("{providerProfileId:guid}/availability")]
+    public async Task<ActionResult<ProviderAvailabilityResponse>> AddAvailability(
+        Guid providerProfileId,
+        CreateProviderAvailabilityRequest request,
+        CancellationToken cancellationToken)
+    {
+        var response = await _providerProfileService.AddAvailabilityAsync(
+            providerProfileId,
+            request,
+            cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPut("{providerProfileId:guid}/availability/{availabilityId:guid}")]
+    public async Task<ActionResult<ProviderAvailabilityResponse>> UpdateAvailability(
+        Guid providerProfileId,
+        Guid availabilityId,
+        UpdateProviderAvailabilityRequest request,
+        CancellationToken cancellationToken)
+    {
+        var response = await _providerProfileService.UpdateAvailabilityAsync(
+            providerProfileId,
+            availabilityId,
+            request,
+            cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpDelete("{providerProfileId:guid}/availability/{availabilityId:guid}")]
+    public async Task<IActionResult> DeleteAvailability(
+        Guid providerProfileId,
+        Guid availabilityId,
+        CancellationToken cancellationToken)
+    {
+        await _providerProfileService.DeleteAvailabilityAsync(
+            providerProfileId,
+            availabilityId,
             cancellationToken);
 
         return NoContent();

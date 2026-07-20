@@ -28,6 +28,8 @@ public sealed class ApplicationDbContext
 
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
+    public DbSet<ProviderAvailability> ProviderAvailabilities => Set<ProviderAvailability>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

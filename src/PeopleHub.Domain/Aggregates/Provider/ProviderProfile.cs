@@ -7,6 +7,8 @@ public class ProviderProfile : AuditableEntity
 {
     private readonly List<ProviderSkill> _skills = [];
 
+    private readonly List<ProviderAvailability> _availabilities = [];
+
     private ProviderProfile()
     {
     }
@@ -34,6 +36,9 @@ public class ProviderProfile : AuditableEntity
     public VerificationStatus VerificationStatus { get; private set; }
 
     public IReadOnlyCollection<ProviderSkill> Skills => _skills;
+
+    public IReadOnlyCollection<ProviderAvailability> Availabilities =>
+    _availabilities.AsReadOnly();
 
     public void UpdateBio(string bio)
     {
@@ -71,6 +76,57 @@ public class ProviderProfile : AuditableEntity
     _skills.Add(new ProviderSkill(Id, serviceCategory));
 }
 
+public ProviderAvailability AddAvailability(
+    DayOfWeek dayOfWeek,
+    TimeOnly startTime,
+    TimeOnly endTime)
+{
+    if (startTime >= endTime)
+    {
+        throw new ArgumentException(
+            "Start time must be earlier than end time.");
+    }
+
+    var overlaps = _availabilities.Any(a =>
+        a.DayOfWeek == dayOfWeek &&
+        startTime < a.EndTime &&
+        endTime > a.StartTime);
+
+    if (overlaps)
+    {
+        throw new InvalidOperationException(
+            "Availability overlaps with an existing time slot.");
+    }
+
+    var availability = new ProviderAvailability(
+        Id,
+        dayOfWeek,
+        startTime,
+        endTime);
+
+    _availabilities.Add(availability);
+
+    return availability;
+}
+
+public void RemoveAvailability(Guid availabilityId)
+{
+    var availability = _availabilities.FirstOrDefault(a => a.Id == availabilityId);
+
+    if (availability is null)
+    {
+        return;
+    }
+
+    _availabilities.Remove(availability);
+}
+
+public ProviderAvailability? GetAvailability(Guid availabilityId)
+{
+    return _availabilities.FirstOrDefault(a => a.Id == availabilityId);
+}
+
+
 public void RemoveSkill(Guid serviceCategoryId)
 {
     var skill = _skills.FirstOrDefault(s => s.ServiceCategoryId == serviceCategoryId);
@@ -82,4 +138,36 @@ public void RemoveSkill(Guid serviceCategoryId)
 
     _skills.Remove(skill);
 }
+
+public void UpdateAvailability(
+    Guid availabilityId,
+    DayOfWeek dayOfWeek,
+    TimeOnly startTime,
+    TimeOnly endTime)
+{
+    var availability = _availabilities.FirstOrDefault(a => a.Id == availabilityId);
+
+    if (availability is null)
+    {
+        throw new InvalidOperationException("Availability not found.");
+    }
+
+    var overlaps = _availabilities.Any(a =>
+        a.Id != availabilityId &&
+        a.DayOfWeek == dayOfWeek &&
+        startTime < a.EndTime &&
+        endTime > a.StartTime);
+
+    if (overlaps)
+    {
+        throw new InvalidOperationException(
+            "Availability overlaps with an existing time slot.");
+    }
+
+    availability.Update(
+        dayOfWeek,
+        startTime,
+        endTime);
+}
+
 }

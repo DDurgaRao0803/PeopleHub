@@ -39,15 +39,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-builder.Services.AddInfrastructure(
-    builder.Configuration,
-    options =>
-    {
-        if (builder.Environment.IsEnvironment("Testing"))
-        {
-            // Leave empty - the integration test host will configure the provider.
-        }
-    });
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
 
 var app = builder.Build();
