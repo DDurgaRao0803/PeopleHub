@@ -71,6 +71,16 @@ Legend
 
 ---
 
+# Provider Skills
+
+| Feature | Status |
+|----------|--------|
+| Add Skill | ✅ |
+| Remove Skill | ✅ |
+| List Skills | ✅ |
+
+---
+
 # Provider Verification
 
 | Feature | Status |
@@ -88,6 +98,65 @@ Legend
 
 ---
 
+# Service Categories
+
+| Feature | Status |
+|----------|--------|
+| Create Category | ✅ |
+| Update Category | ✅ |
+| Delete Category | ✅ |
+| Get Categories | ✅ |
+| Repository | ✅ |
+| Service | ✅ |
+| Controller | ✅ |
+| Swagger Tests | ✅ |
+
+---
+
+# Provider Availability
+
+| Feature | Status |
+|----------|--------|
+| Create Availability | ✅ |
+| Update Availability | ✅ |
+| Delete Availability | ✅ |
+| Get Provider Availability | ✅ |
+| Repository | ✅ |
+| Service | ✅ |
+| Controller | ✅ |
+| Swagger Tests | ✅ |
+
+---
+
+# Service Requests
+
+| Feature | Status |
+|----------|--------|
+| Create Service Request | ✅ |
+| Get By Id | ✅ |
+| Get Customer Requests | ✅ |
+| Get Provider Requests | ✅ |
+| Accept Request | ✅ |
+| Complete Request | ✅ |
+| Repository | ✅ |
+| Service | ✅ |
+| Controller | ✅ |
+| Swagger Tests | ✅ |
+
+**Completed**
+
+- Domain Entity
+- Status Enum
+- EF Core Configuration
+- Repository
+- Service Layer
+- Dependency Injection
+- Migration
+- SQL Server Persistence
+- End-to-End Swagger Testing
+
+---
+
 # Provider Services
 
 | Feature | Status |
@@ -97,41 +166,6 @@ Legend
 | Delete Service | ⬜ |
 | Get Service | ⬜ |
 | List Provider Services | ⬜ |
-
----
-
-# Service Categories
-
-| Feature | Status |
-|----------|--------|
-| Create Category | ⬜ |
-| Update Category | ⬜ |
-| Delete Category | ⬜ |
-| Get Categories | ⬜ |
-
----
-
-# Provider Availability
-
-| Feature | Status |
-|----------|--------|
-| Weekly Schedule | ⬜ |
-| Time Slots | ⬜ |
-| Holidays | ⬜ |
-| Leave Dates | ⬜ |
-
----
-
-# Bookings
-
-| Feature | Status |
-|----------|--------|
-| Create Booking | ⬜ |
-| Accept Booking | ⬜ |
-| Reject Booking | ⬜ |
-| Cancel Booking | ⬜ |
-| Complete Booking | ⬜ |
-| Booking History | ⬜ |
 
 ---
 
@@ -208,7 +242,8 @@ Legend
 | Authentication | ⬜ |
 | Dashboard | ⬜ |
 | Provider Module | ⬜ |
-| Booking Module | ⬜ |
+| Service Requests | ⬜ |
+| Reviews | ⬜ |
 
 ---
 
@@ -218,33 +253,36 @@ Legend
 |----------|--------|
 | Authentication | ⬜ |
 | Provider Search | ⬜ |
-| Booking | ⬜ |
+| Service Requests | ⬜ |
+| Reviews | ⬜ |
 | Notifications | ⬜ |
 
 ---
 
 # Current Milestone
 
-🎯 **Provider Services Module**
+🎯 **Provider Reviews & Ratings Module**
 
-Planned order
+Planned Order
 
-1. Service Categories
+1. Provider Reviews & Ratings
 2. Provider Services
-3. Provider Availability
-4. Booking Module
+3. Messaging
+4. Notifications
+5. SmartMatch
+6. Administration
 
 ---
 
 # Latest Build
 
-```
+```text
 dotnet build
 ```
 
 Status
 
-```
+```text
 SUCCESS
 ```
 
@@ -252,7 +290,7 @@ SUCCESS
 
 # Latest Test Results
 
-```
+```text
 28 Passed
 0 Failed
 ```

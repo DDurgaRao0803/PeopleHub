@@ -110,6 +110,7 @@ options.LogTo(Console.WriteLine, LogLevel.Information);
         services.AddScoped<IProviderVerificationService, ProviderVerificationService>();
         services.AddScoped<IServiceCategoryService, ServiceCategoryService>();
         services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
+        services.AddScoped<IServiceRequestService, ServiceRequestService>();
         
 
         return services;

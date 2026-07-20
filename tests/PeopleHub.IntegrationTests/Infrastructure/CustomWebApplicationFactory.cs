@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using PeopleHub.Infrastructure.Persistence.Context;
 using Microsoft.AspNetCore.TestHost;
+using System.Linq;
 
 namespace PeopleHub.IntegrationTests.Infrastructure;
 
@@ -18,42 +19,43 @@ public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
     private DbConnection? _connection;
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
+{
+    builder.UseEnvironment("Testing");
+
+    builder.ConfigureServices(services =>
     {
-        builder.UseEnvironment("Testing");
-
-        builder.ConfigureTestServices(services =>
+        // Replace authentication with test authentication
+        services.AddAuthentication(options =>
         {
-            // Replace authentication with test authentication
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = TestAuthenticationHandler.Scheme;
-                options.DefaultChallengeScheme = TestAuthenticationHandler.Scheme;
-            })
-            .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>(
-                TestAuthenticationHandler.Scheme,
-                _ => { });
+            options.DefaultAuthenticateScheme = TestAuthenticationHandler.Scheme;
+            options.DefaultChallengeScheme = TestAuthenticationHandler.Scheme;
+        })
+        .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>(
+            TestAuthenticationHandler.Scheme,
+            _ => { });
 
-            // Remove existing DbContext registrations
-            services.RemoveAll<ApplicationDbContext>();
-            services.RemoveAll<DbContextOptions<ApplicationDbContext>>();
-            services.RemoveAll<DbContextOptions>();
-            services.RemoveAll<IDbContextFactory<ApplicationDbContext>>();
-            services.RemoveAll<DbConnection>();
+        // Remove the application's DbContext registration
+        var descriptor = services.SingleOrDefault(
+            d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
 
-            // Configure SQLite in-memory
-            _connection = new SqliteConnection("DataSource=:memory:");
-            _connection.Open();
+        if (descriptor is not null)
+        {
+            services.Remove(descriptor);
+        }
 
-            services.AddSingleton(_connection);
-            services.AddSingleton<DbConnection>(_connection);
+        // Configure SQLite in-memory
+        _connection = new SqliteConnection("DataSource=:memory:");
+        _connection.Open();
 
-            services.AddDbContext<ApplicationDbContext>((sp, options) =>
-            {
-                var connection = sp.GetRequiredService<DbConnection>();
-                options.UseSqlite(connection);
-            });
+        services.AddSingleton<DbConnection>(_connection);
+
+        services.AddDbContext<ApplicationDbContext>((sp, options) =>
+        {
+            var connection = sp.GetRequiredService<DbConnection>();
+            options.UseSqlite(connection);
         });
-    }
+    });
+}
 
     protected override IHost CreateHost(IHostBuilder builder)
     {

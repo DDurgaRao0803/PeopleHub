@@ -9,7 +9,7 @@
 
 PeopleHub is a production-grade service marketplace platform built using Clean Architecture.
 
-The platform connects customers with verified service providers and will support provider services, bookings, SmartMatch, messaging, notifications, payments, and administration.
+The platform connects customers with verified service providers and will support provider services, service requests, reviews, SmartMatch, messaging, notifications, payments, and administration.
 
 ---
 
@@ -25,6 +25,7 @@ The platform connects customers with verified service providers and will support
 ## Architecture
 
 - Clean Architecture
+- Domain Driven Design (DDD)
 - Repository Pattern
 - Service Layer
 - Unit of Work
@@ -61,7 +62,7 @@ The platform connects customers with verified service providers and will support
 
 # Solution Structure
 
-```
+```text
 PeopleHub
 │
 ├── docs
@@ -88,6 +89,7 @@ Always follow these rules.
 ## Required
 
 - Clean Architecture
+- Domain Driven Design (DDD)
 - Repository Pattern
 - Service Layer
 - Unit of Work
@@ -113,14 +115,14 @@ Always follow these rules.
 
 Always:
 
-1. Start every response with a roadmap.
+1. Start every response with **Progress**.
 2. Show the exact file path before every code change.
 3. Implement one logical change at a time.
 4. Build after every change.
 5. Fix build errors before continuing.
 6. Run tests after completing a feature.
 7. Preserve the existing architecture.
-8. Update both PROJECT_CONTEXT.md and API_ROADMAP.md after each milestone.
+8. Update both `PROJECT_CONTEXT.md` and `API_ROADMAP.md` after each completed module.
 
 ---
 
@@ -157,15 +159,14 @@ Completed
 
 Completed
 
-- Role enum
+- Role Enum
 - JWT Role Claim
 - Admin Authorization
-- Protected Admin APIs
 
 Verified
 
-- User → 403
-- Admin → 200
+- User → 403 Forbidden
+- Admin → 200 OK
 
 ---
 
@@ -182,6 +183,21 @@ Completed
 
 ---
 
+## Service Categories
+
+Completed
+
+- Create
+- Update
+- Delete
+- Get
+- Repository
+- Service
+- Controller
+- Swagger Testing
+
+---
+
 ## Provider Profile
 
 Completed
@@ -192,6 +208,16 @@ Completed
 - Delete
 
 Repository, Service, Controller, Unit Tests, Integration Tests completed.
+
+---
+
+## Provider Skills
+
+Completed
+
+- Add Skill
+- Remove Skill
+- List Skills
 
 ---
 
@@ -209,6 +235,58 @@ Completed
 
 ---
 
+## Provider Availability
+
+Completed
+
+- Create Availability
+- Update Availability
+- Delete Availability
+- Get Provider Availability
+- Repository
+- Service
+- Controller
+- Swagger Testing
+
+---
+
+## Service Requests
+
+Completed
+
+### Domain
+
+- ServiceRequest Entity
+- ServiceRequestStatus Enum
+
+### Persistence
+
+- Repository
+- EF Core Configuration
+- Migration
+
+### Application
+
+- Contracts
+- Service Layer
+- Dependency Injection
+
+### API
+
+- Controller
+- Swagger
+
+### Verified End-to-End
+
+- Create Service Request
+- Get By Id
+- Get Customer Requests
+- Get Provider Requests
+- Accept Request
+- Complete Request
+
+---
+
 # Testing
 
 Completed
@@ -220,7 +298,7 @@ Completed
 
 Current Status
 
-```
+```text
 28 Tests Passed
 0 Failed
 ```
@@ -231,13 +309,13 @@ Current Status
 
 Latest Build
 
-```
+```text
 dotnet build
 ```
 
 Status
 
-```
+```text
 SUCCESS
 ```
 
@@ -247,11 +325,11 @@ SUCCESS
 
 Estimated Completion
 
-**45%**
+**60%**
 
 Current Focus
 
-**Provider Services Module**
+**Provider Reviews & Ratings Module**
 
 ---
 
@@ -261,7 +339,7 @@ When continuing this project:
 
 - Never recreate completed work.
 - Continue from the Current Focus section.
-- Follow Repository → Service → Controller → Tests.
+- Follow Domain → Repository → Service → Controller → Tests.
 - Never introduce MediatR.
 - Never introduce CQRS.
 - Never introduce AutoMapper.
@@ -269,4 +347,5 @@ When continuing this project:
 - Show file paths before every code change.
 - Build after every logical change.
 - Maintain passing builds and tests.
+- Update both roadmap documents after each completed module.
 - Keep the implementation consistent with the existing codebase.
