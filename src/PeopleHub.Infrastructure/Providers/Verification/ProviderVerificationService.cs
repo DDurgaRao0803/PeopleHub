@@ -1,7 +1,7 @@
 using PeopleHub.Application.Common.Interfaces.Persistence;
 using PeopleHub.Application.Interfaces.Repositories;
 using PeopleHub.Application.Providers;
-using PeopleHub.Contracts.Providers;
+using PeopleHub.Contracts.Providers.Verification;
 using PeopleHub.Domain.Aggregates.Provider;
 using DomainGovernmentIdType = PeopleHub.Domain.Enums.GovernmentIdType;
 
@@ -100,7 +100,7 @@ public sealed class ProviderVerificationService : IProviderVerificationService
         {
             Id = verification.Id,
             GovernmentIdType =
-                (PeopleHub.Contracts.Providers.GovernmentIdType)
+                (PeopleHub.Contracts.Providers.Verification.GovernmentIdType)
                 verification.GovernmentIdType,
             GovernmentIdNumber = verification.GovernmentIdNumber,
             FrontImageUrl = verification.FrontImageUrl,

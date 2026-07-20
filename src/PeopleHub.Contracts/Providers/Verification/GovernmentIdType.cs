@@ -1,4 +1,4 @@
-namespace PeopleHub.Contracts.Providers;
+namespace PeopleHub.Contracts.Providers.Verification;
 
 public enum GovernmentIdType
 {

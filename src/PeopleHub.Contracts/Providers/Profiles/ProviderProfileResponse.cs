@@ -1,4 +1,4 @@
-namespace PeopleHub.Contracts.Providers;
+namespace PeopleHub.Contracts.Providers.Profiles;
 
 public sealed class ProviderProfileResponse
 {

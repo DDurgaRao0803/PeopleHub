@@ -1,4 +1,4 @@
-using PeopleHub.Contracts.Providers;
+using PeopleHub.Contracts.Providers.Profiles;
 using PeopleHub.Contracts.Providers.Availability;
 
 namespace PeopleHub.Application.Providers;

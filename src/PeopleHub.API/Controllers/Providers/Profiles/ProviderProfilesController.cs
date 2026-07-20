@@ -2,7 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PeopleHub.Application.Providers;
-using PeopleHub.Contracts.Providers;
+using PeopleHub.Contracts.Providers.Profiles;
 using PeopleHub.Contracts.Providers.Availability;
 
 namespace PeopleHub.API.Controllers;

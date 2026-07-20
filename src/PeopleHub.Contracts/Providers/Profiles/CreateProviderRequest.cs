@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PeopleHub.Contracts.Providers;
+namespace PeopleHub.Contracts.Providers.Profiles;
 
 public sealed record CreateProviderRequest(
     [Required]

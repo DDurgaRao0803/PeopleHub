@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using PeopleHub.API.Controllers;
 using PeopleHub.Application.Providers;
-using PeopleHub.Contracts.Providers;
+using PeopleHub.Contracts.Providers.Profiles;
 using PeopleHub.Contracts.Providers.Availability;
 
 namespace PeopleHub.UnitTests;

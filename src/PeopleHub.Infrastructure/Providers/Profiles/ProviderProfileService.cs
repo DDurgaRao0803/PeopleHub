@@ -1,6 +1,6 @@
 using PeopleHub.Application.Common.Interfaces.Persistence;
 using PeopleHub.Application.Providers;
-using PeopleHub.Contracts.Providers;
+using PeopleHub.Contracts.Providers.Profiles;
 using PeopleHub.Contracts.Providers.Availability;
 using PeopleHub.Domain.Aggregates.Provider;
 

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PeopleHub.Application.Providers;
-using PeopleHub.Contracts.Providers;
+using PeopleHub.Contracts.Providers.Verification;
 
 namespace PeopleHub.Api.Controllers;
 

@@ -1,4 +1,4 @@
-namespace PeopleHub.Contracts.Providers;
+namespace PeopleHub.Contracts.Providers.ServiceCategories;
 
 public sealed record ServiceCategoryResponse(
     Guid Id,

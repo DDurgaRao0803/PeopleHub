@@ -1,7 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
-using PeopleHub.Contracts.Providers;
+using PeopleHub.Contracts.Providers.Verification;
+using PeopleHub.Contracts.Providers.Profiles;
 using PeopleHub.IntegrationTests.Infrastructure;
 using Xunit;
 using Xunit.Abstractions;

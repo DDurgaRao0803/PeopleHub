@@ -1,4 +1,4 @@
-using PeopleHub.Contracts.Providers;
+using PeopleHub.Contracts.Providers.Verification;
 
 namespace PeopleHub.Application.Providers;
 
