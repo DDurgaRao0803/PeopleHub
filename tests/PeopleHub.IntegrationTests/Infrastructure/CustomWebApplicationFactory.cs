@@ -34,13 +34,19 @@ public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
             TestAuthenticationHandler.Scheme,
             _ => { });
 
-        // Remove the application's DbContext registration
-        var descriptor = services.SingleOrDefault(
-            d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
+        // Remove the application's DbContext registrations so we can replace the
+        // provider for tests. Remove any descriptors for ApplicationDbContext or
+        // its DbContextOptions to avoid multiple database providers being
+        // registered in the same service provider.
+        var descriptorsToRemove = services.Where(d =>
+            d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>) ||
+            d.ServiceType == typeof(ApplicationDbContext) ||
+            d.ImplementationType == typeof(ApplicationDbContext)
+        ).ToList();
 
-        if (descriptor is not null)
+        foreach (var d in descriptorsToRemove)
         {
-            services.Remove(descriptor);
+            services.Remove(d);
         }
 
         // Configure SQLite in-memory
