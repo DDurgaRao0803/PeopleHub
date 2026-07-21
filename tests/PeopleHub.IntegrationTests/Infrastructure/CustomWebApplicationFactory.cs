@@ -88,6 +88,17 @@ public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
         context.Database.EnsureCreated();
     }
 
+    public async Task ExecuteDbContextAsync(
+    Func<ApplicationDbContext, Task> action)
+{
+    using var scope = Services.CreateScope();
+
+    var context = scope.ServiceProvider
+        .GetRequiredService<ApplicationDbContext>();
+
+    await action(context);
+}
+
     protected override void Dispose(bool disposing)
     {
         if (disposing)

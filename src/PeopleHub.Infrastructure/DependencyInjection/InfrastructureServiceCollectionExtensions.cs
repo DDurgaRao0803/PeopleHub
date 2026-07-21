@@ -29,6 +29,8 @@ using PeopleHub.Infrastructure.Providers.ServiceCategories;
 using PeopleHub.Infrastructure.Providers.ServiceRequests;
 using PeopleHub.SmartMatch.Interfaces;
 using PeopleHub.SmartMatch.Services;
+using PeopleHub.Application.SmartMatch.Interfaces;
+using PeopleHub.Infrastructure.Providers.SmartMatch;
 
 
 namespace PeopleHub.Infrastructure.DependencyInjection;
@@ -119,6 +121,7 @@ options.LogTo(Console.WriteLine, LogLevel.Information);
         services.AddScoped<IServiceCategoryService, ServiceCategoryService>();
         services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
         services.AddScoped<IServiceRequestService, ServiceRequestService>();
+        services.AddScoped<ISmartMatchService, SmartMatchService>();
         services.AddScoped<ISmartMatchEngine, SmartMatchEngine>();
         services.AddScoped<IProviderAvailabilityService, ProviderAvailabilityService>();
 
