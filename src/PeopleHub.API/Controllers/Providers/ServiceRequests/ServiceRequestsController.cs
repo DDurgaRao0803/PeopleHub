@@ -1,29 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
+using PeopleHub.Application.Common.Interfaces.Services;
 using PeopleHub.Application.Providers.ServiceRequests;
 using PeopleHub.Contracts.Providers.ServiceRequests;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PeopleHub.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class ServiceRequestsController : ControllerBase
 {
     private readonly IServiceRequestService _serviceRequestService;
+    private readonly ICurrentUserService _currentUserService;
 
     public ServiceRequestsController(
-        IServiceRequestService serviceRequestService)
+        IServiceRequestService serviceRequestService,
+        ICurrentUserService currentUserService)
     {
         _serviceRequestService = serviceRequestService;
+        _currentUserService = currentUserService;
     }
 
     [HttpPost]
     public async Task<ActionResult<ServiceRequestResponse>> Create(
-        [FromQuery] Guid customerId,
         [FromBody] CreateServiceRequestRequest request,
         CancellationToken cancellationToken)
     {
         var response = await _serviceRequestService.CreateAsync(
-            customerId,
+            _currentUserService.UserId,
             request,
             cancellationToken);
 

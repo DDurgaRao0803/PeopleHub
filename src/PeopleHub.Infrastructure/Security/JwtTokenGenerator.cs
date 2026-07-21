@@ -25,12 +25,16 @@ public sealed class JwtTokenGenerator : IJwtTokenGenerator
         Role role)
     {
         var claims = new List<Claim>
-        {
-            new(JwtRegisteredClaimNames.Sub, userId.ToString()),
-            new(JwtRegisteredClaimNames.Email, email),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(ClaimTypes.Role, role.ToString())
-        };
+{
+    new(ClaimTypes.NameIdentifier, userId.ToString()),
+    new(ClaimTypes.Email, email),
+    new(ClaimTypes.Role, role.ToString()),
+
+    // Standard JWT claims
+    new(JwtRegisteredClaimNames.Sub, userId.ToString()),
+    new(JwtRegisteredClaimNames.Email, email),
+    new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+};
 
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(_options.SecretKey));

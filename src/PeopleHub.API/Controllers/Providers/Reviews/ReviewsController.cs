@@ -1,18 +1,25 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PeopleHub.Application.Common.Interfaces.Services;
 using PeopleHub.Application.Providers.Reviews;
 using PeopleHub.Contracts.Providers.Reviews;
 
 namespace PeopleHub.API.Controllers.Providers.Reviews;
 
 [ApiController]
+[Authorize]
 [Route("api/provider-reviews")]
 public sealed class ReviewsController : ControllerBase
 {
     private readonly IReviewService _reviewService;
+    private readonly ICurrentUserService _currentUserService;
 
-    public ReviewsController(IReviewService reviewService)
+    public ReviewsController(
+        IReviewService reviewService,
+        ICurrentUserService currentUserService)
     {
         _reviewService = reviewService;
+        _currentUserService = currentUserService;
     }
 
     [HttpPost]
@@ -22,6 +29,7 @@ public sealed class ReviewsController : ControllerBase
         CancellationToken cancellationToken)
     {
         var response = await _reviewService.CreateAsync(
+            _currentUserService.UserId,
             request,
             cancellationToken);
 

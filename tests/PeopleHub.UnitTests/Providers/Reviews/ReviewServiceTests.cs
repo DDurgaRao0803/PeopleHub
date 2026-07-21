@@ -35,7 +35,6 @@ public class ReviewServiceTests
 
         var request = new CreateReviewRequest
         {
-            CustomerId = customerId,
             ProviderProfileId = providerId,
             ServiceRequestId = serviceRequestId,
             Rating = 5,
@@ -66,7 +65,10 @@ serviceRequest.Complete();
             .ReturnsAsync(serviceRequest);
 
         // Act
-        var result = await _service.CreateAsync(request);
+var result = await _service.CreateAsync(
+    customerId,
+    request,
+    CancellationToken.None);
 
         // Assert
         result.Should().NotBeNull();

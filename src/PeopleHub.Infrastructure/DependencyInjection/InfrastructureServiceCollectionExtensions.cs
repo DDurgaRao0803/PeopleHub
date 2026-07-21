@@ -110,6 +110,10 @@ options.EnableDetailedErrors();
 options.LogTo(Console.WriteLine, LogLevel.Information);
 });
 
+    services.AddHttpContextAccessor();
+
+services.AddScoped<ICurrentUserService, CurrentUserService>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();

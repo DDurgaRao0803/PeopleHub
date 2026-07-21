@@ -5,8 +5,9 @@ namespace PeopleHub.Application.Providers.Reviews;
 public interface IReviewService
 {
     Task<ReviewResponse> CreateAsync(
-        CreateReviewRequest request,
-        CancellationToken cancellationToken = default);
+    Guid customerId,
+    CreateReviewRequest request,
+    CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<ReviewResponse>> GetProviderReviewsAsync(
         Guid providerProfileId,

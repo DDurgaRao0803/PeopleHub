@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PeopleHub.Api.Controllers;
 using PeopleHub.Application.Providers.Verification;
 using PeopleHub.Contracts.Providers.Verification;
+using PeopleHub.Application.Common.Interfaces.Services;
 
 namespace PeopleHub.UnitTests;
 
@@ -13,7 +14,8 @@ public class ProviderVerificationControllerTests
         var providerProfileId = Guid.NewGuid();
 
         var controller = new ProviderVerificationController(
-            new VerificationNotFoundService());
+    new VerificationNotFoundService(),
+    new FakeCurrentUserService());
 
         var result = await controller.Get(
             providerProfileId,
@@ -28,7 +30,8 @@ public class ProviderVerificationControllerTests
         var providerProfileId = Guid.NewGuid();
 
         var controller = new ProviderVerificationController(
-            new SuccessfulProviderVerificationService());
+    new SuccessfulProviderVerificationService(),
+    new FakeCurrentUserService());
 
         var request = new CreateProviderVerificationRequest
         {
@@ -59,54 +62,160 @@ public class ProviderVerificationControllerTests
     }
 
     private sealed class VerificationNotFoundService
-        : IProviderVerificationService
-    {
-        public Task<ProviderVerificationResponse> CreateAsync(
-            Guid providerProfileId,
-            CreateProviderVerificationRequest request,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+    : IProviderVerificationService
+{
+    public Task<ProviderVerificationResponse> CreateAsync(
+        Guid providerProfileId,
+        CreateProviderVerificationRequest request,
+        CancellationToken cancellationToken = default)
+        => throw new NotImplementedException();
 
-        public Task<ProviderVerificationResponse?> GetByProviderProfileIdAsync(
-            Guid providerProfileId,
-            CancellationToken cancellationToken = default)
-            => Task.FromResult<ProviderVerificationResponse?>(null);
+    public Task<ProviderVerificationResponse?> GetByProviderProfileIdAsync(
+        Guid providerProfileId,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult<ProviderVerificationResponse?>(null);
 
-        public Task DeleteAsync(
-            Guid providerProfileId,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
-    }
+    public Task DeleteAsync(
+        Guid providerProfileId,
+        CancellationToken cancellationToken = default)
+        => throw new NotImplementedException();
+
+    public Task<ProviderVerificationResponse> ApproveAsync(
+        Guid providerProfileId,
+        Guid reviewedByUserId,
+        CancellationToken cancellationToken = default)
+        => throw new KeyNotFoundException();
+
+    public Task<ProviderVerificationResponse> RejectAsync(
+        Guid providerProfileId,
+        Guid reviewedByUserId,
+        string reason,
+        CancellationToken cancellationToken = default)
+        => throw new KeyNotFoundException();
+}
 
     private sealed class SuccessfulProviderVerificationService
-        : IProviderVerificationService
+    : IProviderVerificationService
+{
+    public Task<ProviderVerificationResponse> CreateAsync(
+        Guid providerProfileId,
+        CreateProviderVerificationRequest request,
+        CancellationToken cancellationToken = default)
     {
-        public Task<ProviderVerificationResponse> CreateAsync(
-            Guid providerProfileId,
-            CreateProviderVerificationRequest request,
-            CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult(
-                new ProviderVerificationResponse
-                {
-                    Id = Guid.NewGuid(),
-                    GovernmentIdType = request.GovernmentIdType,
-                    GovernmentIdNumber = request.GovernmentIdNumber,
-                    FrontImageUrl = request.FrontImageUrl,
-                    BackImageUrl = request.BackImageUrl,
-                    SelfieImageUrl = request.SelfieImageUrl,
-                    VerificationStatus = "Pending"
-                });
-        }
-
-        public Task<ProviderVerificationResponse?> GetByProviderProfileIdAsync(
-            Guid providerProfileId,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
-
-        public Task DeleteAsync(
-            Guid providerProfileId,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+        return Task.FromResult(
+            new ProviderVerificationResponse
+            {
+                Id = Guid.NewGuid(),
+                GovernmentIdType = request.GovernmentIdType,
+                GovernmentIdNumber = request.GovernmentIdNumber,
+                FrontImageUrl = request.FrontImageUrl,
+                BackImageUrl = request.BackImageUrl,
+                SelfieImageUrl = request.SelfieImageUrl,
+                VerificationStatus = "Pending"
+            });
     }
+
+    public Task<ProviderVerificationResponse?> GetByProviderProfileIdAsync(
+        Guid providerProfileId,
+        CancellationToken cancellationToken = default)
+        => throw new NotImplementedException();
+
+    public Task DeleteAsync(
+        Guid providerProfileId,
+        CancellationToken cancellationToken = default)
+        => throw new NotImplementedException();
+
+    public Task<ProviderVerificationResponse> ApproveAsync(
+        Guid providerProfileId,
+        Guid reviewedByUserId,
+        CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(
+            new ProviderVerificationResponse
+            {
+                Id = Guid.NewGuid(),
+                VerificationStatus = "Approved",
+                ReviewedOnUtc = DateTime.UtcNow
+            });
+    }
+
+    public Task<ProviderVerificationResponse> RejectAsync(
+        Guid providerProfileId,
+        Guid reviewedByUserId,
+        string reason,
+        CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(
+            new ProviderVerificationResponse
+            {
+                Id = Guid.NewGuid(),
+                VerificationStatus = "Rejected",
+                ReviewedOnUtc = DateTime.UtcNow,
+                RejectionReason = reason
+            });
+    }
+}
+
+ private sealed class FakeCurrentUserService : ICurrentUserService
+{
+    public Guid UserId => Guid.NewGuid();
+
+    public bool IsAuthenticated => true;
+
+    public string? Email => "admin@peoplehub.com";
+
+    public string? Role => "Admin";
+} 
+
+[Fact]
+public async Task Approve_ReturnsOk_WhenVerificationIsApproved()
+{
+    var providerProfileId = Guid.NewGuid();
+
+    var controller = new ProviderVerificationController(
+        new SuccessfulProviderVerificationService(),
+        new FakeCurrentUserService());
+
+    var result = await controller.Approve(
+        providerProfileId,
+        CancellationToken.None);
+
+    var ok = Assert.IsType<OkObjectResult>(result.Result);
+
+    var response =
+        Assert.IsType<ProviderVerificationResponse>(ok.Value);
+
+    Assert.Equal("Approved", response.VerificationStatus);
+}
+
+
+[Fact]
+public async Task Reject_ReturnsOk_WhenVerificationIsRejected()
+{
+    var providerProfileId = Guid.NewGuid();
+
+    var controller = new ProviderVerificationController(
+        new SuccessfulProviderVerificationService(),
+        new FakeCurrentUserService());
+
+    var request = new RejectProviderVerificationRequest
+    {
+        Reason = "Invalid ID document"
+    };
+
+    var result = await controller.Reject(
+        providerProfileId,
+        request,
+        CancellationToken.None);
+
+    var ok = Assert.IsType<OkObjectResult>(result.Result);
+
+    var response =
+        Assert.IsType<ProviderVerificationResponse>(ok.Value);
+
+    Assert.Equal("Rejected", response.VerificationStatus);
+    Assert.Equal(request.Reason, response.RejectionReason);
+}
+
+
 }

@@ -112,4 +112,42 @@ public sealed class ProviderVerificationService : IProviderVerificationService
             RejectionReason = verification.RejectionReason
         };
     }
+
+    public async Task<ProviderVerificationResponse> ApproveAsync(
+    Guid providerProfileId,
+    Guid reviewedByUserId,
+    CancellationToken cancellationToken = default)
+{
+    var verification =
+        await _verificationRepository.GetByProviderProfileIdAsync(
+            providerProfileId,
+            cancellationToken)
+        ?? throw new KeyNotFoundException("Provider verification not found.");
+
+    verification.Approve(reviewedByUserId);
+
+    await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+    return Map(verification);
+}
+
+public async Task<ProviderVerificationResponse> RejectAsync(
+    Guid providerProfileId,
+    Guid reviewedByUserId,
+    string reason,
+    CancellationToken cancellationToken = default)
+{
+    var verification =
+        await _verificationRepository.GetByProviderProfileIdAsync(
+            providerProfileId,
+            cancellationToken)
+        ?? throw new KeyNotFoundException("Provider verification not found.");
+
+    verification.Reject(reviewedByUserId, reason);
+
+    await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+    return Map(verification);
+}
+
 }

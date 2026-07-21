@@ -23,7 +23,8 @@ public sealed class ReviewService : IReviewService
     }
 
     public async Task<ReviewResponse> CreateAsync(
-        CreateReviewRequest request,
+    Guid customerId,
+    CreateReviewRequest request,
         CancellationToken cancellationToken = default)
     {
         var alreadyReviewed =
@@ -54,7 +55,7 @@ public sealed class ReviewService : IReviewService
                 "Reviews can only be submitted after the service request is completed.");
         }
 
-        if (serviceRequest.CustomerId != request.CustomerId)
+        if (serviceRequest.CustomerId != customerId)
         {
             throw new InvalidOperationException(
                 "Only the customer who created the service request can submit a review.");
@@ -67,7 +68,7 @@ public sealed class ReviewService : IReviewService
         }
 
         var review = new Review(
-            request.CustomerId,
+            customerId,
             request.ProviderProfileId,
             request.ServiceRequestId,
             request.Rating,

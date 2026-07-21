@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PeopleHub.Application.Providers.Verification;
 using PeopleHub.Contracts.Providers.Verification;
+using PeopleHub.Application.Common.Interfaces.Services;
 
 namespace PeopleHub.Api.Controllers;
 
@@ -12,11 +13,15 @@ public sealed class ProviderVerificationController : ControllerBase
 {
     private readonly IProviderVerificationService _service;
 
+    private readonly ICurrentUserService _currentUserService;
+
     public ProviderVerificationController(
-        IProviderVerificationService service)
-    {
-        _service = service;
-    }
+    IProviderVerificationService service,
+    ICurrentUserService currentUserService)
+{
+    _service = service;
+    _currentUserService = currentUserService;
+}
 
     [HttpPost("{providerProfileId:guid}")]
     public async Task<ActionResult<ProviderVerificationResponse>> Create(
@@ -81,4 +86,56 @@ public sealed class ProviderVerificationController : ControllerBase
             return NotFound(ex.Message);
         }
     }
+
+    [HttpPost("{providerProfileId:guid}/approve")]
+public async Task<ActionResult<ProviderVerificationResponse>> Approve(
+    Guid providerProfileId,
+    CancellationToken cancellationToken)
+{
+    try
+    {
+        var response = await _service.ApproveAsync(
+            providerProfileId,
+            _currentUserService.UserId,
+            cancellationToken);
+
+        return Ok(response);
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(ex.Message);
+    }
+    catch (InvalidOperationException ex)
+    {
+        return BadRequest(ex.Message);
+    }
+}
+
+
+[HttpPost("{providerProfileId:guid}/reject")]
+public async Task<ActionResult<ProviderVerificationResponse>> Reject(
+    Guid providerProfileId,
+    [FromBody] RejectProviderVerificationRequest request,
+    CancellationToken cancellationToken)
+{
+    try
+    {
+        var response = await _service.RejectAsync(
+            providerProfileId,
+            _currentUserService.UserId,
+            request.Reason,
+            cancellationToken);
+
+        return Ok(response);
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(ex.Message);
+    }
+    catch (InvalidOperationException ex)
+    {
+        return BadRequest(ex.Message);
+    }
+}
+
 }

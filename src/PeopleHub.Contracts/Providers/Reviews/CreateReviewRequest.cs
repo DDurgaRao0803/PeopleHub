@@ -2,7 +2,6 @@ namespace PeopleHub.Contracts.Providers.Reviews;
 
 public sealed class CreateReviewRequest
 {
-    public Guid CustomerId { get; set; }
 
     public Guid ProviderProfileId { get; set; }
 

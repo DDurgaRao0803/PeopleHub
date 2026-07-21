@@ -16,4 +16,15 @@ public interface IProviderVerificationService
     Task DeleteAsync(
         Guid providerProfileId,
         CancellationToken cancellationToken = default);
+
+    Task<ProviderVerificationResponse> ApproveAsync(
+    Guid providerProfileId,
+    Guid reviewedByUserId,
+    CancellationToken cancellationToken = default);
+
+Task<ProviderVerificationResponse> RejectAsync(
+    Guid providerProfileId,
+    Guid reviewedByUserId,
+    string reason,
+    CancellationToken cancellationToken = default);
 }
