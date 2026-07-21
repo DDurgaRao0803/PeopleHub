@@ -1,4 +1,5 @@
 using PeopleHub.Domain.Aggregates.Provider;
+using PeopleHub.Contracts.Providers.Search;
 
 namespace PeopleHub.Application.Common.Interfaces.Persistence;
 

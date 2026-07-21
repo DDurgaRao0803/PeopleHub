@@ -3,6 +3,7 @@ using PeopleHub.Domain.Aggregates.Provider;
 using PeopleHub.Domain.Aggregates.User;
 using PeopleHub.Application.Common.Interfaces.Persistence;
 using PeopleHub.Domain.Entities;
+using PeopleHub.Domain.Aggregates.Review;
 
 
 namespace PeopleHub.Infrastructure.Persistence.Context;
@@ -32,6 +33,8 @@ public sealed class ApplicationDbContext
     public DbSet<ProviderAvailability> ProviderAvailabilities => Set<ProviderAvailability>();
 
     public DbSet<ServiceRequest> ServiceRequests => Set<ServiceRequest>();
+
+    public DbSet<Review> Reviews => Set<Review>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

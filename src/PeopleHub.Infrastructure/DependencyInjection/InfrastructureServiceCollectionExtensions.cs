@@ -31,6 +31,10 @@ using PeopleHub.SmartMatch.Interfaces;
 using PeopleHub.SmartMatch.Services;
 using PeopleHub.Application.SmartMatch.Interfaces;
 using PeopleHub.Infrastructure.Providers.SmartMatch;
+using PeopleHub.Application.Providers.Reviews;
+using PeopleHub.Infrastructure.Providers.Reviews;
+using PeopleHub.Application.Providers.Search;
+using PeopleHub.Infrastructure.Providers.Search;
 
 
 namespace PeopleHub.Infrastructure.DependencyInjection;
@@ -124,6 +128,10 @@ options.LogTo(Console.WriteLine, LogLevel.Information);
         services.AddScoped<ISmartMatchService, SmartMatchService>();
         services.AddScoped<ISmartMatchEngine, SmartMatchEngine>();
         services.AddScoped<IProviderAvailabilityService, ProviderAvailabilityService>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
+        services.AddScoped<IReviewService, ReviewService>();
+        services.AddScoped<IProviderSearchRepository, ProviderSearchRepository>();
+        services.AddScoped<IProviderSearchService, ProviderSearchService>();
 
         return services;
     }

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using PeopleHub.Application.Common.Interfaces.Persistence;
 using PeopleHub.Domain.Aggregates.Provider;
 using PeopleHub.Infrastructure.Persistence.Context;
+using PeopleHub.Contracts.Providers.Search;
 
 namespace PeopleHub.Infrastructure.Persistence.Repositories;
 
