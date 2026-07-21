@@ -10,6 +10,7 @@
 <PackageReference Include="Microsoft.Extensions.Identity.Core" />
 <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
 <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+<ProjectReference Include="..\PeopleHub.SmartMatch\PeopleHub.SmartMatch.csproj" />
 
   </ItemGroup>
 

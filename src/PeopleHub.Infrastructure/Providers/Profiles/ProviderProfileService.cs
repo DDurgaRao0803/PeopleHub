@@ -112,4 +112,5 @@ public sealed class ProviderProfileService : IProviderProfileService
             VerificationStatus = profile.VerificationStatus.ToString()
         };
     }
+    
 }

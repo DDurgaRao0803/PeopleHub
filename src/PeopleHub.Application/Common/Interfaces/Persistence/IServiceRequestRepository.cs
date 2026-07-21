@@ -1,6 +1,6 @@
 using PeopleHub.Domain.Entities;
 
-namespace PeopleHub.Domain.Interfaces.Repositories;
+namespace PeopleHub.Application.Common.Interfaces.Persistence;
 
 public interface IServiceRequestRepository
 {
@@ -23,4 +23,5 @@ public interface IServiceRequestRepository
     Task UpdateAsync(
         ServiceRequest serviceRequest,
         CancellationToken cancellationToken = default);
+
 }

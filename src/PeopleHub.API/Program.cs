@@ -1,5 +1,8 @@
 using PeopleHub.Infrastructure.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using PeopleHub.Infrastructure.Persistence.Context;
+using PeopleHub.Infrastructure.Persistence.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +55,17 @@ else
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    if (!app.Environment.IsEnvironment("Testing"))
+    {
+        await db.Database.MigrateAsync();
+        await ServiceCategorySeeder.SeedAsync(db);
+    }
+}
 
 // Configure middleware pipeline
 if (app.Environment.IsDevelopment())

@@ -1,7 +1,6 @@
 using PeopleHub.Application.Providers.ServiceRequests;
 using PeopleHub.Contracts.Providers.ServiceRequests;
 using PeopleHub.Domain.Entities;
-using PeopleHub.Domain.Interfaces.Repositories;
 using PeopleHub.Application.Common.Interfaces.Persistence;
 
 namespace PeopleHub.Infrastructure.Providers.ServiceRequests;

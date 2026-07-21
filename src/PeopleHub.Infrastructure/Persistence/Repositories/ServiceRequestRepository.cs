@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PeopleHub.Domain.Entities;
-using PeopleHub.Domain.Interfaces.Repositories;
+using PeopleHub.Application.Common.Interfaces.Persistence;
 using PeopleHub.Infrastructure.Persistence.Context;
 
 namespace PeopleHub.Infrastructure.Persistence.Repositories;

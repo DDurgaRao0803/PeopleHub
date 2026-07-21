@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using PeopleHub.Application.Common.Interfaces.Persistence;
 using PeopleHub.Domain.Aggregates.Provider;
 using PeopleHub.Infrastructure.Persistence.Context;
+using PeopleHub.Domain.Enums;
 
 namespace PeopleHub.Infrastructure.Persistence.Repositories;
 
@@ -62,4 +63,19 @@ public sealed class ProviderRepository : IProviderRepository
 
         return Task.CompletedTask;
     }
+
+    public async Task<IReadOnlyList<ProviderProfile>> GetEligibleProvidersAsync(
+    Guid serviceCategoryId,
+    CancellationToken cancellationToken = default)
+{
+    return await _context.ProviderProfiles
+        .Include(provider => provider.Skills)
+        .Include(provider => provider.Availabilities)
+        .Where(provider =>
+            provider.VerificationStatus == VerificationStatus.Approved &&
+            provider.Skills.Any(skill =>
+                skill.ServiceCategoryId == serviceCategoryId) &&
+            provider.Availabilities.Any())
+        .ToListAsync(cancellationToken);
+}
 }

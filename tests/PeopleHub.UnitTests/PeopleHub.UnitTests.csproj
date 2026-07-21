@@ -36,6 +36,7 @@
     <ProjectReference Include="..\..\src\PeopleHub.Application\PeopleHub.Application.csproj" />
     <ProjectReference Include="..\..\src\PeopleHub.Contracts\PeopleHub.Contracts.csproj" />
     <ProjectReference Include="..\..\src\PeopleHub.API\PeopleHub.API.csproj" />
+    <ProjectReference Include="..\..\src\PeopleHub.SmartMatch\PeopleHub.SmartMatch.csproj" />
   </ItemGroup>
 
    

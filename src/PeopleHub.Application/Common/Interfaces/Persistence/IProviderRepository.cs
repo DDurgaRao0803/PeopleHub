@@ -12,6 +12,10 @@ public interface IProviderRepository
         Guid userId,
         CancellationToken cancellationToken = default);
 
+    Task<IReadOnlyList<ProviderProfile>> GetEligibleProvidersAsync(
+    Guid serviceCategoryId,
+    CancellationToken cancellationToken = default);
+
     Task AddAsync(
         ProviderProfile provider,
         CancellationToken cancellationToken = default);

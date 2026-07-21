@@ -19,7 +19,6 @@ using PeopleHub.Application.Providers.Profiles;
 using PeopleHub.Infrastructure.Providers.Profiles;
 using PeopleHub.Application.Interfaces.Repositories;
 using Microsoft.Extensions.Logging;
-using PeopleHub.Domain.Interfaces.Repositories;
 using PeopleHub.Application.Providers.Availability;
 using PeopleHub.Application.Providers.Verification;
 using PeopleHub.Application.Providers.ServiceCategories;
@@ -28,6 +27,8 @@ using PeopleHub.Infrastructure.Providers.Availability;
 using PeopleHub.Infrastructure.Providers.Verification;
 using PeopleHub.Infrastructure.Providers.ServiceCategories;
 using PeopleHub.Infrastructure.Providers.ServiceRequests;
+using PeopleHub.SmartMatch.Interfaces;
+using PeopleHub.SmartMatch.Services;
 
 
 namespace PeopleHub.Infrastructure.DependencyInjection;
@@ -118,6 +119,7 @@ options.LogTo(Console.WriteLine, LogLevel.Information);
         services.AddScoped<IServiceCategoryService, ServiceCategoryService>();
         services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
         services.AddScoped<IServiceRequestService, ServiceRequestService>();
+        services.AddScoped<ISmartMatchEngine, SmartMatchEngine>();
         services.AddScoped<IProviderAvailabilityService, ProviderAvailabilityService>();
 
         return services;
