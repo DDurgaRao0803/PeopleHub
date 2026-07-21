@@ -64,6 +64,7 @@ using (var scope = app.Services.CreateScope())
     {
         await db.Database.MigrateAsync();
         await ServiceCategorySeeder.SeedAsync(db);
+        await AdminSeeder.SeedAsync(db);
     }
 }
 

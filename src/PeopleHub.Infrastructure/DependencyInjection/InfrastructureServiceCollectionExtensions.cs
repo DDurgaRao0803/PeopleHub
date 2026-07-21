@@ -37,6 +37,9 @@ using PeopleHub.Application.Providers.Search;
 using PeopleHub.Infrastructure.Providers.Search;
 using PeopleHub.Application.Providers.Services;
 using PeopleHub.Infrastructure.Providers.Services;
+using PeopleHub.Application.Administration;
+using PeopleHub.Infrastructure.Administration;
+
 
 namespace PeopleHub.Infrastructure.DependencyInjection;
 
@@ -139,6 +142,7 @@ services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IReviewService, ReviewService>();
         services.AddScoped<IProviderSearchRepository, ProviderSearchRepository>();
         services.AddScoped<IProviderSearchService, ProviderSearchService>();
+        services.AddScoped<IAdminDashboardService, AdminDashboardService>();
 
         return services;
     }
