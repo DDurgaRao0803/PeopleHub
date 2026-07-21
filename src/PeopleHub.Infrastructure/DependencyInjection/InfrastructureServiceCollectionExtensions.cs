@@ -35,7 +35,8 @@ using PeopleHub.Application.Providers.Reviews;
 using PeopleHub.Infrastructure.Providers.Reviews;
 using PeopleHub.Application.Providers.Search;
 using PeopleHub.Infrastructure.Providers.Search;
-
+using PeopleHub.Application.Providers.Services;
+using PeopleHub.Infrastructure.Providers.Services;
 
 namespace PeopleHub.Infrastructure.DependencyInjection;
 
@@ -122,8 +123,10 @@ options.LogTo(Console.WriteLine, LogLevel.Information);
         services.AddSingleton<IRefreshTokenGenerator, RefreshTokenGenerator>();
         services.AddScoped<IProviderProfileService, ProviderProfileService>();
         services.AddScoped<IProviderVerificationService, ProviderVerificationService>();
+        services.AddScoped<IProviderServiceService, ProviderServiceService>();
         services.AddScoped<IServiceCategoryService, ServiceCategoryService>();
         services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
+        services.AddScoped<IProviderServiceRepository, ProviderServiceRepository>();
         services.AddScoped<IServiceRequestService, ServiceRequestService>();
         services.AddScoped<ISmartMatchService, SmartMatchService>();
         services.AddScoped<ISmartMatchEngine, SmartMatchEngine>();

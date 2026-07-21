@@ -36,6 +36,8 @@ public sealed class ApplicationDbContext
 
     public DbSet<Review> Reviews => Set<Review>();
 
+    public DbSet<ProviderService> ProviderServices => Set<ProviderService>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

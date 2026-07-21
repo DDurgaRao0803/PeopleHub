@@ -1,12 +1,34 @@
 # PeopleHub API Roadmap
 
-> This document tracks the implementation status of all API features.
+> Version: 1.0
+>
+> This document tracks the implementation status of every backend module.
+>
+> Update this file immediately after completing a module.
 
-Legend
+---
 
-- ✅ Completed
-- 🚧 In Progress
-- ⬜ Not Started
+# Legend
+
+| Status | Meaning |
+|---------|---------|
+| ✅ | Completed |
+| 🚧 | In Progress |
+| ⬜ | Not Started |
+
+---
+
+# Overall Progress
+
+| Item | Status |
+|------|--------|
+| Backend | 🚧 In Progress |
+| Angular Client | ⬜ |
+| Flutter App | ⬜ |
+
+Estimated Backend Completion
+
+**60%**
 
 ---
 
@@ -25,24 +47,20 @@ Legend
 | Reset Password | ⬜ |
 | Change Password | ⬜ |
 | OTP | ⬜ |
-| Role-Based Access Control (RBAC) | ✅ |
+| RBAC | ✅ |
 | Admin Authorization | ✅ |
 
-**Completed**
+Completed
 
 - User Registration
 - Password Hashing
-- Login
-- JWT Access Token
-- Refresh Token
+- JWT Authentication
+- Refresh Tokens
 - Refresh Token Rotation
-- Refresh Token Revocation
 - Logout
 - `/api/auth/me`
-- Role Claim in JWT
-- Admin-only endpoint
-- User → 403 Forbidden
-- Admin → 200 OK
+- Role Claims
+- Admin Authorization
 
 ---
 
@@ -67,7 +85,11 @@ Legend
 | Update Provider Profile | ✅ |
 | Delete Provider Profile | ✅ |
 | Get Provider Profile | ✅ |
-| Provider Profile Tests | ✅ |
+| Repository | ✅ |
+| Service | ✅ |
+| Controller | ✅ |
+| Unit Tests | ✅ |
+| Integration Tests | ✅ |
 
 ---
 
@@ -78,6 +100,9 @@ Legend
 | Add Skill | ✅ |
 | Remove Skill | ✅ |
 | List Skills | ✅ |
+| Repository | ✅ |
+| Service | ✅ |
+| Controller | ✅ |
 
 ---
 
@@ -109,7 +134,7 @@ Legend
 | Repository | ✅ |
 | Service | ✅ |
 | Controller | ✅ |
-| Swagger Tests | ✅ |
+| Swagger Verification | ✅ |
 
 ---
 
@@ -124,7 +149,7 @@ Legend
 | Repository | ✅ |
 | Service | ✅ |
 | Controller | ✅ |
-| Swagger Tests | ✅ |
+| Swagger Verification | ✅ |
 
 ---
 
@@ -132,28 +157,31 @@ Legend
 
 | Feature | Status |
 |----------|--------|
-| Create Service Request | ✅ |
+| Create Request | ✅ |
 | Get By Id | ✅ |
-| Get Customer Requests | ✅ |
-| Get Provider Requests | ✅ |
+| Customer Requests | ✅ |
+| Provider Requests | ✅ |
 | Accept Request | ✅ |
 | Complete Request | ✅ |
 | Repository | ✅ |
 | Service | ✅ |
 | Controller | ✅ |
-| Swagger Tests | ✅ |
+| EF Configuration | ✅ |
+| Migration | ✅ |
+| Swagger Verification | ✅ |
 
-**Completed**
+Completed
 
 - Domain Entity
 - Status Enum
-- EF Core Configuration
 - Repository
+- EF Core Configuration
 - Service Layer
 - Dependency Injection
 - Migration
 - SQL Server Persistence
-- End-to-End Swagger Testing
+- End-to-End Testing
+
 
 ---
 
@@ -166,17 +194,28 @@ Legend
 | Delete Service | ⬜ |
 | Get Service | ⬜ |
 | List Provider Services | ⬜ |
+| Repository | ⬜ |
+| Service | ⬜ |
+| Controller | ⬜ |
+| Unit Tests | ⬜ |
+| Integration Tests | ⬜ |
 
 ---
 
-# Reviews
+# Reviews & Ratings
 
 | Feature | Status |
 |----------|--------|
 | Create Review | ⬜ |
 | Update Review | ⬜ |
 | Delete Review | ⬜ |
+| Get Reviews | ⬜ |
 | Provider Ratings | ⬜ |
+| Repository | ⬜ |
+| Service | ⬜ |
+| Controller | ⬜ |
+| Unit Tests | ⬜ |
+| Integration Tests | ⬜ |
 
 ---
 
@@ -187,7 +226,13 @@ Legend
 | Conversations | ⬜ |
 | Send Message | ⬜ |
 | Read Messages | ⬜ |
+| Delete Message | ⬜ |
 | SignalR Integration | ⬜ |
+| Repository | ⬜ |
+| Service | ⬜ |
+| Controller | ⬜ |
+| Unit Tests | ⬜ |
+| Integration Tests | ⬜ |
 
 ---
 
@@ -199,6 +244,11 @@ Legend
 | Email Notifications | ⬜ |
 | SMS Notifications | ⬜ |
 | In-App Notifications | ⬜ |
+| Repository | ⬜ |
+| Service | ⬜ |
+| Controller | ⬜ |
+| Unit Tests | ⬜ |
+| Integration Tests | ⬜ |
 
 ---
 
@@ -209,6 +259,9 @@ Legend
 | Provider Matching | ⬜ |
 | Ranking Algorithm | ⬜ |
 | Recommendation Engine | ⬜ |
+| Background Processing | ⬜ |
+| Repository Integration | ⬜ |
+| Unit Tests | ⬜ |
 
 ---
 
@@ -221,6 +274,7 @@ Legend
 | Provider Management | ⬜ |
 | Provider Verification Review | ⬜ |
 | Audit Logs | ⬜ |
+| System Settings | ⬜ |
 
 ---
 
@@ -230,8 +284,10 @@ Legend
 |----------|--------|
 | Health Checks | ⬜ |
 | API Versioning | ⬜ |
-| Serilog | ⬜ |
+| Serilog Logging | ⬜ |
+| Global Exception Handling | ⬜ |
 | Swagger Security | ✅ |
+| Rate Limiting | ⬜ |
 
 ---
 
@@ -244,6 +300,7 @@ Legend
 | Provider Module | ⬜ |
 | Service Requests | ⬜ |
 | Reviews | ⬜ |
+| Administration | ⬜ |
 
 ---
 
@@ -261,16 +318,19 @@ Legend
 
 # Current Milestone
 
-🎯 **Provider Reviews & Ratings Module**
+🎯 **Provider Services Module**
 
-Planned Order
+---
 
-1. Provider Reviews & Ratings
-2. Provider Services
+# Planned Backend Order
+
+1. Provider Services
+2. Reviews & Ratings
 3. Messaging
 4. Notifications
 5. SmartMatch
 6. Administration
+7. System Enhancements
 
 ---
 
@@ -294,3 +354,42 @@ SUCCESS
 28 Passed
 0 Failed
 ```
+
+> Update these numbers after every successful test run.
+
+---
+
+# Release History
+
+## v1.0
+
+Completed Modules
+
+- Authentication
+- Users
+- Provider Profile
+- Provider Skills
+- Provider Verification
+- Service Categories
+- Provider Availability
+- Service Requests
+
+Current Focus
+
+- Provider Services
+
+---
+
+# Maintenance Notes
+
+After completing every backend module:
+
+- Update feature status
+- Update current milestone
+- Update latest build status
+- Update latest test count
+- Commit documentation changes together with code changes
+
+---
+
+# End of Document
