@@ -4,6 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using PeopleHub.Infrastructure.Persistence.Context;
 using PeopleHub.Infrastructure.Persistence.Seeders;
 using PeopleHub.API.Middleware;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using PeopleHub.Application;
+using PeopleHub.Application.Users.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +58,10 @@ else
     builder.Services.AddInfrastructure(builder.Configuration);
 }
 builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation();
+
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserValidator>();
 
 var app = builder.Build();
 
