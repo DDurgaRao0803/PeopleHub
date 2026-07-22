@@ -1,14 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PeopleHub.Application.Common.Interfaces.Services;
 using PeopleHub.Application.Providers.ServiceRequests;
 using PeopleHub.Contracts.Providers.ServiceRequests;
-using Microsoft.AspNetCore.Authorization;
 
-namespace PeopleHub.Api.Controllers;
+namespace PeopleHub.API.Controllers;
 
 [ApiController]
 [Authorize]
-[Route("api/[controller]")]
+[Route("api/service-requests")]
 public class ServiceRequestsController : ControllerBase
 {
     private readonly IServiceRequestService _serviceRequestService;
@@ -60,6 +60,8 @@ public class ServiceRequestsController : ControllerBase
         Guid customerId,
         CancellationToken cancellationToken)
     {
+        Console.WriteLine(">>> GetCustomerRequests HIT");
+
         var response = await _serviceRequestService.GetCustomerRequestsAsync(
             customerId,
             cancellationToken);
@@ -72,6 +74,8 @@ public class ServiceRequestsController : ControllerBase
         Guid providerProfileId,
         CancellationToken cancellationToken)
     {
+        Console.WriteLine(">>> GetProviderRequests HIT");
+
         var response = await _serviceRequestService.GetProviderRequestsAsync(
             providerProfileId,
             cancellationToken);
@@ -80,9 +84,11 @@ public class ServiceRequestsController : ControllerBase
     }
 
     [HttpPut("{id:guid}/accept")]
-    public async Task<ActionResult<ServiceRequestResponse>> Accept(
-        Guid id,
-        CancellationToken cancellationToken)
+public async Task<ActionResult<ServiceRequestResponse>> Accept(
+    Guid id,
+    CancellationToken cancellationToken)
+{
+    try
     {
         var response = await _serviceRequestService.AcceptAsync(
             id,
@@ -90,23 +96,43 @@ public class ServiceRequestsController : ControllerBase
 
         return Ok(response);
     }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(new
+        {
+            message = ex.Message
+        });
+    }
+}
 
     [HttpPost("{serviceRequestId:guid}/reject")]
-public async Task<IActionResult> Reject(
+public async Task<ActionResult<ServiceRequestResponse>> Reject(
     Guid serviceRequestId,
     CancellationToken cancellationToken)
 {
-    var response = await _serviceRequestService.RejectAsync(
-        serviceRequestId,
-        cancellationToken);
+    try
+    {
+        var response = await _serviceRequestService.RejectAsync(
+            serviceRequestId,
+            cancellationToken);
 
-    return Ok(response);
+        return Ok(response);
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(new
+        {
+            message = ex.Message
+        });
+    }
 }
 
     [HttpPut("{id:guid}/complete")]
-    public async Task<ActionResult<ServiceRequestResponse>> Complete(
-        Guid id,
-        CancellationToken cancellationToken)
+public async Task<ActionResult<ServiceRequestResponse>> Complete(
+    Guid id,
+    CancellationToken cancellationToken)
+{
+    try
     {
         var response = await _serviceRequestService.CompleteAsync(
             id,
@@ -114,4 +140,12 @@ public async Task<IActionResult> Reject(
 
         return Ok(response);
     }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(new
+        {
+            message = ex.Message
+        });
+    }
+}
 }
