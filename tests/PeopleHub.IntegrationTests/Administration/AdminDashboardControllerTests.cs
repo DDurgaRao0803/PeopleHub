@@ -39,4 +39,44 @@ dashboard.ServiceRequests.Should().BeGreaterThanOrEqualTo(0);
 dashboard.CompletedServiceRequests.Should().BeGreaterThanOrEqualTo(0);
 dashboard.Reviews.Should().BeGreaterThanOrEqualTo(0);
     }
+
+    [Fact]
+public async Task GetDashboard_ShouldReturnUnauthorized_WhenAnonymous()
+{
+    // Arrange
+    Client.DefaultRequestHeaders.Add(
+        "X-Test-Anonymous",
+        "true");
+
+    // Act
+    var response = await Client.GetAsync(
+        "/api/admin/dashboard");
+
+    // Assert
+    response.StatusCode.Should().Be(
+        HttpStatusCode.Unauthorized);
+
+    Client.DefaultRequestHeaders.Remove(
+        "X-Test-Anonymous");
+}
+
+[Fact]
+public async Task GetDashboard_ShouldReturnForbidden_WhenUserIsNotAdmin()
+{
+    // Arrange
+    Client.DefaultRequestHeaders.Add(
+        "X-Test-Role",
+        "User");
+
+    // Act
+    var response = await Client.GetAsync(
+        "/api/admin/dashboard");
+
+    // Assert
+    response.StatusCode.Should().Be(
+        HttpStatusCode.Forbidden);
+
+    Client.DefaultRequestHeaders.Remove(
+        "X-Test-Role");
+}
 }

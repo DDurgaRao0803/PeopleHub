@@ -21,28 +21,43 @@ public sealed class TestAuthenticationHandler
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
 {
-    // Simulate anonymous user for selected tests
     if (Request.Headers.ContainsKey("X-Test-Anonymous"))
     {
         return Task.FromResult(AuthenticateResult.NoResult());
     }
 
-    var claims = new[]
+    var role = Request.Headers.TryGetValue(
+        "X-Test-Role",
+        out var headerRole)
+        ? headerRole.ToString()
+        : "Admin";
+
+    var claims = new List<Claim>
     {
-        new Claim(ClaimTypes.NameIdentifier,
+        new Claim(
+            ClaimTypes.NameIdentifier,
             "11111111-1111-1111-1111-111111111111"),
 
-        new Claim(ClaimTypes.Name,
+        new Claim(
+            ClaimTypes.Name,
             "Integration Test User"),
 
-        new Claim(ClaimTypes.Role,
-            "Admin")
+        new Claim(
+            ClaimTypes.Role,
+            role)
     };
 
-    var identity = new ClaimsIdentity(claims, Scheme);
-    var principal = new ClaimsPrincipal(identity);
-    var ticket = new AuthenticationTicket(principal, Scheme);
+    var identity = new ClaimsIdentity(
+        claims,
+        Scheme);
 
-    return Task.FromResult(AuthenticateResult.Success(ticket));
+    var principal = new ClaimsPrincipal(identity);
+
+    var ticket = new AuthenticationTicket(
+        principal,
+        Scheme);
+
+    return Task.FromResult(
+        AuthenticateResult.Success(ticket));
 }
 }
