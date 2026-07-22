@@ -44,4 +44,32 @@ Response Body:
 """);
 }
     }
+
+    [Fact]
+public async Task Register_WithInvalidRequest_ShouldReturnBadRequest()
+{
+    // Arrange
+    var request = new RegisterRequest
+    {
+        FirstName = "",
+        LastName = "",
+        Email = "invalid-email",
+        Password = "123",
+        PhoneNumber = ""
+    };
+
+    // Act
+    var response = await Client.PostAsJsonAsync(
+        "/api/auth/register",
+        request);
+
+    // Assert
+    response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+    var body = await response.Content.ReadAsStringAsync();
+
+    body.Should().NotBeNullOrWhiteSpace();
+}
+
+
 }
