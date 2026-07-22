@@ -1,5 +1,8 @@
 using PeopleHub.Domain.Aggregates.Provider;
 using PeopleHub.SmartMatch.Ranking;
+using PeopleHub.SmartMatch.Models;
+using PeopleHub.SmartMatch.Ranking.Interfaces;
+using PeopleHub.SmartMatch.Ranking.Rules;
 
 namespace PeopleHub.UnitTests.SmartMatch.Ranking;
 
@@ -14,10 +17,22 @@ public class ScoreCalculatorTests
             "Experienced Electrician",
             12);
 
-        var calculator = new ScoreCalculator();
+        var calculator = new ScoreCalculator(
+    new IScoreRule[]
+    {
+        new ExperienceScoreRule(),
+        new RatingScoreRule(),
+        new CompletedJobsScoreRule(),
+        new VerificationScoreRule(),
+        new ResponseRateScoreRule()
+    });
 
         // Act
-        var result = calculator.Calculate(provider);
+        var result = calculator.Calculate(
+    new ScoreContext
+    {
+        Provider = provider
+    });
 
         // Assert
         Assert.Equal(provider.Id, result.ProviderId);
@@ -33,12 +48,24 @@ public class ScoreCalculatorTests
             "New Provider",
             0);
 
-        var calculator = new ScoreCalculator();
+        var calculator = new ScoreCalculator(
+    new IScoreRule[]
+    {
+        new ExperienceScoreRule(),
+        new RatingScoreRule(),
+        new CompletedJobsScoreRule(),
+        new VerificationScoreRule(),
+        new ResponseRateScoreRule()
+    });
 
         // Act
-        var result = calculator.Calculate(provider);
+var result = calculator.Calculate(
+    new ScoreContext
+    {
+        Provider = provider
+    });
 
         // Assert
-        Assert.Equal(0, result.Score);
+        Assert.Equal(0m, result.Score);
     }
 }

@@ -1,6 +1,9 @@
 using PeopleHub.Domain.Aggregates.Provider;
 using PeopleHub.Domain.Entities;
 using PeopleHub.SmartMatch.Services;
+using PeopleHub.SmartMatch.Ranking;
+using PeopleHub.SmartMatch.Ranking.Interfaces;
+using PeopleHub.SmartMatch.Ranking.Rules;
 
 namespace PeopleHub.UnitTests.SmartMatch.Services;
 
@@ -44,7 +47,17 @@ public class SmartMatchEngineTests
     "Repair electrical wiring", // Description
     new DateTime(2026, 7, 20, 10, 0, 0));
 
-        var engine = new SmartMatchEngine();
+        var scoreCalculator = new ScoreCalculator(
+    new IScoreRule[]
+    {
+        new ExperienceScoreRule(),
+        new RatingScoreRule(),
+        new CompletedJobsScoreRule(),
+        new VerificationScoreRule(),
+        new ResponseRateScoreRule()
+    });
+
+var engine = new SmartMatchEngine(scoreCalculator);
 
         // Act
         var result = engine.FindBestMatch(
@@ -78,7 +91,17 @@ public class SmartMatchEngineTests
     "Repair electrical wiring", // Description
     new DateTime(2026, 7, 20, 10, 0, 0));
 
-        var engine = new SmartMatchEngine();
+        var scoreCalculator = new ScoreCalculator(
+    new IScoreRule[]
+    {
+        new ExperienceScoreRule(),
+        new RatingScoreRule(),
+        new CompletedJobsScoreRule(),
+        new VerificationScoreRule(),
+        new ResponseRateScoreRule()
+    });
+
+var engine = new SmartMatchEngine(scoreCalculator);
 
         // Act
         var result = engine.FindBestMatch(

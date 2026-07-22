@@ -1,55 +1,28 @@
-using PeopleHub.Domain.Aggregates.Provider;
-using PeopleHub.Domain.Enums;
+
 using PeopleHub.SmartMatch.Models;
+using PeopleHub.SmartMatch.Ranking.Rules;
+using PeopleHub.SmartMatch.Ranking.Interfaces;
 
 namespace PeopleHub.SmartMatch.Ranking;
 
 public sealed class ScoreCalculator
 {
-    private const decimal MaxExperienceYears = 20m;
-    private const decimal MaxCompletedJobs = 100m;
 
-    private const decimal ExperienceWeight = 25m;
-    private const decimal RatingWeight = 30m;
-    private const decimal CompletedJobsWeight = 20m;
-    private const decimal VerificationWeight = 10m;
-    private const decimal ResponseRateWeight = 15m;
+    private readonly IReadOnlyList<IScoreRule> _scoreRules;
 
-    public ProviderScore Calculate(ProviderProfile provider)
+public ScoreCalculator(IEnumerable<IScoreRule> scoreRules)
+{
+    _scoreRules = scoreRules.ToList();
+}
+
+    public ProviderScore Calculate(ScoreContext context)
     {
-        ArgumentNullException.ThrowIfNull(provider);
+        ArgumentNullException.ThrowIfNull(context);
 
-        decimal experienceScore =
-            Math.Min(provider.ExperienceYears, MaxExperienceYears)
-            / MaxExperienceYears
-            * ExperienceWeight;
-
-        decimal ratingScore =
-            provider.AverageRating
-            / 5m
-            * RatingWeight;
-
-        decimal completedJobsScore =
-            Math.Min(provider.CompletedJobs, MaxCompletedJobs)
-            / MaxCompletedJobs
-            * CompletedJobsWeight;
-
-        decimal verificationScore =
-            provider.VerificationStatus == VerificationStatus.Approved
-                ? VerificationWeight
-                : 0m;
-
-        decimal responseRateScore =
-            provider.ResponseRate
-            / 100m
-            * ResponseRateWeight;
+var provider = context.Provider;
 
         decimal totalScore =
-            experienceScore +
-            ratingScore +
-            completedJobsScore +
-            verificationScore +
-            responseRateScore;
+    _scoreRules.Sum(rule => rule.Calculate(context));
 
         return new ProviderScore
         {

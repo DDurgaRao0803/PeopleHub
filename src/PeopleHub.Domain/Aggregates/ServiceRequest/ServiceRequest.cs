@@ -10,12 +10,14 @@ public class ServiceRequest : AuditableEntity
     }
 
     public ServiceRequest(
-        Guid customerId,
-        Guid providerProfileId,
-        Guid serviceCategoryId,
-        string title,
-        string description,
-        DateTime requestedDate)
+    Guid customerId,
+    Guid providerProfileId,
+    Guid serviceCategoryId,
+    string title,
+    string description,
+    DateTime requestedDate,
+    decimal? customerLatitude = null,
+    decimal? customerLongitude = null)
     {
         CustomerId = customerId;
         ProviderProfileId = providerProfileId;
@@ -23,6 +25,8 @@ public class ServiceRequest : AuditableEntity
         Title = title;
         Description = description;
         RequestedDate = requestedDate;
+        CustomerLatitude = customerLatitude;
+CustomerLongitude = customerLongitude;
         Status = ServiceRequestStatus.Pending;
     }
 
@@ -39,6 +43,10 @@ public class ServiceRequest : AuditableEntity
     public DateTime RequestedDate { get; private set; }
 
     public ServiceRequestStatus Status { get; private set; }
+
+    public decimal? CustomerLatitude { get; private set; }
+
+public decimal? CustomerLongitude { get; private set; }
 
     public void Accept()
     {
@@ -82,6 +90,24 @@ public void Cancel()
     }
 
     Status = ServiceRequestStatus.Cancelled;
+}
+
+public void UpdateCustomerLocation(
+    decimal latitude,
+    decimal longitude)
+{
+    if (latitude < -90m || latitude > 90m)
+    {
+        throw new ArgumentOutOfRangeException(nameof(latitude));
+    }
+
+    if (longitude < -180m || longitude > 180m)
+    {
+        throw new ArgumentOutOfRangeException(nameof(longitude));
+    }
+
+    CustomerLatitude = latitude;
+    CustomerLongitude = longitude;
 }
 
 }

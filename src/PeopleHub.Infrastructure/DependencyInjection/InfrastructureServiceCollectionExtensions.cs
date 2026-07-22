@@ -38,6 +38,9 @@ using PeopleHub.Application.Providers.Services;
 using PeopleHub.Infrastructure.Providers.Services;
 using PeopleHub.Application.Administration;
 using PeopleHub.Infrastructure.Administration;
+using PeopleHub.SmartMatch.Ranking;
+using PeopleHub.SmartMatch.Ranking.Interfaces;
+using PeopleHub.SmartMatch.Ranking.Rules;
 
 
 namespace PeopleHub.Infrastructure.DependencyInjection;
@@ -136,6 +139,13 @@ services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IServiceRequestService, ServiceRequestService>();
         services.AddScoped<ISmartMatchService, SmartMatchService>();
         services.AddScoped<ISmartMatchEngine, SmartMatchEngine>();
+        services.AddScoped<IScoreRule, ExperienceScoreRule>();
+services.AddScoped<IScoreRule, RatingScoreRule>();
+services.AddScoped<IScoreRule, CompletedJobsScoreRule>();
+services.AddScoped<IScoreRule, VerificationScoreRule>();
+services.AddScoped<IScoreRule, ResponseRateScoreRule>();
+
+services.AddScoped<ScoreCalculator>();
         services.AddScoped<IProviderAvailabilityService, ProviderAvailabilityService>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<IReviewService, ReviewService>();
@@ -144,6 +154,7 @@ services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IAdminDashboardService, AdminDashboardService>();
         services.AddScoped<IAdminUserService, AdminUserService>();
         services.AddScoped<IAdminProviderVerificationService, AdminProviderVerificationService>();
+        
 
         return services;
     }

@@ -4,6 +4,7 @@ using PeopleHub.SmartMatch.Interfaces;
 using PeopleHub.SmartMatch.Models;
 using PeopleHub.SmartMatch.Ranking;
 using PeopleHub.SmartMatch.Rules;
+using PeopleHub.SmartMatch.Distance;
 
 namespace PeopleHub.SmartMatch.Services;
 
@@ -12,7 +13,14 @@ public sealed class SmartMatchEngine : ISmartMatchEngine
     private readonly VerificationRule _verificationRule = new();
     private readonly SkillRule _skillRule = new();
     private readonly AvailabilityRule _availabilityRule = new();
-    private readonly ScoreCalculator _scoreCalculator = new();
+    private readonly ScoreCalculator _scoreCalculator;
+
+    private readonly IDistanceCalculator _distanceCalculator = new HaversineDistanceCalculator();
+
+    public SmartMatchEngine(ScoreCalculator scoreCalculator)
+{
+    _scoreCalculator = scoreCalculator;
+}
 
     public SmartMatchResult FindBestMatch(
         ServiceRequest serviceRequest,
@@ -47,7 +55,11 @@ public sealed class SmartMatchEngine : ISmartMatchEngine
                 continue;
             }
 
-            var score = _scoreCalculator.Calculate(provider);
+            var score = _scoreCalculator.Calculate(
+    new ScoreContext
+    {
+        Provider = provider
+    });
 
             scores.Add(score);
 
