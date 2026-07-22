@@ -210,5 +210,58 @@ public void UpdateLastActive_Should_Update_LastActiveUtc()
     Assert.True(provider.LastActiveUtc > previous);
 }
 
+[Fact]
+public void UpdateLocation_Should_Set_Latitude_And_Longitude()
+{
+    var provider = new ProviderProfile(
+        Guid.NewGuid(),
+        "Experienced electrician",
+        5);
+
+    provider.UpdateLocation(17.3850m, 78.4867m);
+
+    Assert.Equal(17.3850m, provider.Latitude);
+    Assert.Equal(78.4867m, provider.Longitude);
+}
+
+[Fact]
+public void UpdateLocation_Should_Throw_When_Latitude_Is_Invalid()
+{
+    var provider = new ProviderProfile(
+        Guid.NewGuid(),
+        "Experienced electrician",
+        5);
+
+    Assert.Throws<ArgumentOutOfRangeException>(
+        () => provider.UpdateLocation(95m, 78m));
+}
+
+[Fact]
+public void UpdateLocation_Should_Throw_When_Longitude_Is_Invalid()
+{
+    var provider = new ProviderProfile(
+        Guid.NewGuid(),
+        "Experienced electrician",
+        5);
+
+    Assert.Throws<ArgumentOutOfRangeException>(
+        () => provider.UpdateLocation(17m, 190m));
+}
+
+[Fact]
+public void UpdateLocation_Should_Allow_Boundary_Values()
+{
+    var provider = new ProviderProfile(
+        Guid.NewGuid(),
+        "Experienced electrician",
+        5);
+
+    provider.UpdateLocation(-90m, 180m);
+
+    Assert.Equal(-90m, provider.Latitude);
+    Assert.Equal(180m, provider.Longitude);
+}
+
+
 
 }

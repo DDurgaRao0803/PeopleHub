@@ -48,6 +48,10 @@ public class ProviderProfile : AuditableEntity
 
     public DateTime LastActiveUtc { get; private set; }
 
+    public decimal? Latitude { get; private set; }
+
+public decimal? Longitude { get; private set; }
+
     public IReadOnlyCollection<ProviderSkill> Skills => _skills;
 
     public IReadOnlyCollection<ProviderAvailability> Availabilities =>
@@ -211,4 +215,22 @@ public class ProviderProfile : AuditableEntity
             startTime,
             endTime);
     }
+
+    public void UpdateLocation(decimal latitude, decimal longitude)
+{
+    if (latitude < -90m || latitude > 90m)
+    {
+        throw new ArgumentOutOfRangeException(nameof(latitude));
+    }
+
+    if (longitude < -180m || longitude > 180m)
+    {
+        throw new ArgumentOutOfRangeException(nameof(longitude));
+    }
+
+    Latitude = latitude;
+    Longitude = longitude;
+}
+
+
 }
