@@ -17,7 +17,6 @@ using PeopleHub.Application.Users;
 using PeopleHub.Infrastructure.Users;
 using PeopleHub.Application.Providers.Profiles;
 using PeopleHub.Infrastructure.Providers.Profiles;
-using PeopleHub.Application.Interfaces.Repositories;
 using Microsoft.Extensions.Logging;
 using PeopleHub.Application.Providers.Availability;
 using PeopleHub.Application.Providers.Verification;
@@ -143,6 +142,8 @@ services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IProviderSearchRepository, ProviderSearchRepository>();
         services.AddScoped<IProviderSearchService, ProviderSearchService>();
         services.AddScoped<IAdminDashboardService, AdminDashboardService>();
+        services.AddScoped<IAdminUserService, AdminUserService>();
+        services.AddScoped<IAdminProviderVerificationService, AdminProviderVerificationService>();
 
         return services;
     }

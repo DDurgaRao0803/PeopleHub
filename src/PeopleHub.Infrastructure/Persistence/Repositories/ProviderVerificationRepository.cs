@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using PeopleHub.Application.Interfaces.Repositories;
+using PeopleHub.Application.Common.Interfaces.Persistence;
 using PeopleHub.Domain.Aggregates.Provider;
 using PeopleHub.Infrastructure.Persistence.Context;
+using PeopleHub.Domain.Enums;
 
 namespace PeopleHub.Infrastructure.Persistence.Repositories;
 
@@ -42,4 +43,14 @@ public sealed class ProviderVerificationRepository : IProviderVerificationReposi
     {
         _context.ProviderVerifications.Remove(verification);
     }
+
+    public async Task<IReadOnlyList<ProviderVerification>> GetPendingAsync(
+    CancellationToken cancellationToken = default)
+{
+    return await _context.ProviderVerifications
+        .Where(x => x.VerificationStatus == VerificationStatus.Pending)
+        .OrderBy(x => x.SubmittedOnUtc)
+        .ToListAsync(cancellationToken);
+}
+
 }

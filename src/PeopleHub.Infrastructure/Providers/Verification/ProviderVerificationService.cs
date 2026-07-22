@@ -1,5 +1,4 @@
 using PeopleHub.Application.Common.Interfaces.Persistence;
-using PeopleHub.Application.Interfaces.Repositories;
 using PeopleHub.Application.Providers.Verification;
 using PeopleHub.Contracts.Providers.Verification;
 using PeopleHub.Domain.Aggregates.Provider;

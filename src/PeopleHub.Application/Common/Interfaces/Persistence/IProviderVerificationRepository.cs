@@ -1,12 +1,15 @@
 using PeopleHub.Domain.Aggregates.Provider;
 
-namespace PeopleHub.Application.Interfaces.Repositories;
+namespace PeopleHub.Application.Common.Interfaces.Persistence;
 
 public interface IProviderVerificationRepository
 {
     Task<ProviderVerification?> GetByProviderProfileIdAsync(
         Guid providerProfileId,
         CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<ProviderVerification>> GetPendingAsync(
+    CancellationToken cancellationToken = default);
 
     Task AddAsync(
         ProviderVerification verification,
