@@ -61,4 +61,27 @@ public class ServiceRequest : AuditableEntity
 
         Status = ServiceRequestStatus.Completed;
     }
+
+    public void Reject()
+{
+    if (Status != ServiceRequestStatus.Pending)
+    {
+        throw new InvalidOperationException(
+            "Only pending requests can be rejected.");
+    }
+
+    Status = ServiceRequestStatus.Rejected;
+}
+
+public void Cancel()
+{
+    if (Status == ServiceRequestStatus.Completed)
+    {
+        throw new InvalidOperationException(
+            "Completed requests cannot be cancelled.");
+    }
+
+    Status = ServiceRequestStatus.Cancelled;
+}
+
 }

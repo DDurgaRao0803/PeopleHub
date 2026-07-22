@@ -91,6 +91,18 @@ public class ServiceRequestsController : ControllerBase
         return Ok(response);
     }
 
+    [HttpPost("{serviceRequestId:guid}/reject")]
+public async Task<IActionResult> Reject(
+    Guid serviceRequestId,
+    CancellationToken cancellationToken)
+{
+    var response = await _serviceRequestService.RejectAsync(
+        serviceRequestId,
+        cancellationToken);
+
+    return Ok(response);
+}
+
     [HttpPut("{id:guid}/complete")]
     public async Task<ActionResult<ServiceRequestResponse>> Complete(
         Guid id,

@@ -106,6 +106,54 @@ public class ServiceRequestService : IServiceRequestService
         return MapToResponse(serviceRequest);
     }
 
+    public async Task<ServiceRequestResponse> RejectAsync(
+    Guid serviceRequestId,
+    CancellationToken cancellationToken = default)
+{
+    var serviceRequest = await _serviceRequestRepository.GetByIdAsync(
+        serviceRequestId,
+        cancellationToken);
+
+    if (serviceRequest is null)
+    {
+        throw new KeyNotFoundException("Service request not found.");
+    }
+
+    serviceRequest.Reject();
+
+    await _serviceRequestRepository.UpdateAsync(
+        serviceRequest,
+        cancellationToken);
+
+    await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+    return MapToResponse(serviceRequest);
+}
+
+public async Task<ServiceRequestResponse> CancelAsync(
+    Guid serviceRequestId,
+    CancellationToken cancellationToken = default)
+{
+    var serviceRequest = await _serviceRequestRepository.GetByIdAsync(
+        serviceRequestId,
+        cancellationToken);
+
+    if (serviceRequest is null)
+    {
+        throw new KeyNotFoundException("Service request not found.");
+    }
+
+    serviceRequest.Cancel();
+
+    await _serviceRequestRepository.UpdateAsync(
+        serviceRequest,
+        cancellationToken);
+
+    await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+    return MapToResponse(serviceRequest);
+}
+
     public async Task<ServiceRequestResponse> CompleteAsync(
         Guid serviceRequestId,
         CancellationToken cancellationToken = default)

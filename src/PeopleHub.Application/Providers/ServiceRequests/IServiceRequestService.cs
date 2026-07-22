@@ -25,6 +25,14 @@ public interface IServiceRequestService
         Guid serviceRequestId,
         CancellationToken cancellationToken = default);
 
+    Task<ServiceRequestResponse> RejectAsync(
+    Guid serviceRequestId,
+    CancellationToken cancellationToken = default);
+
+Task<ServiceRequestResponse> CancelAsync(
+    Guid serviceRequestId,
+    CancellationToken cancellationToken = default);
+
     Task<ServiceRequestResponse> CompleteAsync(
         Guid serviceRequestId,
         CancellationToken cancellationToken = default);
