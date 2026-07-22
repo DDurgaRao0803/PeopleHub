@@ -22,30 +22,31 @@ public sealed class SmartMatchService : ISmartMatchService
     }
 
     public async Task<SmartMatchResponse> FindBestProviderAsync(
-    Guid serviceRequestId,
-    CancellationToken cancellationToken = default)
-{
-    var serviceRequest = await _serviceRequestRepository.GetByIdAsync(
-        serviceRequestId,
-        cancellationToken);
-
-    if (serviceRequest is null)
+        Guid serviceRequestId,
+        CancellationToken cancellationToken = default)
     {
-        throw new KeyNotFoundException("Service request not found.");
+        var serviceRequest = await _serviceRequestRepository.GetByIdAsync(
+            serviceRequestId,
+            cancellationToken);
+
+        if (serviceRequest is null)
+        {
+            throw new KeyNotFoundException(
+                "Service request not found.");
+        }
+
+        var providers = await _providerRepository.GetEligibleProvidersAsync(
+            serviceRequest.ServiceCategoryId,
+            cancellationToken);
+
+        var matchResult = _smartMatchEngine.FindBestMatch(
+            serviceRequest,
+            providers);
+
+        return new SmartMatchResponse
+        {
+            SelectedProviderId = matchResult.SelectedProvider?.Id,
+            CandidateCount = matchResult.Scores.Count
+        };
     }
-
-    var providers = await _providerRepository.GetEligibleProvidersAsync(
-    serviceRequest.ServiceCategoryId,
-    cancellationToken);
-
-    var matchResult = _smartMatchEngine.FindBestMatch(
-    serviceRequest,
-    providers);
-
-    return new SmartMatchResponse
-{
-    SelectedProviderId = matchResult.SelectedProvider?.Id,
-    CandidateCount = matchResult.Scores.Count
-};
-}
 }

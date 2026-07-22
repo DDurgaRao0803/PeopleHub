@@ -23,20 +23,22 @@ public class ServiceRequestsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<ServiceRequestResponse>> Create(
-        [FromBody] CreateServiceRequestRequest request,
-        CancellationToken cancellationToken)
-    {
-        var response = await _serviceRequestService.CreateAsync(
-            _currentUserService.UserId,
-            request,
-            cancellationToken);
+public async Task<ActionResult<ServiceRequestResponse>> Create(
+    [FromBody] CreateServiceRequestRequest request,
+    CancellationToken cancellationToken)
+{
+    Console.WriteLine(">>> CREATE SERVICE REQUEST HIT");
 
-        return CreatedAtAction(
-            nameof(GetById),
-            new { id = response.Id },
-            response);
-    }
+    var response = await _serviceRequestService.CreateAsync(
+        _currentUserService.UserId,
+        request,
+        cancellationToken);
+
+    return CreatedAtAction(
+        nameof(GetById),
+        new { id = response.Id },
+        response);
+}
 
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<ServiceRequestResponse>> GetById(

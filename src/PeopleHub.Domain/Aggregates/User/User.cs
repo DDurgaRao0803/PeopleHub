@@ -2,6 +2,7 @@ using PeopleHub.Domain.Common;
 using PeopleHub.Domain.Enums;
 using PeopleHub.Domain.Exceptions;
 using PeopleHub.Domain.ValueObjects;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PeopleHub.Domain.Aggregates.User;
 
@@ -51,7 +52,11 @@ public sealed class User : AuditableEntity
 
     public PhoneNumber PhoneNumber { get; private set; }
 
-    public Role Role { get; private set; } = Role.User;
+    [NotMapped]
+public Role Role =>
+    _roles.Any(r => r.Role == UserRoleType.Admin)
+        ? Role.Admin
+        : Role.User;
 
     public UserStatus Status { get; private set; }
 

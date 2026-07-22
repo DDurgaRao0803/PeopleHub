@@ -49,16 +49,19 @@ public sealed class ProviderVerificationService : IProviderVerificationService
         }
 
         var verification = new ProviderVerification(
-            providerProfileId,
-            (DomainGovernmentIdType)request.GovernmentIdType,
-            request.GovernmentIdNumber,
-            request.FrontImageUrl,
-            request.BackImageUrl,
-            request.SelfieImageUrl);
+    providerProfileId,
+    (DomainGovernmentIdType)request.GovernmentIdType,
+    request.GovernmentIdNumber,
+    request.FrontImageUrl,
+    request.BackImageUrl,
+    request.SelfieImageUrl);
 
-        await _verificationRepository.AddAsync(
-            verification,
-            cancellationToken);
+// Submit the verification for review.
+verification.Submit();
+
+await _verificationRepository.AddAsync(
+    verification,
+    cancellationToken);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

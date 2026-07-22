@@ -57,7 +57,19 @@ else
 {
     builder.Services.AddInfrastructure(builder.Configuration);
 }
+
+
 builder.Services.AddControllers();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(
+        "AdminOnly",
+        policy =>
+        {
+            policy.RequireRole("Admin");
+        });
+});
 
 builder.Services.AddFluentValidationAutoValidation();
 

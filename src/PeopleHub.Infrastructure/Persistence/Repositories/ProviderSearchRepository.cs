@@ -84,9 +84,9 @@ public sealed class ProviderSearchRepository : IProviderSearchRepository
         .ToListAsync(cancellationToken);
 
     return new PagedResponse<ProviderSearchResponse>(
-        items,
-        totalRecords,
-        request.Page,
-        request.PageSize);
+    items,
+    request.Page,
+    request.PageSize,
+    totalRecords);
 }
 }
