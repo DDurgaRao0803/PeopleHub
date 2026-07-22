@@ -3,6 +3,8 @@ using FluentAssertions;
 using PeopleHub.IntegrationTests.Infrastructure;
 using Xunit;
 using Xunit.Abstractions;
+using System.Net.Http.Json;
+using PeopleHub.Contracts.Providers.ServiceRequests;
 
 namespace PeopleHub.IntegrationTests.Providers.ServiceRequests;
 
@@ -92,4 +94,79 @@ public class ServiceRequestsControllerTests
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
+
+    [Fact]
+public async Task Create_ShouldReturnCreated()
+{
+    // Arrange
+    var request = new CreateServiceRequestRequest(
+        Guid.NewGuid(),
+        Guid.NewGuid(),
+        "Plumbing Service",
+        "Kitchen sink leakage",
+        DateTime.UtcNow.AddDays(1));
+
+    // Act
+    var response = await _client.PostAsJsonAsync(
+        "/api/service-requests",
+        request);
+
+    // Assert
+    response.StatusCode.Should().Be(HttpStatusCode.Created);
+
+    var created = await response.Content
+        .ReadFromJsonAsync<ServiceRequestResponse>();
+
+    created.Should().NotBeNull();
+
+    created!.Id.Should().NotBe(Guid.Empty);
+    created.CustomerId.Should().NotBe(Guid.Empty);
+    created.ProviderProfileId.Should().Be(request.ProviderProfileId);
+    created.ServiceCategoryId.Should().Be(request.ServiceCategoryId);
+    created.Title.Should().Be(request.Title);
+    created.Description.Should().Be(request.Description);
+    created.Status.Should().Be("Pending");
+}
+
+[Fact]
+public async Task GetById_ShouldReturnCreatedRequest()
+{
+    // Arrange
+    var request = new CreateServiceRequestRequest(
+        Guid.NewGuid(),
+        Guid.NewGuid(),
+        "Electrical Repair",
+        "Repair ceiling fan",
+        DateTime.UtcNow.AddDays(2));
+
+    var createResponse = await _client.PostAsJsonAsync(
+        "/api/service-requests",
+        request);
+
+    createResponse.StatusCode.Should().Be(HttpStatusCode.Created);
+
+    var created = await createResponse.Content
+        .ReadFromJsonAsync<ServiceRequestResponse>();
+
+    // Act
+    var response = await _client.GetAsync(
+        $"/api/service-requests/{created!.Id}");
+
+    // Assert
+    response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+    var result = await response.Content
+        .ReadFromJsonAsync<ServiceRequestResponse>();
+
+    result.Should().NotBeNull();
+
+    result!.Id.Should().Be(created.Id);
+    result.Title.Should().Be(request.Title);
+    result.Description.Should().Be(request.Description);
+    result.ProviderProfileId.Should().Be(request.ProviderProfileId);
+    result.ServiceCategoryId.Should().Be(request.ServiceCategoryId);
+    result.Status.Should().Be("Pending");
+}
+
+
 }
