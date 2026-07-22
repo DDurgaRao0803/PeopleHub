@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using PeopleHub.Infrastructure.Persistence.Context;
 using Microsoft.AspNetCore.TestHost;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PeopleHub.IntegrationTests.Infrastructure;
 
@@ -33,6 +34,15 @@ public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
         .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>(
             TestAuthenticationHandler.Scheme,
             _ => { });
+
+            services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireRole("Admin");
+    });
+});
 
         // Remove the application's DbContext registrations so we can replace the
         // provider for tests. Remove any descriptors for ApplicationDbContext or
