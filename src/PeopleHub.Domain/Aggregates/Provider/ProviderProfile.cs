@@ -25,6 +25,11 @@ public class ProviderProfile : AuditableEntity
         Bio = bio.Trim();
         ExperienceYears = experienceYears;
         VerificationStatus = VerificationStatus.NotSubmitted;
+
+        AverageRating = 0m;
+        CompletedJobs = 0;
+        ResponseRate = 0m;
+        LastActiveUtc = DateTime.UtcNow;
     }
 
     public Guid UserId { get; private set; }
@@ -35,10 +40,18 @@ public class ProviderProfile : AuditableEntity
 
     public VerificationStatus VerificationStatus { get; private set; }
 
+    public decimal AverageRating { get; private set; }
+
+    public int CompletedJobs { get; private set; }
+
+    public decimal ResponseRate { get; private set; }
+
+    public DateTime LastActiveUtc { get; private set; }
+
     public IReadOnlyCollection<ProviderSkill> Skills => _skills;
 
     public IReadOnlyCollection<ProviderAvailability> Availabilities =>
-    _availabilities.AsReadOnly();
+        _availabilities.AsReadOnly();
 
     public void UpdateBio(string bio)
     {
@@ -54,10 +67,40 @@ public class ProviderProfile : AuditableEntity
         ExperienceYears = experienceYears;
     }
 
+    public void UpdateRating(decimal rating)
+    {
+        if (rating < 0 || rating > 5)
+        {
+            throw new ArgumentOutOfRangeException(nameof(rating));
+        }
+
+        AverageRating = rating;
+    }
+
+    public void IncrementCompletedJobs()
+    {
+        CompletedJobs++;
+    }
+
+    public void UpdateResponseRate(decimal responseRate)
+    {
+        if (responseRate < 0 || responseRate > 100)
+        {
+            throw new ArgumentOutOfRangeException(nameof(responseRate));
+        }
+
+        ResponseRate = responseRate;
+    }
+
+    public void UpdateLastActive()
+    {
+        LastActiveUtc = DateTime.UtcNow;
+    }
+
     public void Approve()
-{
-    VerificationStatus = VerificationStatus.Approved;
-}
+    {
+        VerificationStatus = VerificationStatus.Approved;
+    }
 
     public void Reject()
     {
@@ -65,109 +108,107 @@ public class ProviderProfile : AuditableEntity
     }
 
     public void AddSkill(ServiceCategory serviceCategory)
-{
-    ArgumentNullException.ThrowIfNull(serviceCategory);
-
-    if (_skills.Any(skill => skill.ServiceCategoryId == serviceCategory.Id))
     {
-        return;
+        ArgumentNullException.ThrowIfNull(serviceCategory);
+
+        if (_skills.Any(skill => skill.ServiceCategoryId == serviceCategory.Id))
+        {
+            return;
+        }
+
+        _skills.Add(new ProviderSkill(Id, serviceCategory));
     }
 
-    _skills.Add(new ProviderSkill(Id, serviceCategory));
-}
-
-public ProviderAvailability AddAvailability(
-    DayOfWeek dayOfWeek,
-    TimeOnly startTime,
-    TimeOnly endTime)
-{
-    if (startTime >= endTime)
+    public void RemoveSkill(Guid serviceCategoryId)
     {
-        throw new ArgumentException(
-            "Start time must be earlier than end time.");
+        var skill = _skills.FirstOrDefault(s => s.ServiceCategoryId == serviceCategoryId);
+
+        if (skill is null)
+        {
+            return;
+        }
+
+        _skills.Remove(skill);
     }
 
-    var overlaps = _availabilities.Any(a =>
-        a.DayOfWeek == dayOfWeek &&
-        startTime < a.EndTime &&
-        endTime > a.StartTime);
-
-    if (overlaps)
+    public ProviderAvailability AddAvailability(
+        DayOfWeek dayOfWeek,
+        TimeOnly startTime,
+        TimeOnly endTime)
     {
-        throw new InvalidOperationException(
-            "Availability overlaps with an existing time slot.");
+        if (startTime >= endTime)
+        {
+            throw new ArgumentException(
+                "Start time must be earlier than end time.");
+        }
+
+        var overlaps = _availabilities.Any(a =>
+            a.DayOfWeek == dayOfWeek &&
+            startTime < a.EndTime &&
+            endTime > a.StartTime);
+
+        if (overlaps)
+        {
+            throw new InvalidOperationException(
+                "Availability overlaps with an existing time slot.");
+        }
+
+        var availability = new ProviderAvailability(
+            Id,
+            dayOfWeek,
+            startTime,
+            endTime);
+
+        _availabilities.Add(availability);
+
+        return availability;
     }
 
-    var availability = new ProviderAvailability(
-        Id,
-        dayOfWeek,
-        startTime,
-        endTime);
-
-    _availabilities.Add(availability);
-
-    return availability;
-}
-
-public void RemoveAvailability(Guid availabilityId)
-{
-    var availability = _availabilities.FirstOrDefault(a => a.Id == availabilityId);
-
-    if (availability is null)
+    public void RemoveAvailability(Guid availabilityId)
     {
-        return;
+        var availability = _availabilities.FirstOrDefault(a => a.Id == availabilityId);
+
+        if (availability is null)
+        {
+            return;
+        }
+
+        _availabilities.Remove(availability);
     }
 
-    _availabilities.Remove(availability);
-}
-
-public ProviderAvailability? GetAvailability(Guid availabilityId)
-{
-    return _availabilities.FirstOrDefault(a => a.Id == availabilityId);
-}
-
-
-public void RemoveSkill(Guid serviceCategoryId)
-{
-    var skill = _skills.FirstOrDefault(s => s.ServiceCategoryId == serviceCategoryId);
-
-    if (skill is null)
+    public ProviderAvailability? GetAvailability(Guid availabilityId)
     {
-        return;
+        return _availabilities.FirstOrDefault(a => a.Id == availabilityId);
     }
 
-    _skills.Remove(skill);
-}
-
-public void UpdateAvailability(
-    Guid availabilityId,
-    DayOfWeek dayOfWeek,
-    TimeOnly startTime,
-    TimeOnly endTime)
-{
-    var availability = _availabilities.FirstOrDefault(a => a.Id == availabilityId);
-
-    if (availability is null)
+    public void UpdateAvailability(
+        Guid availabilityId,
+        DayOfWeek dayOfWeek,
+        TimeOnly startTime,
+        TimeOnly endTime)
     {
-        throw new InvalidOperationException("Availability not found.");
+        var availability = _availabilities.FirstOrDefault(a => a.Id == availabilityId);
+
+        if (availability is null)
+        {
+            throw new InvalidOperationException("Availability not found.");
+        }
+
+        var overlaps = _availabilities.Any(a =>
+            a.Id != availabilityId &&
+            a.DayOfWeek == dayOfWeek &&
+            startTime < a.EndTime &&
+            endTime > a.StartTime);
+
+        if (overlaps)
+        {
+            throw new InvalidOperationException(
+                "Availability overlaps with an existing time slot.");
+        }
+
+        availability.Update(
+            dayOfWeek,
+            startTime,
+            endTime);
     }
-
-    var overlaps = _availabilities.Any(a =>
-        a.Id != availabilityId &&
-        a.DayOfWeek == dayOfWeek &&
-        startTime < a.EndTime &&
-        endTime > a.StartTime);
-
-    if (overlaps)
-    {
-        throw new InvalidOperationException(
-            "Availability overlaps with an existing time slot.");
-    }
-
-    availability.Update(
-        dayOfWeek,
-        startTime,
-        endTime);
-}
-
 }

@@ -24,7 +24,7 @@ public sealed class SmartMatchEngine : ISmartMatchEngine
         var scores = new List<ProviderScore>();
 
         ProviderProfile? selectedProvider = null;
-        var highestScore = int.MinValue;
+        decimal highestScore = decimal.MinValue;
 
         foreach (var provider in providers)
         {

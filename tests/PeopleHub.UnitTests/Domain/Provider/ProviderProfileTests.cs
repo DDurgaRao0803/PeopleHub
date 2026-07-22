@@ -114,4 +114,101 @@ public class ProviderProfileTests
 
         Assert.Empty(provider.Skills);
     }
+
+    [Fact]
+public void Constructor_Should_Initialize_SmartMatch_Metrics()
+{
+    var provider = new ProviderProfile(
+        Guid.NewGuid(),
+        "Experienced electrician",
+        5);
+
+    Assert.Equal(0m, provider.AverageRating);
+    Assert.Equal(0, provider.CompletedJobs);
+    Assert.Equal(0m, provider.ResponseRate);
+    Assert.True(provider.LastActiveUtc <= DateTime.UtcNow);
+}
+
+[Fact]
+public void UpdateRating_Should_Change_Rating()
+{
+    var provider = new ProviderProfile(
+        Guid.NewGuid(),
+        "Experienced electrician",
+        5);
+
+    provider.UpdateRating(4.8m);
+
+    Assert.Equal(4.8m, provider.AverageRating);
+}
+
+[Fact]
+public void UpdateRating_Should_Throw_When_Rating_Is_Invalid()
+{
+    var provider = new ProviderProfile(
+        Guid.NewGuid(),
+        "Experienced electrician",
+        5);
+
+    Assert.Throws<ArgumentOutOfRangeException>(
+        () => provider.UpdateRating(5.5m));
+}
+
+[Fact]
+public void IncrementCompletedJobs_Should_Increase_Count()
+{
+    var provider = new ProviderProfile(
+        Guid.NewGuid(),
+        "Experienced electrician",
+        5);
+
+    provider.IncrementCompletedJobs();
+    provider.IncrementCompletedJobs();
+
+    Assert.Equal(2, provider.CompletedJobs);
+}
+
+[Fact]
+public void UpdateResponseRate_Should_Change_ResponseRate()
+{
+    var provider = new ProviderProfile(
+        Guid.NewGuid(),
+        "Experienced electrician",
+        5);
+
+    provider.UpdateResponseRate(92m);
+
+    Assert.Equal(92m, provider.ResponseRate);
+}
+
+[Fact]
+public void UpdateResponseRate_Should_Throw_When_Invalid()
+{
+    var provider = new ProviderProfile(
+        Guid.NewGuid(),
+        "Experienced electrician",
+        5);
+
+    Assert.Throws<ArgumentOutOfRangeException>(
+        () => provider.UpdateResponseRate(120m));
+}
+
+[Fact]
+public void UpdateLastActive_Should_Update_LastActiveUtc()
+{
+    var provider = new ProviderProfile(
+        Guid.NewGuid(),
+        "Experienced electrician",
+        5);
+
+    var previous = provider.LastActiveUtc;
+
+    Thread.Sleep(20);
+
+    provider.UpdateLastActive();
+
+    Assert.True(provider.LastActiveUtc > previous);
+}
+
+
 }

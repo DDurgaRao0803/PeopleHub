@@ -21,7 +21,7 @@ public class ScoreCalculatorTests
 
         // Assert
         Assert.Equal(provider.Id, result.ProviderId);
-        Assert.Equal(12, result.Score);
+        Assert.Equal(15m, result.Score);
     }
 
     [Fact]
