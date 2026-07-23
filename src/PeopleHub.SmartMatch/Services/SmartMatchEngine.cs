@@ -1,4 +1,3 @@
-using PeopleHub.Domain.Aggregates.Provider;
 using PeopleHub.Domain.Entities;
 using PeopleHub.SmartMatch.Interfaces;
 using PeopleHub.SmartMatch.Models;
@@ -12,7 +11,9 @@ public sealed class SmartMatchEngine : ISmartMatchEngine
     private readonly VerificationRule _verificationRule = new();
     private readonly SkillRule _skillRule = new();
     private readonly AvailabilityRule _availabilityRule = new();
+
     private readonly ScoreCalculator _scoreCalculator;
+
 
     public SmartMatchEngine(
         ScoreCalculator scoreCalculator)
@@ -20,24 +21,34 @@ public sealed class SmartMatchEngine : ISmartMatchEngine
         _scoreCalculator = scoreCalculator;
     }
 
+
+
     public SmartMatchResult FindBestMatch(
         ServiceRequest serviceRequest,
-        IReadOnlyCollection<ProviderProfile> providers)
+        IReadOnlyCollection<SmartMatchCandidate> candidates)
     {
         ArgumentNullException.ThrowIfNull(serviceRequest);
-        ArgumentNullException.ThrowIfNull(providers);
+        ArgumentNullException.ThrowIfNull(candidates);
+
 
         var scores = new List<ProviderScore>();
 
-        ProviderProfile? selectedProvider = null;
+        SmartMatchCandidate? selectedCandidate = null;
+
         decimal highestScore = decimal.MinValue;
 
-        foreach (var provider in providers)
+
+
+        foreach (var candidate in candidates)
         {
+            var provider = candidate.Provider;
+
+
             if (!_verificationRule.IsEligible(provider))
             {
                 continue;
             }
+
 
             if (!_skillRule.IsEligible(
                 provider,
@@ -46,6 +57,7 @@ public sealed class SmartMatchEngine : ISmartMatchEngine
                 continue;
             }
 
+
             if (!_availabilityRule.IsEligible(
                 provider,
                 serviceRequest.RequestedDate))
@@ -53,25 +65,91 @@ public sealed class SmartMatchEngine : ISmartMatchEngine
                 continue;
             }
 
-            var score = _scoreCalculator.Calculate(
-                new ScoreContext
+
+
+            var providerScore =
+                _scoreCalculator.Calculate(
+                    new ScoreContext
+                    {
+                        Provider = provider
+                    });
+
+
+
+            /*
+             * Bid adjustment:
+             *
+             * Lower bid amount improves score.
+             * Faster completion improves score.
+             */
+
+
+            var bidScore =
+                CalculateBidScore(
+                    candidate);
+
+
+
+            var finalScore =
+                providerScore.Score +
+                bidScore;
+
+
+
+            scores.Add(
+                new ProviderScore
                 {
-                    Provider = provider
+                    ProviderId = provider.Id,
+                    Score = finalScore
                 });
 
-            scores.Add(score);
 
-            if (score.Score > highestScore)
+
+            if (finalScore > highestScore)
             {
-                highestScore = score.Score;
-                selectedProvider = provider;
+                highestScore = finalScore;
+                selectedCandidate = candidate;
             }
         }
 
+
+
         return new SmartMatchResult
         {
-            SelectedProvider = selectedProvider,
+            SelectedProvider =
+                selectedCandidate?.Provider,
+
             Scores = scores
         };
+    }
+
+
+
+    private static decimal CalculateBidScore(
+        SmartMatchCandidate candidate)
+    {
+        var bid = candidate.Bid;
+
+
+        /*
+         * Example weighting:
+         *
+         * Price:
+         * lower amount = better
+         *
+         * Time:
+         * lower minutes = better
+         */
+
+
+        var priceScore =
+            100m / bid.Amount;
+
+
+        var timeScore =
+            100m / bid.EstimatedMinutes;
+
+
+        return priceScore + timeScore;
     }
 }
