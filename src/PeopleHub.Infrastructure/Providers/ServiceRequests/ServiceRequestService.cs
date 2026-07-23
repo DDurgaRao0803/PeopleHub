@@ -93,6 +93,27 @@ public class ServiceRequestService : IServiceRequestService
             .ToList();
     }
 
+    public async Task<IReadOnlyList<ServiceRequestResponse>> GetMyProviderRequestsAsync(
+    CancellationToken cancellationToken = default)
+{
+    var provider = await _providerRepository.GetByUserIdAsync(
+        _currentUserService.UserId,
+        cancellationToken);
+
+    if (provider is null)
+    {
+        throw new KeyNotFoundException(
+            "Provider profile not found.");
+    }
+
+    var requests = await _serviceRequestRepository.GetByProviderProfileIdAsync(
+        provider.Id,
+        cancellationToken);
+
+    return requests
+        .Select(MapToResponse)
+        .ToList();
+}
 
     public async Task<ServiceRequestResponse> AcceptAsync(
         Guid serviceRequestId,

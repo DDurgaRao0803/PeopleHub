@@ -36,4 +36,7 @@ Task<ServiceRequestResponse> CancelAsync(
     Task<ServiceRequestResponse> CompleteAsync(
         Guid serviceRequestId,
         CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<ServiceRequestResponse>> GetMyProviderRequestsAsync(
+    CancellationToken cancellationToken = default);
 }

@@ -84,6 +84,27 @@ public async Task<ActionResult<ServiceRequestResponse>> Create(
 
         return Ok(response);
     }
+    
+    [HttpGet("my-requests")]
+public async Task<ActionResult<IReadOnlyList<ServiceRequestResponse>>> GetMyRequests(
+    CancellationToken cancellationToken)
+{
+    try
+    {
+        var response = await _serviceRequestService
+            .GetMyProviderRequestsAsync(cancellationToken);
+
+        return Ok(response);
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(new
+        {
+            message = ex.Message
+        });
+    }
+}
+
 
     [HttpPut("{id:guid}/accept")]
 public async Task<ActionResult<ServiceRequestResponse>> Accept(
@@ -150,4 +171,7 @@ public async Task<ActionResult<ServiceRequestResponse>> Complete(
         });
     }
 }
+
+
+
 }
