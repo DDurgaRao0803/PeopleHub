@@ -43,6 +43,8 @@ using PeopleHub.Infrastructure.Administration;
 using PeopleHub.SmartMatch.Ranking;
 using PeopleHub.SmartMatch.Ranking.Interfaces;
 using PeopleHub.SmartMatch.Ranking.Rules;
+using PeopleHub.Application.Providers.Bidding;
+using PeopleHub.Infrastructure.Providers.Bidding;
 
 
 namespace PeopleHub.Infrastructure.DependencyInjection;
@@ -137,8 +139,10 @@ services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IProviderServiceService, ProviderServiceService>();
         services.AddScoped<IServiceCategoryService, ServiceCategoryService>();
         services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
+        services.AddScoped<IProviderBidRepository, ProviderBidRepository>();
         services.AddScoped<IProviderServiceRepository, ProviderServiceRepository>();
         services.AddScoped<IServiceRequestService, ServiceRequestService>();
+        services.AddScoped<IProviderBidService, ProviderBidService>();
         services.AddScoped<ISmartMatchService, SmartMatchService>();
         services.AddScoped<ISmartMatchEngine, SmartMatchEngine>();
         services.AddScoped<IScoreRule, ExperienceScoreRule>();
