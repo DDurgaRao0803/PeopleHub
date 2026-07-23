@@ -47,6 +47,8 @@ using PeopleHub.Application.Providers.Bidding;
 using PeopleHub.Infrastructure.Providers.Bidding;
 using PeopleHub.Application.Notifications;
 using PeopleHub.Infrastructure.Notifications;
+using PeopleHub.Application.Location;
+using PeopleHub.Infrastructure.Location;
 
 
 namespace PeopleHub.Infrastructure.DependencyInjection;
@@ -147,6 +149,15 @@ services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IProviderBidService, ProviderBidService>();
         services.AddScoped<ISmartMatchService, SmartMatchService>();
         services.AddScoped<INotificationRepository, NotificationRepository>();
+        services.AddScoped<
+    IProviderLocationRepository,
+    ProviderLocationRepository>();
+
+services.AddScoped<
+    ILocationService,
+    LocationService>();
+
+
 
 services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<ISmartMatchEngine, SmartMatchEngine>();
