@@ -10,15 +10,18 @@ public sealed class SmartMatchService : ISmartMatchService
     private readonly IServiceRequestRepository _serviceRequestRepository;
     private readonly IProviderRepository _providerRepository;
     private readonly ISmartMatchEngine _smartMatchEngine;
+    private readonly IUnitOfWork _unitOfWork;
 
     public SmartMatchService(
         IServiceRequestRepository serviceRequestRepository,
         IProviderRepository providerRepository,
-        ISmartMatchEngine smartMatchEngine)
+        ISmartMatchEngine smartMatchEngine,
+        IUnitOfWork unitOfWork)
     {
         _serviceRequestRepository = serviceRequestRepository;
         _providerRepository = providerRepository;
         _smartMatchEngine = smartMatchEngine;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<SmartMatchResponse> FindBestProviderAsync(
@@ -42,6 +45,21 @@ public sealed class SmartMatchService : ISmartMatchService
         var matchResult = _smartMatchEngine.FindBestMatch(
             serviceRequest,
             providers);
+
+
+        if (matchResult.SelectedProvider is not null)
+        {
+            serviceRequest.AssignProvider(
+                matchResult.SelectedProvider.Id);
+
+            await _serviceRequestRepository.UpdateAsync(
+                serviceRequest,
+                cancellationToken);
+
+            await _unitOfWork.SaveChangesAsync(
+                cancellationToken);
+        }
+
 
         return new SmartMatchResponse
         {
