@@ -8,6 +8,8 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using PeopleHub.Application;
 using PeopleHub.Application.Users.Validators;
+using PeopleHub.API.Hubs;
+using PeopleHub.Application.Common.Interfaces.Realtime;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,6 +63,12 @@ else
 
 builder.Services.AddControllers();
 
+builder.Services.AddSignalR();
+
+builder.Services.AddScoped<
+    IRealtimeNotifier,
+    SignalRLocationNotifier>();
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy(
@@ -107,6 +115,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<LocationHub>(
+    "/hubs/location");
 
 app.Run();
 

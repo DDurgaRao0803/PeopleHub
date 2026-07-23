@@ -1,4 +1,5 @@
 using PeopleHub.Application.Common.Interfaces.Persistence;
+using PeopleHub.Application.Common.Interfaces.Realtime;
 using PeopleHub.Application.Location;
 using PeopleHub.Contracts.Location;
 using PeopleHub.Domain.Aggregates.Location;
@@ -10,14 +11,18 @@ public sealed class LocationService
 {
     private readonly IProviderLocationRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IRealtimeNotifier _realtimeNotifier;
+
 
 
     public LocationService(
         IProviderLocationRepository repository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IRealtimeNotifier realtimeNotifier)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
+        _realtimeNotifier = realtimeNotifier;
     }
 
 
@@ -63,6 +68,15 @@ public sealed class LocationService
 
 
         await _unitOfWork.SaveChangesAsync(
+            cancellationToken);
+
+
+
+        await _realtimeNotifier.SendLocationUpdateAsync(
+            providerProfileId,
+            request.Latitude,
+            request.Longitude,
+            DateTime.UtcNow,
             cancellationToken);
 
 
