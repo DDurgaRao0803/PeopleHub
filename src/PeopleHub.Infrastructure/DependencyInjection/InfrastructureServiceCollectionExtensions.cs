@@ -49,6 +49,8 @@ using PeopleHub.Application.Notifications;
 using PeopleHub.Infrastructure.Notifications;
 using PeopleHub.Application.Location;
 using PeopleHub.Infrastructure.Location;
+using PeopleHub.Application.Payments;
+using PeopleHub.Infrastructure.Payments;
 
 
 namespace PeopleHub.Infrastructure.DependencyInjection;
@@ -156,6 +158,14 @@ services.AddScoped<ICurrentUserService, CurrentUserService>();
 services.AddScoped<
     ILocationService,
     LocationService>();
+
+    services.AddScoped<IPaymentService, PaymentService>();
+
+services.AddScoped<IWalletService, WalletService>();
+
+services.AddScoped<IWalletRepository, WalletRepository>();
+
+services.AddScoped<IWalletTransactionRepository, WalletTransactionRepository>();
 
 
 
