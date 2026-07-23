@@ -36,6 +36,8 @@ using PeopleHub.Application.Providers.Search;
 using PeopleHub.Infrastructure.Providers.Search;
 using PeopleHub.Application.Providers.Services;
 using PeopleHub.Infrastructure.Providers.Services;
+using PeopleHub.Application.Providers.Dashboard;
+using PeopleHub.Infrastructure.Providers.Dashboard;
 using PeopleHub.Application.Administration;
 using PeopleHub.Infrastructure.Administration;
 using PeopleHub.SmartMatch.Ranking;
@@ -154,6 +156,8 @@ services.AddScoped<ScoreCalculator>();
         services.AddScoped<IAdminDashboardService, AdminDashboardService>();
         services.AddScoped<IAdminUserService, AdminUserService>();
         services.AddScoped<IAdminProviderVerificationService, AdminProviderVerificationService>();
+        services.AddScoped<IProviderDashboardService, ProviderDashboardService>();
+        
         
 
         return services;
