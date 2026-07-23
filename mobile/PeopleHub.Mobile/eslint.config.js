@@ -15,10 +15,13 @@ module.exports = defineConfig([
 
   {
     rules: {
-      "no-console": "warn",
-      "no-debugger": "error",
-      "prefer-const": "error",
-      "no-var": "error",
-    },
+  "no-console": "warn",
+  "no-debugger": "error",
+  "prefer-const": "error",
+  "no-var": "error",
+
+  // Axios create() is the official API.
+  "import/no-named-as-default-member": "off",
+},
   },
 ]);
