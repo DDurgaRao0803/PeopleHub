@@ -160,6 +160,7 @@ services.AddScoped<
     LocationService>();
 
     services.AddScoped<IPaymentService, PaymentService>();
+    services.AddScoped<IPaymentTransactionRepository, PaymentTransactionRepository>();
 
 services.AddScoped<IWalletService, WalletService>();
 

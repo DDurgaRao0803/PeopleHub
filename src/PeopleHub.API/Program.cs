@@ -49,6 +49,25 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+
+// ============================================================
+// CORS
+// ============================================================
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PeopleHubCors", policy =>
+    {
+        policy
+            .SetIsOriginAllowed(origin =>
+                origin.EndsWith(".app.github.dev") ||
+                origin.StartsWith("http://localhost") ||
+                origin.StartsWith("https://localhost"))
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 if (builder.Environment.IsEnvironment("Testing"))
 {
     builder.Services.AddInfrastructure(
@@ -59,7 +78,6 @@ else
 {
     builder.Services.AddInfrastructure(builder.Configuration);
 }
-
 
 builder.Services.AddControllers();
 
@@ -110,14 +128,18 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
+// ============================================================
+// CORS
+// ============================================================
+app.UseCors("PeopleHubCors");
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<LocationHub>(
-    "/hubs/location");
+app.MapHub<LocationHub>("/hubs/location");
 
 app.Run();
 

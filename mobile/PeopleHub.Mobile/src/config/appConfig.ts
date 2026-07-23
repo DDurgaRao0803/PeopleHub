@@ -12,15 +12,15 @@ export const AppConfig = {
   },
 
   api: {
-    // Development URL
-    // Replace with your backend URL when testing on a device.
-    baseUrl: "http://localhost:5290/api",
+    baseUrl:
+      "https://super-invention-5vvx7gjj5x5wc77v9-5212.app.github.dev/api",
 
     timeout: 30000,
   },
 
   signalR: {
-    hubUrl: "http://localhost:5290/hubs",
+    hubUrl:
+      "https://super-invention-5vvx7gjj5x5wc77v9-5212.app.github.dev/hubs",
   },
 
   storage: {
