@@ -4,6 +4,8 @@ using PeopleHub.Application.SmartMatch.Models;
 using PeopleHub.Domain.Enums;
 using PeopleHub.SmartMatch.Interfaces;
 using PeopleHub.SmartMatch.Models;
+using PeopleHub.Application.Notifications;
+using PeopleHub.Contracts.Notifications;
 
 namespace PeopleHub.Infrastructure.Providers.SmartMatch;
 
@@ -15,20 +17,24 @@ public sealed class SmartMatchService : ISmartMatchService
     private readonly ISmartMatchEngine _smartMatchEngine;
     private readonly IUnitOfWork _unitOfWork;
 
+    private readonly INotificationService _notificationService;
+
 
     public SmartMatchService(
-        IServiceRequestRepository serviceRequestRepository,
-        IProviderRepository providerRepository,
-        IProviderBidRepository providerBidRepository,
-        ISmartMatchEngine smartMatchEngine,
-        IUnitOfWork unitOfWork)
-    {
-        _serviceRequestRepository = serviceRequestRepository;
-        _providerRepository = providerRepository;
-        _providerBidRepository = providerBidRepository;
-        _smartMatchEngine = smartMatchEngine;
-        _unitOfWork = unitOfWork;
-    }
+    IServiceRequestRepository serviceRequestRepository,
+    IProviderRepository providerRepository,
+    IProviderBidRepository providerBidRepository,
+    ISmartMatchEngine smartMatchEngine,
+    IUnitOfWork unitOfWork,
+    INotificationService notificationService)
+{
+    _serviceRequestRepository = serviceRequestRepository;
+    _providerRepository = providerRepository;
+    _providerBidRepository = providerBidRepository;
+    _smartMatchEngine = smartMatchEngine;
+    _unitOfWork = unitOfWork;
+    _notificationService = notificationService;
+}
 
 
 
@@ -130,6 +136,32 @@ public sealed class SmartMatchService : ISmartMatchService
 
 
         winningBid.Accept();
+
+        await _notificationService.CreateAsync(
+    serviceRequest.CustomerId,
+    new CreateNotificationRequest
+    {
+        Type = (int)NotificationType.ProviderSelected,
+
+        Title = "Provider Selected",
+
+        Message = "A provider has been selected for your service request."
+    },
+    cancellationToken);
+
+
+
+await _notificationService.CreateAsync(
+    matchResult.SelectedProvider.UserId,
+    new CreateNotificationRequest
+    {
+        Type = (int)NotificationType.ProviderSelected,
+
+        Title = "New Service Assigned",
+
+        Message = "You have been selected for a service request."
+    },
+    cancellationToken);
 
 
 

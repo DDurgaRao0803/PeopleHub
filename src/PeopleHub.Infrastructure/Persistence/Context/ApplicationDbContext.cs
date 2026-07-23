@@ -5,6 +5,7 @@ using PeopleHub.Application.Common.Interfaces.Persistence;
 using PeopleHub.Domain.Entities;
 using PeopleHub.Domain.Aggregates.Review;
 using PeopleHub.Domain.Aggregates.Bidding;
+using PeopleHub.Domain.Aggregates.Notifications;
 
 
 namespace PeopleHub.Infrastructure.Persistence.Context;
@@ -38,6 +39,8 @@ public sealed class ApplicationDbContext
     public DbSet<ProviderBid> ProviderBids => Set<ProviderBid>();
 
     public DbSet<Review> Reviews => Set<Review>();
+
+    public DbSet<Notification> Notifications => Set<Notification>();
 
     public DbSet<ProviderService> ProviderServices => Set<ProviderService>();
 
