@@ -11,28 +11,26 @@ public class ServiceRequest : AuditableEntity
 
     public ServiceRequest(
     Guid customerId,
-    Guid providerProfileId,
     Guid serviceCategoryId,
     string title,
     string description,
     DateTime requestedDate,
     decimal? customerLatitude = null,
     decimal? customerLongitude = null)
-    {
-        CustomerId = customerId;
-        ProviderProfileId = providerProfileId;
-        ServiceCategoryId = serviceCategoryId;
-        Title = title;
-        Description = description;
-        RequestedDate = requestedDate;
-        CustomerLatitude = customerLatitude;
-CustomerLongitude = customerLongitude;
-        Status = ServiceRequestStatus.Pending;
-    }
+{
+    CustomerId = customerId;
+    ServiceCategoryId = serviceCategoryId;
+    Title = title;
+    Description = description;
+    RequestedDate = requestedDate;
+    CustomerLatitude = customerLatitude;
+    CustomerLongitude = customerLongitude;
+    Status = ServiceRequestStatus.Pending;
+}
 
     public Guid CustomerId { get; private set; }
 
-    public Guid ProviderProfileId { get; private set; }
+    public Guid? ProviderProfileId { get; private set; }
 
     public Guid ServiceCategoryId { get; private set; }
 
@@ -47,6 +45,24 @@ CustomerLongitude = customerLongitude;
     public decimal? CustomerLatitude { get; private set; }
 
 public decimal? CustomerLongitude { get; private set; }
+
+
+    public void AssignProvider(Guid providerProfileId)
+{
+    if (Status != ServiceRequestStatus.Pending)
+    {
+        throw new InvalidOperationException(
+            "Only pending requests can be assigned.");
+    }
+
+    if (providerProfileId == Guid.Empty)
+    {
+        throw new ArgumentException(
+            "Provider id cannot be empty.");
+    }
+
+    ProviderProfileId = providerProfileId;
+}
 
     public void Accept()
     {

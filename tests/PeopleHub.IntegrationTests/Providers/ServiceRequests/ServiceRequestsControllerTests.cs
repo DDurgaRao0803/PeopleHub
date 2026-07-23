@@ -121,7 +121,7 @@ public async Task Create_ShouldReturnCreated()
 
     created!.Id.Should().NotBe(Guid.Empty);
     created.CustomerId.Should().NotBe(Guid.Empty);
-    created.ProviderProfileId.Should().Be(request.ProviderProfileId);
+    created.ProviderProfileId.Should().BeNull();
     created.ServiceCategoryId.Should().Be(request.ServiceCategoryId);
     created.Title.Should().Be(request.Title);
     created.Description.Should().Be(request.Description);
@@ -163,7 +163,7 @@ public async Task GetById_ShouldReturnCreatedRequest()
     result!.Id.Should().Be(created.Id);
     result.Title.Should().Be(request.Title);
     result.Description.Should().Be(request.Description);
-    result.ProviderProfileId.Should().Be(request.ProviderProfileId);
+    result.ProviderProfileId.Should().BeNull();
     result.ServiceCategoryId.Should().Be(request.ServiceCategoryId);
     result.Status.Should().Be("Pending");
 }

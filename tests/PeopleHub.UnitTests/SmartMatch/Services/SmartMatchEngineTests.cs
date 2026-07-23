@@ -40,11 +40,10 @@ public class SmartMatchEngineTests
             new TimeOnly(17, 0));
 
         var serviceRequest = new ServiceRequest(
-    Guid.NewGuid(),          // CustomerId
-    Guid.NewGuid(),          // ProviderProfileId
-    category.Id,             // ServiceCategoryId
-    "Electrical Repair",     // Title
-    "Repair electrical wiring", // Description
+    Guid.NewGuid(),              // CustomerId
+    category.Id,                 // ServiceCategoryId
+    "Electrical Repair",         // Title
+    "Repair electrical wiring",  // Description
     new DateTime(2026, 7, 20, 10, 0, 0));
 
         var scoreCalculator = new ScoreCalculator(
@@ -84,11 +83,10 @@ var engine = new SmartMatchEngine(scoreCalculator);
         // Not approved
 
         var serviceRequest = new ServiceRequest(
-    Guid.NewGuid(),          // CustomerId
-    Guid.NewGuid(),          // ProviderProfileId
-    category.Id,             // ServiceCategoryId
-    "Electrical Repair",     // Title
-    "Repair electrical wiring", // Description
+    Guid.NewGuid(),              // CustomerId
+    category.Id,                 // ServiceCategoryId
+    "Electrical Repair",         // Title
+    "Repair electrical wiring",  // Description
     new DateTime(2026, 7, 20, 10, 0, 0));
 
         var scoreCalculator = new ScoreCalculator(

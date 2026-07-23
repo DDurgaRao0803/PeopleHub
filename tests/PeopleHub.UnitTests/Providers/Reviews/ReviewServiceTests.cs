@@ -43,11 +43,12 @@ public class ReviewServiceTests
 
         var serviceRequest = new ServiceRequest(
     customerId,
-    providerId,
     Guid.NewGuid(),               // ServiceCategoryId
     "House Cleaning",
     "General cleaning service",
     DateTime.UtcNow);
+
+serviceRequest.AssignProvider(providerId);
 
 serviceRequest.Accept();
 serviceRequest.Complete();

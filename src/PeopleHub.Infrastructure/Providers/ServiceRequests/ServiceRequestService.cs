@@ -24,12 +24,11 @@ public class ServiceRequestService : IServiceRequestService
         CancellationToken cancellationToken = default)
     {
         var serviceRequest = new ServiceRequest(
-            customerId,
-            request.ProviderProfileId,
-            request.ServiceCategoryId,
-            request.Title,
-            request.Description,
-            request.RequestedDate);
+    customerId,
+    request.ServiceCategoryId,
+    request.Title,
+    request.Description,
+    request.RequestedDate);
 
         await _serviceRequestRepository.AddAsync(
             serviceRequest,

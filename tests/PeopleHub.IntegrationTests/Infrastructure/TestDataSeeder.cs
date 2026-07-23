@@ -85,25 +85,26 @@ public sealed class TestDataSeeder
     }
 
     public async Task<ServiceRequest> CreateServiceRequestAsync(
-        ProviderProfile providerProfile,
-        ServiceCategory serviceCategory,
-        Guid? customerId = null,
-        string title = "Test Service Request",
-        string description = "Integration test request",
-        CancellationToken cancellationToken = default)
-    {
-        var serviceRequest = new ServiceRequest(
-            customerId ?? Guid.NewGuid(),
-            providerProfile.Id,
-            serviceCategory.Id,
-            title,
-            description,
-            TestRequestedDate);
+    ProviderProfile providerProfile,
+    ServiceCategory serviceCategory,
+    Guid? customerId = null,
+    string title = "Test Service Request",
+    string description = "Integration test request",
+    CancellationToken cancellationToken = default)
+{
+    var serviceRequest = new ServiceRequest(
+        customerId ?? Guid.NewGuid(),
+        serviceCategory.Id,
+        title,
+        description,
+        TestRequestedDate);
 
-        _context.ServiceRequests.Add(serviceRequest);
+    serviceRequest.AssignProvider(providerProfile.Id);
 
-        await _context.SaveChangesAsync(cancellationToken);
+    _context.ServiceRequests.Add(serviceRequest);
 
-        return serviceRequest;
-    }
+    await _context.SaveChangesAsync(cancellationToken);
+
+    return serviceRequest;
+}
 }

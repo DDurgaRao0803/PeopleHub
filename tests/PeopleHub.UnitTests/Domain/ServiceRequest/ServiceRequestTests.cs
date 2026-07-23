@@ -11,24 +11,35 @@ public class ServiceRequestTests
         var request = new ServiceRequestEntity(
             Guid.NewGuid(),
             Guid.NewGuid(),
-            Guid.NewGuid(),
             "Fix AC",
             "AC not cooling",
             DateTime.UtcNow);
 
         Assert.Equal(ServiceRequestStatus.Pending, request.Status);
+        Assert.Null(request.ProviderProfileId);
     }
 
     [Fact]
-    public void Accept_Should_Set_Status_To_Accepted()
+    public void AssignProvider_Should_Set_Provider()
     {
+        var providerId = Guid.NewGuid();
+
         var request = new ServiceRequestEntity(
-            Guid.NewGuid(),
             Guid.NewGuid(),
             Guid.NewGuid(),
             "Fix AC",
             "AC not cooling",
             DateTime.UtcNow);
+
+        request.AssignProvider(providerId);
+
+        Assert.Equal(providerId, request.ProviderProfileId);
+    }
+
+    [Fact]
+    public void Accept_Should_Set_Status_To_Accepted()
+    {
+        var request = CreateAssignedRequest();
 
         request.Accept();
 
@@ -38,13 +49,7 @@ public class ServiceRequestTests
     [Fact]
     public void Reject_Should_Set_Status_To_Rejected()
     {
-        var request = new ServiceRequestEntity(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            "Fix AC",
-            "AC not cooling",
-            DateTime.UtcNow);
+        var request = CreateAssignedRequest();
 
         request.Reject();
 
@@ -54,13 +59,7 @@ public class ServiceRequestTests
     [Fact]
     public void Cancel_Should_Set_Status_To_Cancelled()
     {
-        var request = new ServiceRequestEntity(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            "Fix AC",
-            "AC not cooling",
-            DateTime.UtcNow);
+        var request = CreateAssignedRequest();
 
         request.Cancel();
 
@@ -70,13 +69,7 @@ public class ServiceRequestTests
     [Fact]
     public void Complete_Should_Set_Status_To_Completed()
     {
-        var request = new ServiceRequestEntity(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            "Fix AC",
-            "AC not cooling",
-            DateTime.UtcNow);
+        var request = CreateAssignedRequest();
 
         request.Accept();
         request.Complete();
@@ -87,33 +80,38 @@ public class ServiceRequestTests
     [Fact]
     public void Reject_Should_Throw_When_Request_Is_Accepted()
     {
-        var request = new ServiceRequestEntity(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            "Fix AC",
-            "AC not cooling",
-            DateTime.UtcNow);
+        var request = CreateAssignedRequest();
 
         request.Accept();
 
-        Assert.Throws<InvalidOperationException>(() => request.Reject());
+        Assert.Throws<InvalidOperationException>(
+            () => request.Reject());
     }
 
     [Fact]
     public void Cancel_Should_Throw_When_Request_Is_Completed()
     {
+        var request = CreateAssignedRequest();
+
+        request.Accept();
+        request.Complete();
+
+        Assert.Throws<InvalidOperationException>(
+            () => request.Cancel());
+    }
+
+
+    private static ServiceRequestEntity CreateAssignedRequest()
+    {
         var request = new ServiceRequestEntity(
-            Guid.NewGuid(),
             Guid.NewGuid(),
             Guid.NewGuid(),
             "Fix AC",
             "AC not cooling",
             DateTime.UtcNow);
 
-        request.Accept();
-        request.Complete();
+        request.AssignProvider(Guid.NewGuid());
 
-        Assert.Throws<InvalidOperationException>(() => request.Cancel());
+        return request;
     }
 }

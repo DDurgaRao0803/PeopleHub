@@ -26,12 +26,13 @@ public class ServiceRequestServiceTests
 public async Task AcceptAsync_Should_Accept_Request()
 {
     var request = new ServiceRequest(
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        "Fix AC",
-        "AC issue",
-        DateTime.UtcNow);
+    Guid.NewGuid(),
+    Guid.NewGuid(),
+    "Fix AC",
+    "AC issue",
+    DateTime.UtcNow);
+
+request.AssignProvider(Guid.NewGuid());
 
     _repository
         .Setup(x => x.GetByIdAsync(
@@ -59,12 +60,13 @@ public async Task AcceptAsync_Should_Accept_Request()
 public async Task RejectAsync_Should_Reject_Request()
 {
     var request = new ServiceRequest(
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        "Fix AC",
-        "AC issue",
-        DateTime.UtcNow);
+    Guid.NewGuid(),
+    Guid.NewGuid(),
+    "Fix AC",
+    "AC issue",
+    DateTime.UtcNow);
+
+request.AssignProvider(Guid.NewGuid());
 
     _repository
         .Setup(x => x.GetByIdAsync(
@@ -92,12 +94,13 @@ public async Task RejectAsync_Should_Reject_Request()
 public async Task CancelAsync_Should_Cancel_Request()
 {
     var request = new ServiceRequest(
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        "Fix AC",
-        "AC issue",
-        DateTime.UtcNow);
+    Guid.NewGuid(),
+    Guid.NewGuid(),
+    "Fix AC",
+    "AC issue",
+    DateTime.UtcNow);
+
+request.AssignProvider(Guid.NewGuid());
 
     _repository
         .Setup(x => x.GetByIdAsync(
@@ -125,12 +128,13 @@ public async Task CancelAsync_Should_Cancel_Request()
 public async Task CompleteAsync_Should_Complete_Request()
 {
     var request = new ServiceRequest(
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        "Fix AC",
-        "AC issue",
-        DateTime.UtcNow);
+    Guid.NewGuid(),
+    Guid.NewGuid(),
+    "Fix AC",
+    "AC issue",
+    DateTime.UtcNow);
+
+request.AssignProvider(Guid.NewGuid());
 
     request.Accept();
 

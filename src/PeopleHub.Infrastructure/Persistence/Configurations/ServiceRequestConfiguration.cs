@@ -16,7 +16,7 @@ public class ServiceRequestConfiguration : IEntityTypeConfiguration<ServiceReque
             .IsRequired();
 
         builder.Property(x => x.ProviderProfileId)
-            .IsRequired();
+    .IsRequired(false);
 
         builder.Property(x => x.ServiceCategoryId)
             .IsRequired();
