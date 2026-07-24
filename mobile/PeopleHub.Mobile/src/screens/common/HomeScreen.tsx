@@ -1,14 +1,38 @@
 import React from "react";
 import {
   SafeAreaView,
+  ScrollView,
   StyleSheet,
-  Text,
 } from "react-native";
+
+import {
+  CategorySection,
+  HomeHeader,
+  NearbyProviders,
+  QuickActions,
+  RecentActivity,
+  SearchBar,
+} from "../../components/home";
 
 export function HomeScreen(): React.JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>PeopleHub Home</Text>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.content}
+      >
+        <HomeHeader />
+
+        <SearchBar />
+
+        <CategorySection />
+
+        <QuickActions />
+
+        <NearbyProviders />
+
+        <RecentActivity />
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -16,13 +40,12 @@ export function HomeScreen(): React.JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#FFFFFF",
   },
 
-  title: {
-    fontSize: 28,
-    fontWeight: "700",
+  content: {
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 32,
   },
 });
