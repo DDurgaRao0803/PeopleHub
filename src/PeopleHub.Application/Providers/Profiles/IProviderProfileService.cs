@@ -22,4 +22,7 @@ public interface IProviderProfileService
         Guid userId,
         CancellationToken cancellationToken = default);
 
+    Task<IReadOnlyList<NearbyProviderResponse>> GetNearbyAsync(
+    CancellationToken cancellationToken = default);
+
 }

@@ -99,12 +99,13 @@ public class ServiceRequestsControllerTests
 public async Task Create_ShouldReturnCreated()
 {
     // Arrange
-    var request = new CreateServiceRequestRequest(
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        "Plumbing Service",
-        "Kitchen sink leakage",
-        DateTime.UtcNow.AddDays(1));
+var serviceCategoryId = Guid.NewGuid();
+
+var request = new CreateServiceRequestRequest(
+    serviceCategoryId,
+    "Test Request",
+    "Test Description",
+    DateTime.UtcNow);
 
     // Act
     var response = await _client.PostAsJsonAsync(
@@ -132,12 +133,13 @@ public async Task Create_ShouldReturnCreated()
 public async Task GetById_ShouldReturnCreatedRequest()
 {
     // Arrange
-    var request = new CreateServiceRequestRequest(
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        "Electrical Repair",
-        "Repair ceiling fan",
-        DateTime.UtcNow.AddDays(2));
+var serviceCategoryId = Guid.NewGuid();
+
+var request = new CreateServiceRequestRequest(
+    serviceCategoryId,
+    "Another Request",
+    "Another Description",
+    DateTime.UtcNow);
 
     var createResponse = await _client.PostAsJsonAsync(
         "/api/service-requests",

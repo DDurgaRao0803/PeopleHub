@@ -106,4 +106,15 @@ public async Task<ProviderProfile?> GetByUserIdWithAvailabilityAsync(
             cancellationToken);
 }
 
+public async Task<IReadOnlyList<ProviderProfile>> GetNearbyAsync(
+    CancellationToken cancellationToken = default)
+{
+    return await _dbContext.ProviderProfiles
+        .Include(p => p.Skills)
+            .ThenInclude(s => s.ServiceCategory)
+        .AsNoTracking()
+        .OrderByDescending(p => p.LastActiveUtc)
+        .ToListAsync(cancellationToken);
+}
+
 }

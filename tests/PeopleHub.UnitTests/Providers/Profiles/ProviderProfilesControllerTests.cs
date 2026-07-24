@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PeopleHub.API.Controllers;
-using PeopleHub.Application.Providers.Profiles;
 using PeopleHub.Application.Providers.Availability;
+using PeopleHub.Application.Providers.Profiles;
 using PeopleHub.Contracts.Providers.Availability;
 using PeopleHub.Contracts.Providers.Profiles;
 using System.Security.Claims;
@@ -125,6 +125,11 @@ public class ProviderProfilesControllerTests
             Guid userId,
             CancellationToken cancellationToken = default)
             => throw new NotImplementedException();
+
+        public Task<IReadOnlyList<NearbyProviderResponse>> GetNearbyAsync(
+            CancellationToken cancellationToken = default)
+            => Task.FromResult<IReadOnlyList<NearbyProviderResponse>>(
+                []);
     }
 
     private sealed class SuccessfulProviderProfileService : IProviderProfileService
@@ -159,6 +164,11 @@ public class ProviderProfilesControllerTests
             Guid userId,
             CancellationToken cancellationToken = default)
             => throw new NotImplementedException();
+
+        public Task<IReadOnlyList<NearbyProviderResponse>> GetNearbyAsync(
+            CancellationToken cancellationToken = default)
+            => Task.FromResult<IReadOnlyList<NearbyProviderResponse>>(
+                []);
     }
 
     private sealed class AvailabilitySuccessService : IProviderAvailabilityService

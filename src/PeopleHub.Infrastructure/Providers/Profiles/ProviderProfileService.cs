@@ -100,6 +100,23 @@ public sealed class ProviderProfileService : IProviderProfileService
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyList<NearbyProviderResponse>> GetNearbyAsync(
+    CancellationToken cancellationToken = default)
+{
+    var providers = await _providerRepository.GetNearbyAsync(
+        cancellationToken);
+
+    return providers
+        .Select(profile => new NearbyProviderResponse(
+            profile.Id,
+            profile.UserId,
+            $"Provider {profile.UserId.ToString()[..8]}",
+            profile.Skills.FirstOrDefault()?.ServiceCategory.Name ?? "General",
+            profile.AverageRating,
+            true))
+        .ToList();
+}
+
     private static ProviderProfileResponse Map(
         ProviderProfile profile)
     {

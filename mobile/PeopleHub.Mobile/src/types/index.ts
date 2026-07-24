@@ -6,3 +6,4 @@ export * from "./provider";
 export * from "./wallet";
 export * from "./user";
 export * from "./serviceCategory";
+export * from "./serviceRequest";

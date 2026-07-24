@@ -77,6 +77,17 @@ public sealed class ProviderProfilesController : ControllerBase
         return Ok(profile);
     }
 
+    [HttpGet("nearby")]
+[AllowAnonymous]
+public async Task<ActionResult<IReadOnlyList<NearbyProviderResponse>>> GetNearby(
+    CancellationToken cancellationToken)
+{
+    var response = await _providerProfileService.GetNearbyAsync(
+        cancellationToken);
+
+    return Ok(response);
+}
+
     [HttpPut]
     public async Task<ActionResult<ProviderProfileResponse>> Update(
         UpdateProviderProfileRequest request,
