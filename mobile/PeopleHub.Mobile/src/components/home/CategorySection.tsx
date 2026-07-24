@@ -1,5 +1,9 @@
-import React from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Pressable,
   StyleSheet,
@@ -9,25 +13,69 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 
-type Category = {
-  id: string;
-  name: string;
-  icon: keyof typeof Ionicons.glyphMap;
+import { serviceCategoryService } from "../../services";
+import type { ServiceCategory } from "../../types";
+
+const iconMap: Record<string, keyof typeof Ionicons.glyphMap> = {
+  Electrician: "flash",
+  Plumber: "water",
+  Cleaning: "sparkles",
+  Painter: "color-palette",
+  Driver: "car",
+  "IT Support": "laptop",
 };
 
-const categories: Category[] = [
-  { id: "1", name: "Electrician", icon: "flash" },
-  { id: "2", name: "Plumber", icon: "water" },
-  { id: "3", name: "Cleaning", icon: "sparkles" },
-  { id: "4", name: "Painter", icon: "color-palette" },
-  { id: "5", name: "Driver", icon: "car" },
-  { id: "6", name: "IT Support", icon: "laptop" },
-];
-
 export function CategorySection(): React.JSX.Element {
+  const [categories, setCategories] = useState<ServiceCategory[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const loadCategories = async () => {
+  try {
+    const response =
+      await serviceCategoryService.getCategories();
+
+    setCategories(response);
+  } catch {
+    setError(true);
+  } finally {
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  void loadCategories();
+}, []);
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text>Unable to load categories.</Text>
+      </View>
+    );
+  }
+
+  if (categories.length === 0) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text>No categories available.</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Popular Categories</Text>
+      <Text style={styles.title}>
+        Popular Categories
+      </Text>
 
       <FlatList
         data={categories}
@@ -38,7 +86,7 @@ export function CategorySection(): React.JSX.Element {
         renderItem={({ item }) => (
           <Pressable style={styles.card}>
             <Ionicons
-              name={item.icon}
+              name={iconMap[item.name] ?? "construct"}
               size={28}
               color="#2563EB"
             />
@@ -54,6 +102,11 @@ export function CategorySection(): React.JSX.Element {
 }
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    paddingVertical: 40,
+    alignItems: "center",
+  },
+
   container: {
     marginBottom: 28,
   },

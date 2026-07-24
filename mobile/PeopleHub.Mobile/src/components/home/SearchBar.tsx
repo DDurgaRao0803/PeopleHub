@@ -7,8 +7,6 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { colors } from "../../theme/colors";
-
 export function SearchBar(): React.JSX.Element {
   return (
     <View style={styles.container}>

@@ -5,3 +5,4 @@ export * from "./customer";
 export * from "./provider";
 export * from "./wallet";
 export * from "./user";
+export * from "./serviceCategory";
