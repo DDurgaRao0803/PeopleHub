@@ -1,22 +1,21 @@
 /**
  * ============================================================
  * PeopleHub Mobile
- * Design System - Spacing
+ * Design System - Border Radius
  * ============================================================
  */
 
-export const spacing = {
-  xxs: 2,
+export const radius = {
+  none: 0,
+
   xs: 4,
   sm: 8,
   md: 12,
   lg: 16,
   xl: 20,
   xxl: 24,
-  xxxl: 32,
-  huge: 40,
-  giant: 48,
-  massive: 64,
+
+  round: 9999,
 } as const;
 
-export type Spacing = typeof spacing;
+export type Radius = typeof radius;

@@ -8,6 +8,7 @@ import {
 
 import { colors } from "../../theme/colors";
 import { spacing } from "../../theme/spacing";
+import { radius } from "../../theme/radius";
 import { typography } from "../../theme/typography";
 
 interface AppTextInputProps {
@@ -57,21 +58,20 @@ const styles = StyleSheet.create({
   },
 
   label: {
+    ...typography.subtitle,
     marginBottom: spacing.xs,
-    fontSize: typography.fontSize.sm,
-    fontWeight: typography.fontWeight.medium,
     color: colors.text.primary,
   },
 
   input: {
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: spacing.borderRadius.md,
+    borderRadius: radius.md,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.md,
-    fontSize: typography.fontSize.md,
-    color: colors.text.primary,
     backgroundColor: colors.surface,
+    color: colors.text.primary,
+    ...typography.body,
   },
 
   errorBorder: {
@@ -81,6 +81,6 @@ const styles = StyleSheet.create({
   error: {
     marginTop: spacing.xs,
     color: colors.error,
-    fontSize: typography.fontSize.xs,
+    ...typography.caption,
   },
 });

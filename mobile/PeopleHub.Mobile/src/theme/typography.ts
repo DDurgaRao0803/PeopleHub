@@ -1,26 +1,69 @@
 /**
  * ============================================================
  * PeopleHub Mobile
- * Theme - Typography
+ * Design System - Typography
  * ============================================================
  */
 
 export const typography = {
-  fontSize: {
-    xs: 12,
-    sm: 14,
-    md: 16,
-    lg: 18,
-    xl: 22,
-    xxl: 28,
-    display: 36,
+  display: {
+    fontSize: 36,
+    fontWeight: "700",
+    lineHeight: 44,
   },
 
-  fontWeight: {
-    regular: "400",
-    medium: "500",
-    semiBold: "600",
-    bold: "700",
+  h1: {
+    fontSize: 30,
+    fontWeight: "700",
+    lineHeight: 38,
+  },
+
+  h2: {
+    fontSize: 24,
+    fontWeight: "700",
+    lineHeight: 32,
+  },
+
+  h3: {
+    fontSize: 20,
+    fontWeight: "600",
+    lineHeight: 28,
+  },
+
+  title: {
+    fontSize: 18,
+    fontWeight: "600",
+    lineHeight: 26,
+  },
+
+  subtitle: {
+    fontSize: 16,
+    fontWeight: "500",
+    lineHeight: 24,
+  },
+
+  bodyLarge: {
+    fontSize: 16,
+    fontWeight: "400",
+    lineHeight: 24,
+  },
+
+  body: {
+    fontSize: 14,
+    fontWeight: "400",
+    lineHeight: 22,
+  },
+
+  caption: {
+    fontSize: 12,
+    fontWeight: "400",
+    lineHeight: 18,
+  },
+
+  button: {
+    fontSize: 16,
+    fontWeight: "600",
+    lineHeight: 22,
   },
 } as const;
 

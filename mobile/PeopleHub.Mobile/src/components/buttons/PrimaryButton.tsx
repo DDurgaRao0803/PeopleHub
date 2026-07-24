@@ -8,6 +8,7 @@ import {
 
 import { colors } from "../../theme/colors";
 import { spacing } from "../../theme/spacing";
+import { radius } from "../../theme/radius";
 import { typography } from "../../theme/typography";
 
 interface PrimaryButtonProps {
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.primary,
     paddingVertical: spacing.md,
-    borderRadius: spacing.borderRadius.md,
+    borderRadius: radius.md,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -56,8 +57,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
+    ...typography.button,
     color: colors.text.inverse,
-    fontSize: typography.fontSize.md,
-    fontWeight: typography.fontWeight.semiBold,
   },
 });
