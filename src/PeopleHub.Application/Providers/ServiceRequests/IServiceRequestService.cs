@@ -39,4 +39,7 @@ Task<ServiceRequestResponse> CancelAsync(
 
     Task<IReadOnlyList<ServiceRequestResponse>> GetMyProviderRequestsAsync(
     CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<ServiceRequestResponse>> GetMyCustomerRequestsAsync(
+    CancellationToken cancellationToken = default);
 }

@@ -15,6 +15,15 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { serviceCategoryService } from "../../services";
 import type { ServiceCategory } from "../../types";
+import { useNavigation } from "@react-navigation/native";
+import type {
+  NativeStackNavigationProp,
+} from "@react-navigation/native-stack";
+
+import type {
+  MainStackParamList,
+} from "../../navigation/MainStackNavigator";
+
 
 const iconMap: Record<string, keyof typeof Ionicons.glyphMap> = {
   Electrician: "flash",
@@ -29,6 +38,10 @@ export function CategorySection(): React.JSX.Element {
   const [categories, setCategories] = useState<ServiceCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const navigation =
+  useNavigation<
+    NativeStackNavigationProp<MainStackParamList>
+  >();
 
   const loadCategories = async () => {
   try {
@@ -84,7 +97,15 @@ useEffect(() => {
         scrollEnabled={false}
         columnWrapperStyle={styles.row}
         renderItem={({ item }) => (
-          <Pressable style={styles.card}>
+          <Pressable
+  style={styles.card}
+  onPress={() =>
+    navigation.navigate("CreateRequest", {
+      categoryId: item.id,
+      categoryName: item.name,
+    })
+  }
+>
             <Ionicons
               name={iconMap[item.name] ?? "construct"}
               size={28}

@@ -9,7 +9,7 @@ import { useAuth } from "../context/AuthContext";
 import { colors } from "../theme/colors";
 
 import { AuthNavigator } from "./AuthNavigator";
-import { MainNavigator } from "./MainNavigator";
+import { MainStackNavigator } from "./MainStackNavigator";
 
 export function AppNavigator(): React.JSX.Element {
   const {
@@ -29,10 +29,10 @@ export function AppNavigator(): React.JSX.Element {
   }
 
   return isAuthenticated ? (
-    <MainNavigator />
-  ) : (
-    <AuthNavigator />
-  );
+  <MainStackNavigator />
+) : (
+  <AuthNavigator />
+);
 }
 
 const styles = StyleSheet.create({

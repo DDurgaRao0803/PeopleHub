@@ -115,6 +115,18 @@ public class ServiceRequestService : IServiceRequestService
         .ToList();
 }
 
+public async Task<IReadOnlyList<ServiceRequestResponse>> GetMyCustomerRequestsAsync(
+    CancellationToken cancellationToken = default)
+{
+    var requests = await _serviceRequestRepository.GetByCustomerIdAsync(
+        _currentUserService.UserId,
+        cancellationToken);
+
+    return requests
+        .Select(MapToResponse)
+        .ToList();
+}
+
     public async Task<ServiceRequestResponse> AcceptAsync(
         Guid serviceRequestId,
         CancellationToken cancellationToken = default)

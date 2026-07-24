@@ -8,3 +8,10 @@ export interface ServiceRequest {
   requestedDate: string;
   status: string;
 }
+
+export interface CreateServiceRequestRequest {
+  serviceCategoryId: string;
+  title: string;
+  description: string;
+  requestedDate: string;
+}

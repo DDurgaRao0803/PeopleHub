@@ -11,6 +11,7 @@ import {
 
 import { serviceRequestService } from "../../services";
 import { ServiceRequest } from "../../types";
+import { useFocusEffect } from "@react-navigation/native";
 
 export function RequestsScreen(): React.JSX.Element {
   const [requests, setRequests] = useState<ServiceRequest[]>([]);
@@ -30,8 +31,14 @@ export function RequestsScreen(): React.JSX.Element {
   }, []);
 
   useEffect(() => {
+  void loadRequests();
+}, [loadRequests]);
+
+useFocusEffect(
+  useCallback(() => {
     void loadRequests();
-  }, [loadRequests]);
+  }, [loadRequests])
+);
 
   const onRefresh = async () => {
     setRefreshing(true);

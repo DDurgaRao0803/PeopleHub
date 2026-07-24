@@ -105,6 +105,15 @@ public async Task<ActionResult<IReadOnlyList<ServiceRequestResponse>>> GetMyRequ
     }
 }
 
+[HttpGet("my-customer-requests")]
+public async Task<ActionResult<IReadOnlyList<ServiceRequestResponse>>> GetMyCustomerRequests(
+    CancellationToken cancellationToken)
+{
+    var response = await _serviceRequestService
+        .GetMyCustomerRequestsAsync(cancellationToken);
+
+    return Ok(response);
+}
 
     [HttpPut("{id:guid}/accept")]
 public async Task<ActionResult<ServiceRequestResponse>> Accept(
