@@ -13,6 +13,11 @@ using PeopleHub.Application.Common.Interfaces.Realtime;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5212);
+});
+
 // Register application services
 builder.Services.AddEndpointsApiExplorer();
 
