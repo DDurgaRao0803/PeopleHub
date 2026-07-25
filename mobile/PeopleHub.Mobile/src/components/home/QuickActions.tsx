@@ -26,7 +26,6 @@ export function QuickActions(): React.JSX.Element {
   const handlePress = (title: string) => {
     switch (title) {
       case "Become Provider":
-  console.log("Become Provider pressed");
   break;
 
       default:

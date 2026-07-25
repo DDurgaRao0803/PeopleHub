@@ -23,7 +23,7 @@ export default function SplashScreen({
   return (
     <Pressable
       style={styles.container}
-      onPress={() => navigation.replace("Welcome")}
+      onPress={() => navigation.replace("Login")}
     >
       <View style={styles.content}>
         <Ionicons

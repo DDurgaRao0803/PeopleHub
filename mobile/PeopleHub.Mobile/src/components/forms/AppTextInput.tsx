@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+
 import {
   StyleSheet,
   Text,
   TextInput,
   View,
+  TextInputProps,
+  TouchableOpacity,
 } from "react-native";
 
 import { colors } from "../../theme/colors";
@@ -11,48 +14,84 @@ import { spacing } from "../../theme/spacing";
 import { radius } from "../../theme/radius";
 import { typography } from "../../theme/typography";
 
-interface AppTextInputProps {
+interface AppTextInputProps extends TextInputProps {
   label: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  placeholder?: string;
-  secureTextEntry?: boolean;
   error?: string;
+  showPasswordToggle?: boolean;
 }
 
 export function AppTextInput({
   label,
-  value,
-  onChangeText,
-  placeholder,
-  secureTextEntry = false,
   error,
+  secureTextEntry = false,
+  showPasswordToggle = false,
+  ...props
 }: AppTextInputProps): React.JSX.Element {
+
+  const [passwordVisible, setPasswordVisible] =
+    useState(false);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
 
-      <TextInput
-        value={value}
-        onChangeText={onChangeText}
-        placeholder={placeholder}
-        secureTextEntry={secureTextEntry}
-        autoCapitalize="none"
-        autoCorrect={false}
-        style={[
-          styles.input,
-          error ? styles.errorBorder : undefined,
-        ]}
-      />
+      <Text style={styles.label}>
+        {label}
+      </Text>
+
+      <View style={styles.inputContainer}>
+
+        <TextInput
+          {...props}
+          secureTextEntry={
+            showPasswordToggle
+              ? !passwordVisible
+              : secureTextEntry
+          }
+          autoCapitalize={
+            props.autoCapitalize ?? "none"
+          }
+          autoCorrect={
+            props.autoCorrect ?? false
+          }
+          style={[
+            styles.input,
+            showPasswordToggle
+              ? styles.inputWithIcon
+              : undefined,
+            error
+              ? styles.errorBorder
+              : undefined,
+            props.style,
+          ]}
+        />
+
+        {showPasswordToggle && (
+          <TouchableOpacity
+            style={styles.eyeButton}
+            onPress={() =>
+              setPasswordVisible(!passwordVisible)
+            }
+          >
+            <Text style={styles.eyeIcon}>
+              {passwordVisible ? "🙈" : "👁"}
+            </Text>
+          </TouchableOpacity>
+        )}
+
+      </View>
 
       {error ? (
-        <Text style={styles.error}>{error}</Text>
+        <Text style={styles.error}>
+          {error}
+        </Text>
       ) : null}
+
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+
   container: {
     marginBottom: spacing.md,
   },
@@ -61,6 +100,11 @@ const styles = StyleSheet.create({
     ...typography.subtitle,
     marginBottom: spacing.xs,
     color: colors.text.primary,
+  },
+
+  inputContainer: {
+    position: "relative",
+    justifyContent: "center",
   },
 
   input: {
@@ -74,6 +118,22 @@ const styles = StyleSheet.create({
     ...typography.body,
   },
 
+  inputWithIcon: {
+    paddingRight: 52,
+  },
+
+  eyeButton: {
+    position: "absolute",
+    right: spacing.md,
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  eyeIcon: {
+    fontSize: 18,
+  },
+
   errorBorder: {
     borderColor: colors.error,
   },
@@ -83,4 +143,5 @@ const styles = StyleSheet.create({
     color: colors.error,
     ...typography.caption,
   },
+
 });
