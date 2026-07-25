@@ -37,9 +37,9 @@ public sealed class AuthenticationService : IAuthenticationService
         _dbContext = dbContext;
     }
 
-    public async Task RegisterAsync(
-        RegisterRequest request,
-        CancellationToken cancellationToken = default)
+    public async Task<Guid> RegisterAsync(
+    RegisterRequest request,
+    CancellationToken cancellationToken = default)
     {
         var emailExists = await _userRepository.ExistsByEmailAsync(
             request.Email,
@@ -70,9 +70,14 @@ public sealed class AuthenticationService : IAuthenticationService
             PhoneNumber.Create(request.PhoneNumber),
             passwordHash);
 
-        await _userRepository.AddAsync(user, cancellationToken);
+        await _userRepository.AddAsync(
+    user,
+    cancellationToken);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+await _unitOfWork.SaveChangesAsync(
+    cancellationToken);
+
+return user.Id;
     }
 
     public async Task<LoginResponse> LoginAsync(

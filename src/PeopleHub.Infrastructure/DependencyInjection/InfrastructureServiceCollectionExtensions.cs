@@ -131,8 +131,11 @@ services.AddScoped<ICurrentUserService, CurrentUserService>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddSingleton<IOtpGenerator, OtpGenerator>();
+        services.AddSingleton<IOtpHasher, OtpHasher>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IOtpRepository, OtpRepository>();
         services.AddScoped<IProviderProfileRepository, ProviderProfileRepository>();
         services.AddScoped<IProviderVerificationRepository, ProviderVerificationRepository>();
         services.AddScoped<IProviderRepository, ProviderRepository>();
@@ -154,6 +157,7 @@ services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<
     IProviderLocationRepository,
     ProviderLocationRepository>();
+    services.AddScoped<IOtpService, OtpService>();
 
 services.AddScoped<
     ILocationService,

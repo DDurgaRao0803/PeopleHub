@@ -9,6 +9,7 @@ using PeopleHub.Domain.Aggregates.Bidding;
 using PeopleHub.Domain.Aggregates.Notifications;
 using PeopleHub.Domain.Aggregates.Location;
 using PeopleHub.Domain.Aggregates.Payments;
+using PeopleHub.Domain.Aggregates.Otp;
 
 using PeopleHub.Domain.Entities;
 
@@ -94,6 +95,8 @@ public sealed class ApplicationDbContext
 
     public DbSet<WalletTransaction> WalletTransactions =>
         Set<WalletTransaction>();
+
+    public DbSet<OtpCode> OtpCodes => Set<OtpCode>();
 
 
 

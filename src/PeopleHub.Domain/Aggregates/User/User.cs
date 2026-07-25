@@ -3,6 +3,7 @@ using PeopleHub.Domain.Enums;
 using PeopleHub.Domain.Exceptions;
 using PeopleHub.Domain.ValueObjects;
 using System.ComponentModel.DataAnnotations.Schema;
+using PeopleHub.Domain.Aggregates.Otp;
 
 namespace PeopleHub.Domain.Aggregates.User;
 
@@ -10,11 +11,12 @@ public sealed class User : AuditableEntity
 {
     private readonly List<UserRole> _roles = [];
     private readonly List<RefreshToken> _refreshTokens = [];
+    private readonly List<OtpCode> _otpCodes = [];
 
     private User()
     {
         FirstName = null!;
-        LastName = null!;   
+        LastName = null!;
         PasswordHash = null!;
         Email = null!;
         PhoneNumber = null!;
@@ -28,7 +30,6 @@ public sealed class User : AuditableEntity
         string passwordHash)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(firstName);
-        ArgumentException.ThrowIfNullOrWhiteSpace(lastName);
         ArgumentNullException.ThrowIfNull(email);
         ArgumentNullException.ThrowIfNull(phoneNumber);
         ArgumentException.ThrowIfNullOrWhiteSpace(passwordHash);
@@ -53,10 +54,10 @@ public sealed class User : AuditableEntity
     public PhoneNumber PhoneNumber { get; private set; }
 
     [NotMapped]
-public Role Role =>
-    _roles.Any(r => r.Role == UserRoleType.Admin)
-        ? Role.Admin
-        : Role.User;
+    public Role Role =>
+        _roles.Any(r => r.Role == UserRoleType.Admin)
+            ? Role.Admin
+            : Role.User;
 
     public UserStatus Status { get; private set; }
 
@@ -70,6 +71,9 @@ public Role Role =>
 
     public IReadOnlyCollection<RefreshToken> RefreshTokens =>
         _refreshTokens.AsReadOnly();
+
+    public IReadOnlyCollection<OtpCode> OtpCodes =>
+        _otpCodes.AsReadOnly();
 
     public void Activate()
     {
@@ -174,14 +178,6 @@ public Role Role =>
         _refreshTokens.Remove(refreshToken);
     }
 
-    public void Update(
-    string firstName,
-    string lastName)
-{
-    FirstName = firstName;
-    LastName = lastName;
-}
-
     public RefreshToken? GetRefreshToken(string tokenHash)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(tokenHash);
@@ -206,5 +202,35 @@ public Role Role =>
     {
         _refreshTokens.RemoveAll(
             x => x.IsExpired || x.IsRevoked);
+    }
+
+    public void AddOtpCode(OtpCode otpCode)
+    {
+        ArgumentNullException.ThrowIfNull(otpCode);
+
+        _otpCodes.Add(otpCode);
+    }
+
+    public OtpCode? GetLatestOtp(OtpPurpose purpose)
+    {
+        return _otpCodes
+            .Where(x => x.Purpose == purpose)
+            .OrderByDescending(x => x.CreatedAtUtc)
+            .FirstOrDefault();
+    }
+
+    public void RemoveOtpCode(OtpCode otpCode)
+    {
+        ArgumentNullException.ThrowIfNull(otpCode);
+
+        _otpCodes.Remove(otpCode);
+    }
+
+    public void Update(
+        string firstName,
+        string lastName)
+    {
+        FirstName = firstName;
+        LastName = lastName;
     }
 }

@@ -4,6 +4,8 @@ using PeopleHub.API.Controllers;
 using PeopleHub.Application.Authentication;
 using PeopleHub.Contracts.Authentication;
 using PeopleHub.Contracts.Users;
+using PeopleHub.Domain.Enums;
+
 
 namespace PeopleHub.UnitTests;
 
@@ -12,7 +14,9 @@ public class AuthenticationControllerTests
     [Fact]
     public async Task Login_ReturnsUnauthorized_WhenAuthenticationServiceRejectsCredentials()
     {
-        var controller = new AuthenticationController(new RejectingAuthenticationService());
+        var controller = new AuthenticationController(
+    new RejectingAuthenticationService(),
+    new FakeOtpService());
 
         var request = new LoginRequest
         {
@@ -29,7 +33,9 @@ public class AuthenticationControllerTests
     [Fact]
     public async Task Register_ReturnsConflict_WhenAuthenticationServiceRejectsDuplicateUser()
     {
-        var controller = new AuthenticationController(new RejectingRegistrationService());
+        var controller = new AuthenticationController(
+    new RejectingRegistrationService(),
+    new FakeOtpService());
 
         var request = new RegisterRequest
         {
@@ -49,9 +55,9 @@ public class AuthenticationControllerTests
 
     private sealed class RejectingAuthenticationService : IAuthenticationService
     {
-        public Task RegisterAsync(
-            RegisterRequest request,
-            CancellationToken cancellationToken = default)
+        public Task<Guid> RegisterAsync(
+    RegisterRequest request,
+    CancellationToken cancellationToken = default)
             => throw new NotImplementedException();
 
         public Task<LoginResponse> LoginAsync(
@@ -74,10 +80,10 @@ public class AuthenticationControllerTests
             CancellationToken cancellationToken = default)
             => throw new NotImplementedException();
     }
-
+    
     private sealed class RejectingRegistrationService : IAuthenticationService
     {
-        public Task RegisterAsync(
+        public Task<Guid> RegisterAsync(
             RegisterRequest request,
             CancellationToken cancellationToken = default)
             => throw new InvalidOperationException("A user with this email already exists.");
@@ -102,4 +108,28 @@ public class AuthenticationControllerTests
             CancellationToken cancellationToken = default)
             => throw new NotImplementedException();
     }
+
+    private sealed class FakeOtpService : IOtpService
+{
+    public Task<string> GenerateAsync(
+        Guid userId,
+        OtpPurpose purpose,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult("123456");
+
+    public Task<OtpVerificationResult> VerifyAsync(
+        Guid userId,
+        string otp,
+        OtpPurpose purpose,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult(OtpVerificationResult.Success);
+
+    public Task<string> ResendAsync(
+        Guid userId,
+        OtpPurpose purpose,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult("123456");
+}
+
+
 }

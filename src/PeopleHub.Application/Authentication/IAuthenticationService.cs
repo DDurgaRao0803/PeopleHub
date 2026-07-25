@@ -5,7 +5,7 @@ namespace PeopleHub.Application.Authentication;
 
 public interface IAuthenticationService
 {
-    Task RegisterAsync(
+    Task<Guid> RegisterAsync(
     RegisterRequest request,
     CancellationToken cancellationToken = default);
     

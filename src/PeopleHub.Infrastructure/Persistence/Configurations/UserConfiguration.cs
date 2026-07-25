@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PeopleHub.Domain.Aggregates.User;
 
-
 namespace PeopleHub.Infrastructure.Persistence.Configurations;
 
 public sealed class UserConfiguration : IEntityTypeConfiguration<User>
@@ -22,8 +21,8 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(x => x.PasswordHash)
-    .HasMaxLength(500)
-    .IsRequired();    
+            .HasMaxLength(500)
+            .IsRequired();
 
         builder.Property(x => x.Status)
             .IsRequired();
@@ -61,13 +60,21 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Navigation(u => u.RefreshTokens)
-    .UsePropertyAccessMode(PropertyAccessMode.Field);
+        builder.Navigation(u => u.RefreshTokens)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-        builder
-    .HasMany(u => u.RefreshTokens)
-    .WithOne()
-    .HasForeignKey(rt => rt.UserId)
-    .OnDelete(DeleteBehavior.Cascade);
+        builder.HasMany(u => u.RefreshTokens)
+            .WithOne()
+            .HasForeignKey(rt => rt.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // OTP Codes
+        builder.Navigation(u => u.OtpCodes)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.HasMany(u => u.OtpCodes)
+            .WithOne()
+            .HasForeignKey(o => o.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
