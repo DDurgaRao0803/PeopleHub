@@ -12,9 +12,22 @@ import type {
   LoginResponse,
   RefreshTokenRequest,
   RefreshTokenResponse,
+  RegisterCustomerRequest,
 } from "../../types";
 
+
+
 export class AuthApi {
+
+  async register(
+  request: RegisterCustomerRequest,
+): Promise<void> {
+  await apiClient.post(
+    API_ENDPOINTS.AUTH.REGISTER,
+    request,
+  );
+}
+
   async login(request: LoginRequest): Promise<LoginResponse> {
     const { data } = await apiClient.post<LoginResponse>(
       API_ENDPOINTS.AUTH.LOGIN,

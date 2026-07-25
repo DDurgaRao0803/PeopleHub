@@ -12,16 +12,13 @@ export const AppConfig = {
   },
 
   api: {
-    baseUrl:
-      "https://super-invention-5vvx7gjj5x5wc77v9-5212.app.github.dev/api",
+  baseUrl: "http://192.168.8.74:5212/api",
+  timeout: 30000,
+},
 
-    timeout: 30000,
-  },
-
-  signalR: {
-    hubUrl:
-      "https://super-invention-5vvx7gjj5x5wc77v9-5212.app.github.dev/hubs",
-  },
+signalR: {
+  hubUrl: "http://192.168.8.74:5212/hubs",
+},
 
   storage: {
     accessTokenKey: "peoplehub_access_token",

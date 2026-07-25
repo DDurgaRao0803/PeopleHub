@@ -11,9 +11,17 @@ import { secureStorage } from "../storage";
 import type {
   LoginRequest,
   LoginResponse,
+  RegisterCustomerRequest,
 } from "../types";
 
 class AuthService {
+
+  async register(
+  request: RegisterCustomerRequest,
+): Promise<void> {
+  await authApi.register(request);
+}
+
   async login(request: LoginRequest): Promise<LoginResponse> {
     const response = await authApi.login(request);
 
