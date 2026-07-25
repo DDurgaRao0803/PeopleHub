@@ -125,11 +125,31 @@ export function CustomerRegisterScreen({
     type: "mobile",
     purpose: "register",
   });
-} catch {
-  setErrors((previous) => ({
-    ...previous,
-    email: "Registration failed. Please try again.",
-  }));
+} catch (error: any) {
+  const message =
+    error?.response?.data?.message ??
+    "Registration failed. Please try again.";
+
+  if (
+    message.toLowerCase().includes("email")
+  ) {
+    setErrors((previous) => ({
+      ...previous,
+      email: message,
+    }));
+  } else if (
+    message.toLowerCase().includes("phone")
+  ) {
+    setErrors((previous) => ({
+      ...previous,
+      mobile: message,
+    }));
+  } else {
+    setErrors((previous) => ({
+      ...previous,
+      email: message,
+    }));
+  }
 }finally {
   setLoading(false);
 }

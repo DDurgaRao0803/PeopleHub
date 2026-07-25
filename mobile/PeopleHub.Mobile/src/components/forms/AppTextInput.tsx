@@ -108,15 +108,23 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius.md,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.md,
-    backgroundColor: colors.surface,
-    color: colors.text.primary,
-    ...typography.body,
-  },
+  borderWidth: 1,
+  borderColor: colors.border,
+  borderRadius: radius.md,
+
+  minHeight: 52,
+
+  paddingHorizontal: spacing.md,
+
+  paddingTop: 14,
+  paddingBottom: 14,
+
+  backgroundColor: colors.surface,
+  color: colors.text.primary,
+
+  fontSize: 16,
+  lineHeight: 20,
+},
 
   inputWithIcon: {
     paddingRight: 52,
