@@ -1,22 +1,31 @@
 import React from "react";
+
 import {
-  ActivityIndicator,
+  Pressable,
   StyleSheet,
   Text,
   View,
 } from "react-native";
+
 import { Ionicons } from "@expo/vector-icons";
 
-import { AppScreen } from "../../components/ui/AppScreen";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+
 import { colors } from "../../theme/colors";
 import { spacing } from "../../theme/spacing";
 import { typography } from "../../theme/typography";
 
-export default function SplashScreen(): React.JSX.Element {
-  return (
-    <AppScreen>
-      <View style={styles.container}>
+type Props = NativeStackScreenProps<any>;
 
+export default function SplashScreen({
+  navigation,
+}: Props): React.JSX.Element {
+  return (
+    <Pressable
+      style={styles.container}
+      onPress={() => navigation.replace("Welcome")}
+    >
+      <View style={styles.content}>
         <Ionicons
           name="people-circle"
           size={120}
@@ -29,46 +38,40 @@ export default function SplashScreen(): React.JSX.Element {
 
         <Text style={styles.subtitle}>
           Trusted Services.
-          {"\n"}
+        </Text>
+
+        <Text style={styles.subtitle}>
           Trusted Professionals.
         </Text>
 
-        <ActivityIndicator
-          size="large"
-          color={colors.primary}
-          style={styles.loader}
-        />
-
+        <View style={{ height: spacing.xxxl }} />
       </View>
-    </AppScreen>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.background,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: spacing.xl,
-    backgroundColor: colors.background,
+  },
+
+  content: {
+    alignItems: "center",
+    padding: spacing.xl,
   },
 
   title: {
     ...typography.h1,
-    color: colors.primary,
+    color: colors.text.primary,
     marginTop: spacing.lg,
-    marginBottom: spacing.sm,
-    textAlign: "center",
   },
 
   subtitle: {
-    ...typography.body,
+    ...typography.subtitle,
     color: colors.text.secondary,
-    textAlign: "center",
-    lineHeight: 24,
-  },
-
-  loader: {
-    marginTop: spacing.xxxl,
+    marginTop: spacing.sm,
   },
 });

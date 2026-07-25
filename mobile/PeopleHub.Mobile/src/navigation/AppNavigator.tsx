@@ -2,7 +2,7 @@ import React from "react";
 
 import { useAuth } from "../context/AuthContext";
 
-import SplashScreen from "../screens/auth/SplashScreen";
+import LoadingScreen from "../screens/auth/LoadingScreen";
 import { AuthNavigator } from "./AuthNavigator";
 import { MainStackNavigator } from "./MainStackNavigator";
 
@@ -13,7 +13,7 @@ export function AppNavigator(): React.JSX.Element {
   } = useAuth();
 
   if (isLoading) {
-    return <SplashScreen />;
+    return <LoadingScreen />;
   }
 
   return isAuthenticated ? (

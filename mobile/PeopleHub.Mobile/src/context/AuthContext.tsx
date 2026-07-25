@@ -64,8 +64,8 @@ export function AuthProvider({
     setUser(null);
     setIsAuthenticated(false);
   } finally {
-    setIsLoading(false);
-  }
+  setIsLoading(false);
+}
 };
 
     void initialize();

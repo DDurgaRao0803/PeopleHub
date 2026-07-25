@@ -132,18 +132,17 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    padding: spacing.screenPadding,
+    padding: spacing.xl,
   },
 
   title: {
-    fontSize: typography.fontSize.xxl,
-    fontWeight: typography.fontWeight.bold,
+    ...typography.h1,
     color: colors.text.primary,
     marginBottom: spacing.sm,
   },
 
   subtitle: {
-    fontSize: typography.fontSize.md,
+    ...typography.body,
     color: colors.text.secondary,
     marginBottom: spacing.xl,
   },
