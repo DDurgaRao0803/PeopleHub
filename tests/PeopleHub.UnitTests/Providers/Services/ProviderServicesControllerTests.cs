@@ -100,6 +100,35 @@ public class ProviderServicesControllerTests
             => throw new NotImplementedException();
     }
 
+private sealed class ProviderServiceThrowsNotFoundService : IProviderServiceService
+{
+    public Task<ProviderServiceResponse> CreateAsync(
+        CreateProviderServiceRequest request,
+        CancellationToken cancellationToken = default)
+        => throw new KeyNotFoundException();
+
+    public Task<ProviderServiceResponse?> GetByIdAsync(
+        Guid id,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult<ProviderServiceResponse?>(null);
+
+    public Task<IReadOnlyList<ProviderServiceResponse>> GetByProviderProfileIdAsync(
+        Guid providerProfileId,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult<IReadOnlyList<ProviderServiceResponse>>([]);
+
+    public Task<ProviderServiceResponse> UpdateAsync(
+        Guid id,
+        UpdateProviderServiceRequest request,
+        CancellationToken cancellationToken = default)
+        => throw new KeyNotFoundException();
+
+    public Task DeleteAsync(
+        Guid id,
+        CancellationToken cancellationToken = default)
+        => throw new KeyNotFoundException();
+}
+
     private sealed class SuccessfulProviderService : IProviderServiceService
     {
         public Task<ProviderServiceResponse> CreateAsync(
@@ -161,14 +190,118 @@ public class ProviderServicesControllerTests
         }
 
         public Task<ProviderServiceResponse> UpdateAsync(
-            Guid id,
-            UpdateProviderServiceRequest request,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+    Guid id,
+    UpdateProviderServiceRequest request,
+    CancellationToken cancellationToken = default)
+{
+    return Task.FromResult(
+        new ProviderServiceResponse
+        {
+            Id = id,
+            ProviderProfileId = Guid.NewGuid(),
+            ServiceCategoryId = Guid.NewGuid(),
+            Title = request.Title,
+            Description = request.Description,
+            BasePrice = request.BasePrice,
+            EstimatedDurationMinutes = request.EstimatedDurationMinutes,
+            IsActive = request.IsActive
+        });
+}
 
-        public Task DeleteAsync(
-            Guid id,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+public Task DeleteAsync(
+    Guid id,
+    CancellationToken cancellationToken = default)
+{
+    return Task.CompletedTask;
+}
     }
+
+[Fact]
+public async Task GetById_ReturnsOk_WhenServiceExists()
+{
+    var controller = new ProviderServicesController(
+        new SuccessfulProviderService());
+
+    var id = Guid.NewGuid();
+
+    var result = await controller.GetById(
+        id,
+        CancellationToken.None);
+
+    var ok = Assert.IsType<OkObjectResult>(result.Result);
+
+    var response =
+        Assert.IsType<ProviderServiceResponse>(ok.Value);
+
+    Assert.Equal(id, response.Id);
+}
+
+[Fact]
+public async Task Update_ReturnsOk_WhenServiceUpdated()
+{
+    var controller = new ProviderServicesController(
+        new SuccessfulProviderService());
+
+    var request = new UpdateProviderServiceRequest
+    {
+        Title = "Updated",
+        Description = "Updated Description",
+        BasePrice = 250,
+        EstimatedDurationMinutes = 120,
+        IsActive = true
+    };
+
+    var result = await controller.Update(
+        Guid.NewGuid(),
+        request,
+        CancellationToken.None);
+
+    var ok = Assert.IsType<OkObjectResult>(result.Result);
+
+    var response =
+        Assert.IsType<ProviderServiceResponse>(ok.Value);
+
+    Assert.Equal(request.Title, response.Title);
+}
+
+[Fact]
+public async Task Update_ReturnsNotFound_WhenServiceDoesNotExist()
+{
+    var controller = new ProviderServicesController(
+        new ProviderServiceThrowsNotFoundService());
+
+    var result = await controller.Update(
+        Guid.NewGuid(),
+        new UpdateProviderServiceRequest(),
+        CancellationToken.None);
+
+    Assert.IsType<NotFoundObjectResult>(result.Result);
+}
+
+[Fact]
+public async Task Delete_ReturnsNoContent_WhenServiceDeleted()
+{
+    var controller = new ProviderServicesController(
+        new SuccessfulProviderService());
+
+    var result = await controller.Delete(
+        Guid.NewGuid(),
+        CancellationToken.None);
+
+    Assert.IsType<NoContentResult>(result);
+}
+
+[Fact]
+public async Task Delete_ReturnsNotFound_WhenServiceDoesNotExist()
+{
+    var controller = new ProviderServicesController(
+        new ProviderServiceThrowsNotFoundService());
+
+    var result = await controller.Delete(
+        Guid.NewGuid(),
+        CancellationToken.None);
+
+    Assert.IsType<NotFoundObjectResult>(result);
+}
+
 }
