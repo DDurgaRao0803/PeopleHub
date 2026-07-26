@@ -264,5 +264,38 @@ public async Task<Guid> ForgotPasswordAsync(
     return user.Id;
 }
 
+public async Task ResetPasswordAsync(
+    ResetPasswordRequest request,
+    CancellationToken cancellationToken = default)
+{
+    if (request.NewPassword != request.ConfirmPassword)
+    {
+        throw new InvalidOperationException(
+            "Passwords do not match.");
+    }
+
+    var user = await _userRepository.GetByIdAsync(
+        request.UserId,
+        cancellationToken);
+
+    if (user is null)
+    {
+        throw new InvalidOperationException(
+            "User not found.");
+    }
+
+    var passwordHash = _passwordHasher.HashPassword(
+        request.NewPassword);
+
+    user.ChangePassword(passwordHash);
+
+    await _userRepository.UpdateAsync(
+        user,
+        cancellationToken);
+
+    await _unitOfWork.SaveChangesAsync(
+        cancellationToken);
+}
+
     
 }

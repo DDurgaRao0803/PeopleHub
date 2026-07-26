@@ -25,4 +25,8 @@ public interface IAuthenticationService
     ForgotPasswordRequest request,
     CancellationToken cancellationToken = default);
 
+    Task ResetPasswordAsync(
+    ResetPasswordRequest request,
+    CancellationToken cancellationToken = default);
+
 }

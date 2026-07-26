@@ -80,6 +80,13 @@ public class AuthenticationControllerTests
     ForgotPasswordRequest request,
     CancellationToken cancellationToken = default)
     => throw new InvalidOperationException("User not found.");
+
+    public Task ResetPasswordAsync(
+    ResetPasswordRequest request,
+    CancellationToken cancellationToken = default)
+{
+    throw new NotImplementedException();
+}
             
     }
     
@@ -110,6 +117,13 @@ public class AuthenticationControllerTests
     CancellationToken cancellationToken = default)
     => throw new InvalidOperationException("User not found.");
 
+    public Task ResetPasswordAsync(
+    ResetPasswordRequest request,
+    CancellationToken cancellationToken = default)
+{
+    throw new NotImplementedException();
+}
+
     }
 
     private sealed class ForgotPasswordAuthenticationService : IAuthenticationService
@@ -138,6 +152,13 @@ public class AuthenticationControllerTests
         ForgotPasswordRequest request,
         CancellationToken cancellationToken = default)
         => Task.FromResult(Guid.NewGuid());
+
+    public Task ResetPasswordAsync(
+    ResetPasswordRequest request,
+    CancellationToken cancellationToken = default)
+{
+    return Task.CompletedTask;
+}
 }
 
     private sealed class FakeOtpService : IOtpService
@@ -182,6 +203,7 @@ public async Task ForgotPassword_ReturnsOk_WhenUserExists()
 
     Assert.Equal(StatusCodes.Status200OK, ok.StatusCode);
 }
+
 
 
 }

@@ -91,6 +91,44 @@ public async Task<IActionResult> ForgotPassword(
     }
 }
 
+[HttpPost("reset-password")]
+[ProducesResponseType(StatusCodes.Status204NoContent)]
+[ProducesResponseType(StatusCodes.Status400BadRequest)]
+public async Task<IActionResult> ResetPassword(
+    [FromBody] ResetPasswordRequest request,
+    CancellationToken cancellationToken)
+{
+    var verificationResult = await _otpService.VerifyAsync(
+        request.UserId,
+        request.Otp,
+        OtpPurpose.ForgotPassword,
+        cancellationToken);
+
+    if (verificationResult != OtpVerificationResult.Success)
+    {
+        return BadRequest(new
+        {
+            message = "Invalid or expired OTP."
+        });
+    }
+
+    try
+    {
+        await _authenticationService.ResetPasswordAsync(
+            request,
+            cancellationToken);
+
+        return NoContent();
+    }
+    catch (InvalidOperationException ex)
+    {
+        return BadRequest(new
+        {
+            message = ex.Message
+        });
+    }
+}
+
 
     [HttpPost("verify-otp")]
 public async Task<IActionResult> VerifyOtp(
