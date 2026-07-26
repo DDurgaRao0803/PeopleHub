@@ -4,6 +4,7 @@ using PeopleHub.API.Controllers;
 using PeopleHub.Application.Authentication;
 using PeopleHub.Contracts.Authentication;
 using PeopleHub.Domain.Enums;
+using System.Security.Claims;
 
 
 namespace PeopleHub.UnitTests;
@@ -87,6 +88,14 @@ public class AuthenticationControllerTests
 {
     throw new NotImplementedException();
 }
+
+public Task ChangePasswordAsync(
+    Guid userId,
+    ChangePasswordRequest request,
+    CancellationToken cancellationToken = default)
+{
+    throw new NotImplementedException();
+}
             
     }
     
@@ -124,10 +133,21 @@ public class AuthenticationControllerTests
     throw new NotImplementedException();
 }
 
+public Task ChangePasswordAsync(
+    Guid userId,
+    ChangePasswordRequest request,
+    CancellationToken cancellationToken = default)
+{
+    throw new NotImplementedException();
+}
     }
 
     private sealed class ForgotPasswordAuthenticationService : IAuthenticationService
 {
+    public bool ChangePasswordCalled { get; private set; }
+
+    public Exception? ChangePasswordException { get; set; }
+
     public Task<Guid> RegisterAsync(
         RegisterRequest request,
         CancellationToken cancellationToken = default)
@@ -154,12 +174,26 @@ public class AuthenticationControllerTests
         => Task.FromResult(Guid.NewGuid());
 
     public Task ResetPasswordAsync(
-    ResetPasswordRequest request,
-    CancellationToken cancellationToken = default)
-{
-    return Task.CompletedTask;
+        ResetPasswordRequest request,
+        CancellationToken cancellationToken = default)
+        => Task.CompletedTask;
+
+    public Task ChangePasswordAsync(
+        Guid userId,
+        ChangePasswordRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ChangePasswordCalled = true;
+
+        if (ChangePasswordException is not null)
+        {
+            throw ChangePasswordException;
+        }
+
+        return Task.CompletedTask;
+    }
 }
-}
+
 
     private sealed class FakeOtpService : IOtpService
 {
@@ -204,6 +238,179 @@ public async Task ForgotPassword_ReturnsOk_WhenUserExists()
     Assert.Equal(StatusCodes.Status200OK, ok.StatusCode);
 }
 
+[Fact]
+public async Task ChangePassword_ReturnsNoContent_WhenSuccessful()
+{
+    // Arrange
+    var authenticationService = new ForgotPasswordAuthenticationService();
 
+    var controller = new AuthenticationController(
+        authenticationService,
+        new FakeOtpService());
+
+    var userId = Guid.NewGuid();
+
+    controller.ControllerContext = new ControllerContext
+    {
+        HttpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(
+                new ClaimsIdentity(
+                [
+                    new Claim(
+                        ClaimTypes.NameIdentifier,
+                        userId.ToString())
+                ],
+                "Test"))
+        }
+    };
+
+    var request = new ChangePasswordRequest
+    {
+        CurrentPassword = "OldPassword@123",
+        NewPassword = "NewPassword@123",
+        ConfirmPassword = "NewPassword@123"
+    };
+
+    // Act
+    var result = await controller.ChangePassword(
+        request,
+        CancellationToken.None);
+
+    // Assert
+    Assert.IsType<NoContentResult>(result);
+
+    Assert.True(authenticationService.ChangePasswordCalled);
+}
+
+[Fact]
+public async Task ChangePassword_ReturnsUnauthorized_WhenUserIdClaimMissing()
+{
+    // Arrange
+    var controller = new AuthenticationController(
+        new ForgotPasswordAuthenticationService(),
+        new FakeOtpService());
+
+    controller.ControllerContext = new ControllerContext
+    {
+        HttpContext = new DefaultHttpContext()
+    };
+
+    var request = new ChangePasswordRequest
+    {
+        CurrentPassword = "OldPassword@123",
+        NewPassword = "NewPassword@123",
+        ConfirmPassword = "NewPassword@123"
+    };
+
+    // Act
+    var result = await controller.ChangePassword(
+        request,
+        CancellationToken.None);
+
+    // Assert
+    Assert.IsType<UnauthorizedResult>(result);
+}
+
+
+[Fact]
+public async Task ChangePassword_ReturnsBadRequest_WhenCurrentPasswordIncorrect()
+{
+    // Arrange
+    var authenticationService = new ForgotPasswordAuthenticationService
+    {
+        ChangePasswordException =
+            new InvalidOperationException("Current password is incorrect.")
+    };
+
+    var controller = new AuthenticationController(
+        authenticationService,
+        new FakeOtpService());
+
+    var userId = Guid.NewGuid();
+
+    controller.ControllerContext = new ControllerContext
+    {
+        HttpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(
+                new ClaimsIdentity(
+                    new[]
+                    {
+                        new Claim(
+                            ClaimTypes.NameIdentifier,
+                            userId.ToString())
+                    },
+                    "Test"))
+        }
+    };
+
+    var request = new ChangePasswordRequest
+    {
+        CurrentPassword = "WrongPassword",
+        NewPassword = "NewPassword@123",
+        ConfirmPassword = "NewPassword@123"
+    };
+
+    // Act
+    var result = await controller.ChangePassword(
+        request,
+        CancellationToken.None);
+
+    // Assert
+    var badRequest = Assert.IsType<BadRequestObjectResult>(result);
+
+    Assert.Equal(StatusCodes.Status400BadRequest, badRequest.StatusCode);
+}
+
+[Fact]
+public async Task ChangePassword_ReturnsBadRequest_WhenPasswordsDoNotMatch()
+{
+    // Arrange
+    var authenticationService = new ForgotPasswordAuthenticationService
+    {
+        ChangePasswordException =
+            new InvalidOperationException("Passwords do not match.")
+    };
+
+    var controller = new AuthenticationController(
+        authenticationService,
+        new FakeOtpService());
+
+    var userId = Guid.NewGuid();
+
+    controller.ControllerContext = new ControllerContext
+    {
+        HttpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(
+                new ClaimsIdentity(
+                    new[]
+                    {
+                        new Claim(
+                            ClaimTypes.NameIdentifier,
+                            userId.ToString())
+                    },
+                    "Test"))
+        }
+    };
+
+    var request = new ChangePasswordRequest
+    {
+        CurrentPassword = "OldPassword@123",
+        NewPassword = "NewPassword@123",
+        ConfirmPassword = "DifferentPassword@123"
+    };
+
+    // Act
+    var result = await controller.ChangePassword(
+        request,
+        CancellationToken.None);
+
+    // Assert
+    var badRequest = Assert.IsType<BadRequestObjectResult>(result);
+
+    Assert.Equal(StatusCodes.Status400BadRequest, badRequest.StatusCode);
+}
 
 }

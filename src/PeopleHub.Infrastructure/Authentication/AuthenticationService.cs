@@ -299,5 +299,48 @@ public async Task ResetPasswordAsync(
         cancellationToken);
 }
 
+public async Task ChangePasswordAsync(
+    Guid userId,
+    ChangePasswordRequest request,
+    CancellationToken cancellationToken = default)
+{
+    if (request.NewPassword != request.ConfirmPassword)
+    {
+        throw new InvalidOperationException("Passwords do not match.");
+    }
+
+    var user = await _userRepository.GetByIdAsync(
+        userId,
+        cancellationToken);
+
+    if (user is null)
+    {
+        throw new InvalidOperationException("User not found.");
+    }
+
+    var isCurrentPasswordValid = _passwordHasher.VerifyPassword(
+        request.CurrentPassword,
+        user.PasswordHash);
+
+    if (!isCurrentPasswordValid)
+    {
+        throw new InvalidOperationException("Current password is incorrect.");
+    }
+
+    var passwordHash = _passwordHasher.HashPassword(
+        request.NewPassword);
+
+    user.ChangePassword(passwordHash);
+
+    user.RevokeAllRefreshTokens();
+
+    await _userRepository.UpdateAsync(
+        user,
+        cancellationToken);
+
+    await _unitOfWork.SaveChangesAsync(
+        cancellationToken);
+}
+
     
 }

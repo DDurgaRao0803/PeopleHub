@@ -129,6 +129,39 @@ public async Task<IActionResult> ResetPassword(
     }
 }
 
+[Authorize]
+[HttpPost("change-password")]
+[ProducesResponseType(StatusCodes.Status204NoContent)]
+[ProducesResponseType(StatusCodes.Status400BadRequest)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+public async Task<IActionResult> ChangePassword(
+    [FromBody] ChangePasswordRequest request,
+    CancellationToken cancellationToken)
+{
+    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+    if (!Guid.TryParse(userIdClaim, out var userId))
+    {
+        return Unauthorized();
+    }
+
+    try
+    {
+        await _authenticationService.ChangePasswordAsync(
+            userId,
+            request,
+            cancellationToken);
+
+        return NoContent();
+    }
+    catch (InvalidOperationException ex)
+    {
+        return BadRequest(new
+        {
+            message = ex.Message
+        });
+    }
+}
 
     [HttpPost("verify-otp")]
 public async Task<IActionResult> VerifyOtp(
