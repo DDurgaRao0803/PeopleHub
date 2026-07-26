@@ -22,6 +22,7 @@ import { AuthStackParamList } from "../../navigation/AuthStackParamList";
 import { colors } from "../../theme/colors";
 import { spacing } from "../../theme/spacing";
 import { typography } from "../../theme/typography";
+import { useAuth } from "../../context/AuthContext";
 
 type Props = NativeStackScreenProps<
   AuthStackParamList,
@@ -32,7 +33,8 @@ export function LoginScreen({
   navigation,
 }: Props): React.JSX.Element {
 
-  const [identifier, setIdentifier] = useState("");
+const { login } = useAuth();
+const [identifier, setIdentifier] = useState("");
 const [password, setPassword] = useState("");
 
 const [loading, setLoading] = useState(false);
@@ -72,13 +74,19 @@ const [loginMode, setLoginMode] = useState<
 
 const handleLogin = async (): Promise<void> => {
 
-  if (!password.trim()) {
+  if (!identifier.trim()) {
+    Alert.alert(
+      "Email Required",
+      "Please enter your email address."
+    );
+    return;
+  }
 
+  if (!password.trim()) {
     Alert.alert(
       "Password Required",
       "Please enter your password."
     );
-
     return;
   }
 
@@ -86,12 +94,27 @@ const handleLogin = async (): Promise<void> => {
 
     setLoading(true);
 
-    // TODO:
-    // Backend Login API
+
+    await login({
+      email: identifier.trim(),
+      password: password.trim(),
+    });
+
+
+    // No navigation here.
+    // AppNavigator will automatically switch to MainStackNavigator
+    // because AuthContext sets isAuthenticated = true.
+
+  } catch (error: any) {
+
+
+    const message =
+      error?.response?.data?.message ??
+      "Invalid email or password.";
 
     Alert.alert(
-      "Coming Soon",
-      "Backend authentication will be connected next."
+      "Login Failed",
+      message,
     );
 
   } finally {

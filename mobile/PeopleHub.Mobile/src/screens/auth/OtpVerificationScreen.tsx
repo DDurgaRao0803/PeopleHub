@@ -26,6 +26,7 @@ import { colors } from "../../theme/colors";
 import { spacing } from "../../theme/spacing";
 import { radius } from "../../theme/radius";
 import { typography } from "../../theme/typography";
+import { authService } from "../../services/authService";
 
 type Props = NativeStackScreenProps<
   AuthStackParamList,
@@ -38,6 +39,7 @@ export function OtpVerificationScreen({
 }: Props): React.JSX.Element {
 
   const {
+    userId,
   destination,
   type,
   purpose,
@@ -90,8 +92,6 @@ export function OtpVerificationScreen({
 
       setLoading(true);
 
-      // TODO:
-// Verify OTP API
 
 switch (purpose) {
 
@@ -117,15 +117,22 @@ switch (purpose) {
 
   case "register":
 
+  if (!userId) {
     Alert.alert(
-      "Success",
-      "OTP verified successfully."
+      "Error",
+      "User information is missing."
     );
-
-    // TODO:
-    // Navigate to Customer/Provider registration
-
     return;
+  }
+
+
+  await authService.verifyOtp(
+    userId,
+    otp,
+  );
+
+navigation.navigate("Login");
+return;
 
   case "verify-email":
 
@@ -146,11 +153,22 @@ switch (purpose) {
     return;
 }
 
-    } finally {
+} catch (error: any) {
 
-      setLoading(false);
+  const message =
+    error?.response?.data?.message ??
+    "OTP verification failed.";
 
-    }
+  Alert.alert(
+    "Verification Failed",
+    message,
+  );
+
+} finally {
+
+  setLoading(false);
+
+}
 
   };
 
@@ -242,11 +260,9 @@ switch (purpose) {
   if (value.length <= 6) {
     setOtp(value);
 
-    if (value.length === 6) {
-      setTimeout(() => {
-        handleVerify();
-      }, 150);
-    }
+    if (value.length <= 6) {
+  setOtp(value);
+}
   }
 }}
 keyboardType="number-pad"

@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ForgotPasswordScreen } from "../screens/auth/ForgotPasswordScreen";
 import { ResetPasswordScreen } from "../screens/auth/ResetPasswordScreen";
 import { CustomerRegisterScreen } from "../screens/auth/CustomerRegisterScreen";
+import { ProviderRegisterScreen } from "../screens/auth/ProviderRegisterScreen";
 import {
   LoginScreen,
   SplashScreen,
@@ -56,6 +57,12 @@ export function AuthNavigator(): React.JSX.Element {
   name="CustomerRegister"
   component={CustomerRegisterScreen}
 />
+
+<Stack.Screen
+    name="ProviderRegister"
+    component={ProviderRegisterScreen}
+/>
+
     </Stack.Navigator>
   );
   

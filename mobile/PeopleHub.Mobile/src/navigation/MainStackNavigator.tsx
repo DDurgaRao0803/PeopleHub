@@ -5,7 +5,7 @@ import {
 
 import { MainNavigator } from "./MainNavigator";
 import { CreateRequestScreen } from "../screens/serviceRequest";
-import { ProfileScreen } from "../screens/provider";
+import { ProviderProfileScreen } from "../screens/provider/ProviderProfileScreen";
 
 import type { NavigatorScreenParams } from "@react-navigation/native";
 import type { MainTabParamList } from "./MainNavigator";
@@ -42,9 +42,9 @@ export function MainStackNavigator(): React.JSX.Element {
       />
 
       <Stack.Screen
-        name="ProviderProfile"
-        component={ProfileScreen}
-      />
+    name="ProviderProfile"
+    component={ProviderProfileScreen}
+/>
     </Stack.Navigator>
   );
 }

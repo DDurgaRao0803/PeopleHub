@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
 } from "react-native";
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -54,9 +53,9 @@ export function AccountTypeScreen({
 
       <TouchableOpacity
         style={styles.card}
-        onPress={() => {
-          // We'll build this next.
-        }}
+        onPress={() =>
+    navigation.navigate("ProviderRegister")
+}
       >
         <Text style={styles.cardTitle}>
           Service Provider

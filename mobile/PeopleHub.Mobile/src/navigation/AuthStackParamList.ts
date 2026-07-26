@@ -1,6 +1,7 @@
 export type AuthStackParamList = {
   Splash: undefined;
   Login: undefined;
+  ProviderRegister: undefined;
   
 
   EmailPassword: {
@@ -8,6 +9,7 @@ export type AuthStackParamList = {
   };
 
   OtpVerification: {
+    userId?: string;
   destination: string;
   type: "mobile" | "email";
   purpose:

@@ -6,7 +6,7 @@ import { HomeScreen } from "../screens/home/HomeScreen";
 import { SearchScreen } from "../screens/customer";
 import { RequestsScreen } from "../screens/serviceRequest";
 import { NotificationsScreen } from "../screens/notification";
-import { ProfileScreen } from "../screens/provider";
+import { ProfileScreen } from "../screens/customer/ProfileScreen";
 
 import { colors } from "../theme/colors";
 

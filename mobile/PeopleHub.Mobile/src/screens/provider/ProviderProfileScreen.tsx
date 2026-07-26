@@ -12,7 +12,7 @@ import {
 import { providerService } from "../../services/providerService";
 import { colors } from "../../theme/colors";
 
-export function ProfileScreen({ navigation }: any): React.JSX.Element {
+export function ProviderProfileScreen({ navigation }: any): React.JSX.Element {
   const [bio, setBio] = useState("");
   const [experienceYears, setExperienceYears] = useState("");
   const [loading, setLoading] = useState(false);

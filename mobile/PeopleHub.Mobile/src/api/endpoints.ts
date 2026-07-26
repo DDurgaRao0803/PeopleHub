@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
     REGISTER: "/auth/register",
     REFRESH: "/auth/refresh-token",
     LOGOUT: "/auth/logout",
+    VERIFY_OTP: "/auth/verify-otp",
   },
 
   PROVIDER: {

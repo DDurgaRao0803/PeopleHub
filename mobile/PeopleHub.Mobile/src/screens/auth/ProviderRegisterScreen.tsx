@@ -32,10 +32,10 @@ import {
 
 type Props = NativeStackScreenProps<
   AuthStackParamList,
-  "CustomerRegister"
+  "ProviderRegister"
 >;
 
-export function CustomerRegisterScreen({
+export function ProviderRegisterScreen({
   navigation,
 }: Props): React.JSX.Element {
 
@@ -113,7 +113,7 @@ export function CustomerRegisterScreen({
   setLoading(true);
 
   const userId =
-  await authService.registerCustomer({
+  await authService.registerProvider({
     firstName,
     lastName,
     email,
@@ -191,7 +191,7 @@ const passwordValidation =
         </Text>
 
         <Text style={styles.subtitle}>
-          Register as a Customer
+          Register as a Service Provider
         </Text>
 
         <AppTextInput
@@ -419,7 +419,7 @@ const passwordValidation =
         ) : null}
 
         <PrimaryButton
-  title="Create Account"
+  title="Create Provider Account"
   loading={loading}
   disabled={!isFormValid}
   onPress={handleRegister}

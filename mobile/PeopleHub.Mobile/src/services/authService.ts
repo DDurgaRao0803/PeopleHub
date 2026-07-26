@@ -16,10 +16,35 @@ import type {
 
 class AuthService {
 
-  async register(
+  async registerCustomer(
   request: RegisterCustomerRequest,
+): Promise<string> {
+
+  const response =
+    await authApi.register(request);
+
+  return response.userId;
+}
+
+async registerProvider(
+  request: RegisterCustomerRequest,
+): Promise<string> {
+
+  const response =
+    await authApi.register(request);
+
+  return response.userId;
+}
+
+async verifyOtp(
+  userId: string,
+  otp: string,
 ): Promise<void> {
-  await authApi.register(request);
+
+  await authApi.verifyOtp({
+    userId,
+    otp,
+  });
 }
 
   async login(request: LoginRequest): Promise<LoginResponse> {
