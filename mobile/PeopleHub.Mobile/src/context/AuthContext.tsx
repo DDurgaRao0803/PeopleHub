@@ -88,16 +88,16 @@ export function AuthProvider({
 };
 
   const logout = async (): Promise<void> => {
-  console.log("3. AuthContext.logout()");
+  
 
   await authService.logout();
 
-  console.log("4. Tokens cleared");
+  
 
   setUser(null);
   setIsAuthenticated(false);
 
-  console.log("5. isAuthenticated = false");
+  
 };
 
   const value = useMemo<AuthContextValue>(

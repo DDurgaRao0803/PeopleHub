@@ -18,11 +18,11 @@ const Stack = createNativeStackNavigator<AuthStackParamList>();
 export function AuthNavigator(): React.JSX.Element {
   return (
     <Stack.Navigator
-      initialRouteName="Splash"
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
+  initialRouteName="Login"
+  screenOptions={{
+    headerShown: false,
+  }}
+>
       <Stack.Screen
     name="Splash"
     component={SplashScreen}

@@ -8,6 +8,7 @@
 import { apiClient } from "../client";
 import { API_ENDPOINTS } from "../endpoints";
 
+
 import type {
   LoginRequest,
   LoginResponse,
@@ -77,11 +78,13 @@ export class AuthApi {
   }
 
   async logout(): Promise<void> {
+  
 
-    await apiClient.post(
-      API_ENDPOINTS.AUTH.LOGOUT,
-    );
-  }
+  await apiClient.post(
+    API_ENDPOINTS.AUTH.LOGOUT,
+  );
+
+  
 }
-
+}
 export const authApi = new AuthApi();

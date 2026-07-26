@@ -57,12 +57,24 @@ async verifyOtp(
   }
 
   async logout(): Promise<void> {
-    try {
-      await authApi.logout();
-    } finally {
-      await secureStorage.clearAuthentication();
-    }
+  
+
+  try {
+    
+
+    await authApi.logout();
+
+    
+  } catch (error) {
+    
+  } finally {
+    
+
+    await secureStorage.clearAuthentication();
+
+    
   }
+}
 
   async getAccessToken(): Promise<string | null> {
     return secureStorage.getAccessToken();

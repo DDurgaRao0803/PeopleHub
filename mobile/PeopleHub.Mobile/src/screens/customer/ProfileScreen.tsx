@@ -1,3 +1,10 @@
+/**
+ * ============================================================
+ * PeopleHub Mobile
+ * Customer Profile Screen
+ * ============================================================
+ */
+
 import React from "react";
 import {
   Alert,
@@ -15,33 +22,21 @@ import { spacing } from "../../theme/spacing";
 import { typography } from "../../theme/typography";
 
 export function ProfileScreen(): React.JSX.Element {
+
   const {
     user,
     logout,
   } = useAuth();
 
-  const handleLogout = (): void => {
-    Alert.alert(
-      "Logout",
-      "Are you sure you want to logout?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Logout",
-          style: "destructive",
-          onPress: async () => {
-  console.log("1. Logout button pressed");
+  const handleLogout = async (): Promise<void> => {
 
-  await logout();
 
-  console.log("2. Logout completed");
-},
-        },
-      ],
-    );
+    try {
+      await logout();
+
+    } catch (error) {
+      
+    }
   };
 
   return (
@@ -58,7 +53,8 @@ export function ProfileScreen(): React.JSX.Element {
           </View>
 
           <Text style={styles.name}>
-            {`${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim() || "Unknown User"}
+            {`${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim() ||
+              "Unknown User"}
           </Text>
 
           <Text style={styles.role}>
@@ -67,15 +63,15 @@ export function ProfileScreen(): React.JSX.Element {
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.label}>Email</Text>
+          <Text style={styles.label}>
+            Email
+          </Text>
 
           <Text style={styles.value}>
             {user?.email ?? "-"}
           </Text>
 
           <View style={styles.divider} />
-
-
         </View>
 
         <TouchableOpacity
