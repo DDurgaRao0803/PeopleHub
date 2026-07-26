@@ -13,14 +13,20 @@ namespace PeopleHub.API.Controllers;
 public sealed class AuthenticationController : ControllerBase
 {
     private readonly IAuthenticationService _authenticationService;
-private readonly IOtpService _otpService;
+    private readonly IOtpService _otpService;
+
+    private readonly ILogger<AuthenticationController> _logger;
+
+
 
     public AuthenticationController(
     IAuthenticationService authenticationService,
-    IOtpService otpService)
+    IOtpService otpService,
+    ILogger<AuthenticationController> logger)
 {
     _authenticationService = authenticationService;
     _otpService = otpService;
+    _logger = logger;
 }
 
     [HttpPost("register")]
@@ -38,10 +44,15 @@ private readonly IOtpService _otpService;
     request,
     cancellationToken);
 
-await _otpService.GenerateAsync(
+var otp = await _otpService.GenerateAsync(
     userId,
     OtpPurpose.Registration,
     cancellationToken);
+
+_logger.LogInformation(
+    "Development OTP for {Email}: {Otp}",
+    request.Email,
+    otp);
 
 return StatusCode(
     StatusCodes.Status201Created,

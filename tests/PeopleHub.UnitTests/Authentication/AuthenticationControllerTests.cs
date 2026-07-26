@@ -5,6 +5,7 @@ using PeopleHub.Application.Authentication;
 using PeopleHub.Contracts.Authentication;
 using PeopleHub.Domain.Enums;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging.Abstractions;
 
 
 namespace PeopleHub.UnitTests;
@@ -16,7 +17,8 @@ public class AuthenticationControllerTests
     {
         var controller = new AuthenticationController(
     new RejectingAuthenticationService(),
-    new FakeOtpService());
+    new FakeOtpService(),
+    NullLogger<AuthenticationController>.Instance);
 
         var request = new LoginRequest
         {
@@ -35,7 +37,8 @@ public class AuthenticationControllerTests
     {
         var controller = new AuthenticationController(
     new RejectingRegistrationService(),
-    new FakeOtpService());
+    new FakeOtpService(),
+    NullLogger<AuthenticationController>.Instance);
 
         var request = new RegisterRequest
         {
@@ -221,8 +224,9 @@ public Task ChangePasswordAsync(
 public async Task ForgotPassword_ReturnsOk_WhenUserExists()
 {
     var controller = new AuthenticationController(
-        new ForgotPasswordAuthenticationService(),
-        new FakeOtpService());
+    new ForgotPasswordAuthenticationService(),
+    new FakeOtpService(),
+    NullLogger<AuthenticationController>.Instance);
 
     var request = new ForgotPasswordRequest
     {
@@ -245,8 +249,9 @@ public async Task ChangePassword_ReturnsNoContent_WhenSuccessful()
     var authenticationService = new ForgotPasswordAuthenticationService();
 
     var controller = new AuthenticationController(
-        authenticationService,
-        new FakeOtpService());
+    authenticationService,
+    new FakeOtpService(),
+    NullLogger<AuthenticationController>.Instance);
 
     var userId = Guid.NewGuid();
 
@@ -288,8 +293,9 @@ public async Task ChangePassword_ReturnsUnauthorized_WhenUserIdClaimMissing()
 {
     // Arrange
     var controller = new AuthenticationController(
-        new ForgotPasswordAuthenticationService(),
-        new FakeOtpService());
+    new ForgotPasswordAuthenticationService(),
+    new FakeOtpService(),
+    NullLogger<AuthenticationController>.Instance);;
 
     controller.ControllerContext = new ControllerContext
     {
@@ -324,8 +330,9 @@ public async Task ChangePassword_ReturnsBadRequest_WhenCurrentPasswordIncorrect(
     };
 
     var controller = new AuthenticationController(
-        authenticationService,
-        new FakeOtpService());
+    authenticationService,
+    new FakeOtpService(),
+    NullLogger<AuthenticationController>.Instance);
 
     var userId = Guid.NewGuid();
 
@@ -374,8 +381,9 @@ public async Task ChangePassword_ReturnsBadRequest_WhenPasswordsDoNotMatch()
     };
 
     var controller = new AuthenticationController(
-        authenticationService,
-        new FakeOtpService());
+    authenticationService,
+    new FakeOtpService(),
+    NullLogger<AuthenticationController>.Instance);
 
     var userId = Guid.NewGuid();
 
