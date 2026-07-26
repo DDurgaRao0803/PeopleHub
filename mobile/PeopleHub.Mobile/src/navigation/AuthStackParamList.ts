@@ -9,7 +9,7 @@ export type AuthStackParamList = {
   };
 
   OtpVerification: {
-    userId?: string;
+  userId?: string;
   destination: string;
   type: "mobile" | "email";
   purpose:
@@ -17,6 +17,9 @@ export type AuthStackParamList = {
     | "forgot-password"
     | "register"
     | "verify-email";
+
+  email?: string;
+  password?: string;
 };
 
   ForgotPassword: undefined;

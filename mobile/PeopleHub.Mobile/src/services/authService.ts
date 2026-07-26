@@ -16,76 +16,120 @@ import type {
 
 class AuthService {
 
+  private pendingRegistration: {
+    email: string;
+    password: string;
+  } | null = null;
+
   async registerCustomer(
-  request: RegisterCustomerRequest,
-): Promise<string> {
+    request: RegisterCustomerRequest,
+  ): Promise<string> {
 
-  const response =
-    await authApi.register(request);
+    const response =
+      await authApi.register(request);
 
-  return response.userId;
-}
+    return response.userId;
+  }
 
-async registerProvider(
-  request: RegisterCustomerRequest,
-): Promise<string> {
+  async registerProvider(
+    request: RegisterCustomerRequest,
+  ): Promise<string> {
 
-  const response =
-    await authApi.register(request);
+    const response =
+      await authApi.register(request);
 
-  return response.userId;
-}
+    return response.userId;
+  }
 
-async verifyOtp(
-  userId: string,
-  otp: string,
-): Promise<void> {
+  setPendingRegistration(
+    email: string,
+    password: string,
+  ): void {
 
-  await authApi.verifyOtp({
-    userId,
-    otp,
-  });
-}
+    this.pendingRegistration = {
+      email,
+      password,
+    };
+  }
 
-  async login(request: LoginRequest): Promise<LoginResponse> {
-    const response = await authApi.login(request);
+  getPendingRegistration(): {
+    email: string;
+    password: string;
+  } | null {
 
-    await secureStorage.setAccessToken(response.accessToken);
-    await secureStorage.setRefreshToken(response.refreshToken);
+    return this.pendingRegistration;
+  }
+
+  clearPendingRegistration(): void {
+
+    this.pendingRegistration = null;
+  }
+
+  async verifyOtp(
+    userId: string,
+    otp: string,
+  ): Promise<void> {
+
+    await authApi.verifyOtp({
+      userId,
+      otp,
+    });
+  }
+
+  async login(
+    request: LoginRequest,
+  ): Promise<LoginResponse> {
+
+
+    const response =
+      await authApi.login(request);
+
+    await secureStorage.setAccessToken(
+      response.accessToken,
+    );
+
+    await secureStorage.setRefreshToken(
+      response.refreshToken,
+    )
 
     return response;
   }
 
   async logout(): Promise<void> {
-  
 
-  try {
-    
+    try {
 
-    await authApi.logout();
+      await authApi.logout();
 
-    
-  } catch (error) {
-    
-  } finally {
-    
+    } catch {
 
-    await secureStorage.clearAuthentication();
 
-    
+    } finally {
+
+      await secureStorage.clearAuthentication();
+    }
   }
-}
 
   async getAccessToken(): Promise<string | null> {
-    return secureStorage.getAccessToken();
+
+    const token =
+      await secureStorage.getAccessToken();
+
+    return token;
   }
 
   async getRefreshToken(): Promise<string | null> {
-    return secureStorage.getRefreshToken();
+
+    const token =
+      await secureStorage.getRefreshToken();
+
+    return token;
   }
 
   async isAuthenticated(): Promise<boolean> {
-    const token = await secureStorage.getAccessToken();
+
+    const token =
+      await secureStorage.getAccessToken();
 
     return token !== null;
   }

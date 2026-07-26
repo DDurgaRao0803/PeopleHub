@@ -27,6 +27,7 @@ import { spacing } from "../../theme/spacing";
 import { radius } from "../../theme/radius";
 import { typography } from "../../theme/typography";
 import { authService } from "../../services/authService";
+import { useAuth } from "../../context/AuthContext";
 
 type Props = NativeStackScreenProps<
   AuthStackParamList,
@@ -39,7 +40,7 @@ export function OtpVerificationScreen({
 }: Props): React.JSX.Element {
 
   const {
-    userId,
+  userId,
   destination,
   type,
   purpose,
@@ -48,6 +49,8 @@ export function OtpVerificationScreen({
   const inputRef = useRef<TextInput>(null);
 
   const [otp, setOtp] = useState("");
+
+  const { login } = useAuth();
 
   const [seconds, setSeconds] = useState(60);
 
@@ -127,12 +130,50 @@ switch (purpose) {
 
 
   await authService.verifyOtp(
-    userId,
-    otp,
+  userId,
+  otp,
+);
+
+const pendingRegistration =
+  authService.getPendingRegistration();
+
+if (!pendingRegistration) {
+
+  Alert.alert(
+    "Account Verified",
+    "Your account has been verified successfully. Please sign in.",
+  );
+  
+
+  navigation.replace("Login");
+
+  return;
+}
+
+try {
+
+  await login({
+    email: pendingRegistration.email,
+    password: pendingRegistration.password,
+  });
+
+  authService.clearPendingRegistration();
+
+  return;
+
+} catch (error) {
+
+  authService.clearPendingRegistration();
+
+  Alert.alert(
+    "Account Verified",
+    "Your account has been verified successfully. Please sign in.",
   );
 
-navigation.navigate("Login");
-return;
+  navigation.replace("Login");
+
+  return;
+}
 
   case "verify-email":
 

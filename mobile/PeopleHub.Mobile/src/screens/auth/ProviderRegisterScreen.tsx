@@ -121,11 +121,16 @@ export function ProviderRegisterScreen({
     phoneNumber: mobile,
   });
 
+  authService.setPendingRegistration(
+    email,
+    password,
+);
+
   navigation.navigate("OtpVerification", {
-    userId,
-    destination: mobile,
-    type: "mobile",
-    purpose: "register",
+  userId,
+  destination: mobile,
+  type: "mobile",
+  purpose: "register",
 });
 } catch (error: any) {
   const message =

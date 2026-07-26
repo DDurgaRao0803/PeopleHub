@@ -34,7 +34,7 @@ export function ProfileScreen(): React.JSX.Element {
     try {
       await logout();
 
-    } catch (error) {
+    } catch  {
       
     }
   };
