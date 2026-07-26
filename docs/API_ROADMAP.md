@@ -1,111 +1,142 @@
 # PeopleHub API Roadmap
 
-> Tracks backend API implementation progress.
-
-Legend:
+Legend
 
 - ✅ Completed
 - 🚧 In Progress
-- ⬜ Not Started
+- ⬜ Planned
 
+---
 
 # Authentication
 
 | Feature | Status |
-|---|---|
+|----------|--------|
 | Register | ✅ |
 | Login | ✅ |
-| JWT Authentication | ✅ |
-| Refresh Token | ✅ |
 | Logout | ✅ |
+| Refresh Token | ✅ |
+| Current User | ✅ |
+| Email Verification | ✅ |
+| Phone Verification | ✅ |
+| OTP Generation | ✅ |
+| OTP Verification | ✅ |
+| Forgot Password | 🚧 |
+| Reset Password | ⬜ |
+| Change Password | ⬜ |
+| Two Factor Authentication | ⬜ |
 
+---
 
-# Provider Module
-
-| Feature | Status |
-|---|---|
-| Provider Profile | ✅ |
-| Provider Skills | ✅ |
-| Provider Availability | ✅ |
-| Provider Verification | ✅ |
-
-
-# Service Module
-
-| Feature | Status |
-|---|---|
-| Service Categories | ✅ |
-| Create Service Request | ✅ |
-| Service Request Management | ✅ |
-| Complete Service Request | ✅ |
-
-
-# Reviews
+# Users
 
 | Feature | Status |
-|---|---|
-| Create Review | ✅ |
-| Provider Reviews | ✅ |
-
-
-# Provider Search
-
-| Feature | Status |
-|---|---|
-| Keyword Search | ✅ |
-| Category Filter | ✅ |
-| Verified Provider Filter | ✅ |
+|----------|--------|
+| CRUD | ✅ |
 | Pagination | ✅ |
+| Filtering | ✅ |
+| Sorting | ✅ |
 
+---
 
-# Administration
+# Provider Profiles
 
 | Feature | Status |
-|---|---|
-| Admin Dashboard | ✅ |
-| User Management | ✅ |
-| Provider Verification Management | ✅ |
+|----------|--------|
+| CRUD | ✅ |
+| Dashboard | ✅ |
+| Availability | ✅ |
+| Skills | ✅ |
+| Verification | ✅ |
+| Reviews | ✅ |
+| Search | ✅ |
 
+---
+
+# Provider Services
+
+| Feature | Status |
+|----------|--------|
+| CRUD | ✅ |
+
+---
+
+# Service Categories
+
+| Feature | Status |
+|----------|--------|
+| CRUD | ✅ |
+
+---
+
+# Service Requests
+
+| Feature | Status |
+|----------|--------|
+| CRUD | ✅ |
+
+---
+
+# Payments
+
+| Feature | Status |
+|----------|--------|
+| Wallet | ✅ |
+| Payments | ✅ |
+| Transactions | 🚧 |
+
+---
+
+# Notifications
+
+| Feature | Status |
+|----------|--------|
+| Email | 🚧 |
+| SMS | 🚧 |
+| Push | ⬜ |
+
+---
 
 # SmartMatch
 
 | Feature | Status |
-|---|---|
-| Provider Candidate Filtering | ✅ |
-| Verification Rule | ✅ |
-| Skill Rule | ✅ |
-| Availability Rule | ✅ |
-| Provider Scoring | ✅ |
-| Best Provider Selection | ✅ |
+|----------|--------|
+| Matching Engine | 🚧 |
+| Provider Ranking | ⬜ |
+| Auto Assignment | ⬜ |
+| Bidding | ⬜ |
 
+---
 
-# SmartMatch Assignment Workflow
-
-Status: 🚧 In Progress
-
-## Goal
-
-Move from provider recommendation to complete provider assignment.
-
-Planned:
+# Admin
 
 | Feature | Status |
-|---|---|
-| Assign selected provider to request | 🚧 |
-| Update service request status | ⬜ |
-| Create assignment record | ⬜ |
-| Provider accept/reject flow | ⬜ |
-| Customer notification | ⬜ |
-| Provider notification | ⬜ |
+|----------|--------|
+| Dashboard | ⬜ |
+| User Management | ⬜ |
+| Provider Verification | 🚧 |
+| Reports | ⬜ |
 
+---
 
-# Future Modules
+# Testing
 
 | Feature | Status |
-|---|---|
-| Live Location Tracking | ⬜ |
-| Notifications | ⬜ |
-| Payments | ⬜ |
-| Chat | ⬜ |
-| Provider Bidding | ⬜ |
-| Analytics | ⬜ |
+|----------|--------|
+| Unit Tests | ✅ |
+| Integration Tests | ✅ |
+
+---
+
+# Next Development Order
+
+1. Forgot Password
+2. Reset Password
+3. Change Password
+4. Email Notifications
+5. SMS Notifications
+6. Push Notifications
+7. SmartMatch
+8. Live Location
+9. Payments Enhancements
+10. Admin Dashboard

@@ -1,280 +1,266 @@
-# PeopleHub Project Context
+# PeopleHub - Project Context
 
-## Project Name
+## Project Overview
 
-PeopleHub
+PeopleHub is a production-grade Service Marketplace platform that connects customers with service providers.
 
-## Purpose
+Examples:
 
-PeopleHub is a service marketplace platform connecting customers with service providers.
+- Electrician
+- Plumber
+- Carpenter
+- AC Technician
+- Painter
+- Home Cleaning
+- Car Wash
+- Delivery Services
+- Freelance Services
+- Other local services
 
-The platform supports:
+Future modules include:
 
-- Service requests
-- Provider discovery
-- Provider verification
-- SmartMatch provider selection
-- Service tracking
-- Reviews and ratings
+- SmartMatch
+- Real-time bidding
+- Wallet
+- Payments
+- Notifications
+- Live Location Tracking
+- Ratings & Reviews
+- Provider Verification
+- Admin Portal
 
 ---
 
-# Technology Stack
+# Architecture
 
-## Backend
+Backend
 
-- .NET 9
-- ASP.NET Core Web API
-- Entity Framework Core
-- SQL Server
+- ASP.NET Core 9 Web API
 - Clean Architecture
 - Repository Pattern
 - Service Layer
 - Unit of Work
-
-## Testing
-
+- Entity Framework Core
+- SQL Server
+- JWT Authentication
+- Refresh Tokens
 - xUnit
-- FluentAssertions
 - Moq
-- Integration Tests
-- WebApplicationFactory
+- FluentAssertions
+
+Frontend
+
+- React Native
+- Expo SDK 54
+- TypeScript
+- React Navigation
+- Context API
+- Axios
+- AsyncStorage
+
+Development
+
+- GitHub
+- GitHub Codespaces
+- VS Code
+- Git
 
 ---
 
-# Architecture Rules
+# Coding Rules
 
-Follow:
-
-- Clean Architecture
-- Domain-driven structure
-- Repository Pattern
-- Service Layer
-- EF Core
-- SQL Server
+Always follow existing project conventions.
 
 Do NOT introduce:
 
-- MediatR
 - CQRS
+- MediatR
 - AutoMapper
 - Generic Repository
 
+Use:
+
+- Repository Pattern
+- Service Layer
+- Dependency Injection
+- Clean Architecture
+
+Every feature must include
+
+- Domain
+- Application
+- Infrastructure
+- API
+- Unit Tests
+- Integration Tests
+
+Keep the solution compiling after every logical change.
+
 ---
 
-# Solution Structure
-
-```
-src/
- ├── PeopleHub.API
- ├── PeopleHub.Application
- ├── PeopleHub.Contracts
- ├── PeopleHub.Domain
- ├── PeopleHub.Infrastructure
- └── PeopleHub.SmartMatch
-
-tests/
- ├── PeopleHub.UnitTests
- └── PeopleHub.IntegrationTests
-```
-
----
-
-# Completed Features
+# Current Backend Status
 
 ## Authentication
 
-Status: Completed ✅
+Completed
 
-Implemented:
-
-- Registration
+- Register
 - Login
-- JWT Authentication
 - Refresh Token
 - Logout
+- Current User
+- JWT Authentication
+- Password Hashing
+- OTP Generation
+- OTP Verification
+- User Activation
+- Email Verification
+
+OTP supports
+
+- Registration
+- Phone Verification
+- Forgot Password
+- Two Factor Authentication
+
+Completed Tests
+
+- Authentication Controller Tests
+- OTP Service Tests
+
+Current Test Status
+
+- Build Successful
+- 169 Unit Tests Passed
+- Integration Tests Passing
 
 ---
 
-## Provider Module
+# Provider Module
 
-Status: Completed ✅
-
-Implemented:
+Completed
 
 - Provider Profile
-- Provider Skills
+- Provider Services
 - Provider Availability
+- Provider Skills
 - Provider Verification
-
----
-
-## Service Module
-
-Status: Completed ✅
-
-Implemented:
-
+- Provider Dashboard
+- Provider Reviews
+- Provider Search
 - Service Categories
 - Service Requests
-- Service Request lifecycle
-- Completion flow
+
+Infrastructure completed
+
+- EF Configurations
+- Repositories
+- Controllers
+- Services
+- DTOs
+- Validators
+- Tests
 
 ---
 
-## Reviews
+# Payments
 
-Status: Completed ✅
+Completed
 
-Implemented:
-
-- Customer reviews
-- Provider rating records
-
----
-
-## Provider Search
-
-Status: Completed ✅
-
-Implemented:
-
-- Keyword search
-- Category filtering
-- Verification filtering
-- Pagination
+- Wallet Entity
+- Wallet APIs
+- Payment APIs
+- Configurations
+- Tests
 
 ---
 
-## Administration
+# Notifications
 
-Status: Completed ✅
+Infrastructure created.
 
-Implemented:
-
-- Admin Dashboard
-- User Management
-- Provider Verification Management
+Email/SMS providers still pending.
 
 ---
 
-## SmartMatch
+# SmartMatch
 
-Status: Completed ✅
+Foundation completed.
 
-Implemented:
+Future work
 
-- Candidate filtering
-- Verification Rule
-- Skill Rule
-- Availability Rule
-- Provider scoring
-- Best provider selection
-
-Current endpoint:
-
-```
-POST /api/SmartMatch/{serviceRequestId}
-```
-
-Example response:
-
-```json
-{
-  "selectedProviderId": "provider-id",
-  "candidateCount": 1
-}
-```
+- Auto Provider Matching
+- Provider Ranking
+- Provider Bidding
+- Intelligent Selection
 
 ---
 
-# Current Development Phase
+# Frontend Status
 
-## SmartMatch Assignment Workflow
+Completed Screens
 
-Status: In Progress 🚧
+Authentication
 
-Goal:
+- Login
+- Register
+- OTP Verification
+- Forgot Password
+- Reset Password
 
-Convert SmartMatch selection into a complete business workflow.
+Provider
 
-Expected flow:
+- Registration
+- Dashboard (basic)
+- Services (basic)
 
-```
-Customer Service Request
+Shared Components
 
-        |
+- PrimaryButton
+- Input Components
+- Theme
+- Navigation
+- API Layer
 
-        v
+Pending Frontend
 
-SmartMatch Engine
-
-        |
-
-        v
-
-Select Provider
-
-        |
-
-        v
-
-Assign Provider
-
-        |
-
-        v
-
-Update Request Status
-
-        |
-
-        v
-
-Provider Accept / Reject
-
-        |
-
-        v
-
-Service Execution
-```
+- Wallet
+- Payments
+- SmartMatch
+- Provider Dashboard
+- Notifications
+- Live Tracking
 
 ---
 
-# Development Rules
+# Development Workflow
 
-Before every change:
+After every feature
 
-1. Show file path
-2. Make one logical change
-3. Build solution
-4. Fix errors immediately
-5. Add/update tests
-6. Keep solution compiling
+1. Build
+2. Run Unit Tests
+3. Run Integration Tests
+4. Commit
+5. Push
+
+Commit format
+
+feat(...)
+fix(...)
+refactor(...)
+test(...)
+docs(...)
 
 ---
 
-# Current Git Status
+# Current Branch
 
-Latest successful commit:
+main
 
-```
-e35c47e
+Latest completed milestone
 
-Complete SmartMatch provider selection and related fixes
-```
+Authentication + OTP completed with full unit test coverage.
 
-Tests:
+Next milestone
 
-```
-Total: 142
-Failed: 0
-Succeeded: 142
-```
-
-Build:
-
-```
-Successful
-```
+Forgot Password APIs.

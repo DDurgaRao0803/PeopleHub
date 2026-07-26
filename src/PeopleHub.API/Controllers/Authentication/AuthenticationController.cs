@@ -59,6 +59,39 @@ return StatusCode(
         }
     }
 
+    [HttpPost("forgot-password")]
+[ProducesResponseType(StatusCodes.Status200OK)]
+[ProducesResponseType(StatusCodes.Status400BadRequest)]
+public async Task<IActionResult> ForgotPassword(
+    [FromBody] ForgotPasswordRequest request,
+    CancellationToken cancellationToken)
+{
+    try
+    {
+        var userId = await _authenticationService.ForgotPasswordAsync(
+            request,
+            cancellationToken);
+
+        await _otpService.GenerateAsync(
+            userId,
+            OtpPurpose.ForgotPassword,
+            cancellationToken);
+
+        return Ok(new
+        {
+            message = "Password reset OTP has been sent successfully."
+        });
+    }
+    catch (InvalidOperationException)
+    {
+        return BadRequest(new
+        {
+            message = "User not found."
+        });
+    }
+}
+
+
     [HttpPost("verify-otp")]
 public async Task<IActionResult> VerifyOtp(
     VerifyOtpRequest request,

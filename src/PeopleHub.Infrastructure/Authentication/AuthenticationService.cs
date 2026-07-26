@@ -247,5 +247,22 @@ return user.Id;
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
+public async Task<Guid> ForgotPasswordAsync(
+    ForgotPasswordRequest request,
+    CancellationToken cancellationToken = default)
+{
+    var user = await _userRepository.GetByEmailAsync(
+        request.Email,
+        cancellationToken);
+
+    if (user is null)
+    {
+        throw new InvalidOperationException(
+            "User not found.");
+    }
+
+    return user.Id;
+}
+
     
 }

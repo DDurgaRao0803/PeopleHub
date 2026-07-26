@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PeopleHub.API.Controllers;
 using PeopleHub.Application.Authentication;
 using PeopleHub.Contracts.Authentication;
-using PeopleHub.Contracts.Users;
 using PeopleHub.Domain.Enums;
 
 
@@ -55,6 +54,7 @@ public class AuthenticationControllerTests
 
     private sealed class RejectingAuthenticationService : IAuthenticationService
     {
+
         public Task<Guid> RegisterAsync(
     RegisterRequest request,
     CancellationToken cancellationToken = default)
@@ -75,10 +75,12 @@ public class AuthenticationControllerTests
             CancellationToken cancellationToken = default)
             => throw new NotImplementedException();
 
-        public Task<CurrentUserResponse> GetCurrentUserAsync(
-            Guid userId,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+
+        public Task<Guid> ForgotPasswordAsync(
+    ForgotPasswordRequest request,
+    CancellationToken cancellationToken = default)
+    => throw new InvalidOperationException("User not found.");
+            
     }
     
     private sealed class RejectingRegistrationService : IAuthenticationService
@@ -103,11 +105,40 @@ public class AuthenticationControllerTests
             CancellationToken cancellationToken = default)
             => throw new NotImplementedException();
 
-        public Task<CurrentUserResponse> GetCurrentUserAsync(
-            Guid userId,
-            CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+        public Task<Guid> ForgotPasswordAsync(
+    ForgotPasswordRequest request,
+    CancellationToken cancellationToken = default)
+    => throw new InvalidOperationException("User not found.");
+
     }
+
+    private sealed class ForgotPasswordAuthenticationService : IAuthenticationService
+{
+    public Task<Guid> RegisterAsync(
+        RegisterRequest request,
+        CancellationToken cancellationToken = default)
+        => throw new NotImplementedException();
+
+    public Task<LoginResponse> LoginAsync(
+        LoginRequest request,
+        CancellationToken cancellationToken = default)
+        => throw new NotImplementedException();
+
+    public Task<RefreshTokenResponse> RefreshTokenAsync(
+        RefreshTokenRequest request,
+        CancellationToken cancellationToken = default)
+        => throw new NotImplementedException();
+
+    public Task LogoutAsync(
+        LogoutRequest request,
+        CancellationToken cancellationToken = default)
+        => throw new NotImplementedException();
+
+    public Task<Guid> ForgotPasswordAsync(
+        ForgotPasswordRequest request,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult(Guid.NewGuid());
+}
 
     private sealed class FakeOtpService : IOtpService
 {
@@ -129,6 +160,27 @@ public class AuthenticationControllerTests
         OtpPurpose purpose,
         CancellationToken cancellationToken = default)
         => Task.FromResult("123456");
+}
+
+[Fact]
+public async Task ForgotPassword_ReturnsOk_WhenUserExists()
+{
+    var controller = new AuthenticationController(
+        new ForgotPasswordAuthenticationService(),
+        new FakeOtpService());
+
+    var request = new ForgotPasswordRequest
+    {
+        Email = "user@example.com"
+    };
+
+    var result = await controller.ForgotPassword(
+        request,
+        CancellationToken.None);
+
+    var ok = Assert.IsType<OkObjectResult>(result);
+
+    Assert.Equal(StatusCodes.Status200OK, ok.StatusCode);
 }
 
 

@@ -21,4 +21,8 @@ public interface IAuthenticationService
     LogoutRequest request,
     CancellationToken cancellationToken = default);
 
+    Task<Guid> ForgotPasswordAsync(
+    ForgotPasswordRequest request,
+    CancellationToken cancellationToken = default);
+
 }
