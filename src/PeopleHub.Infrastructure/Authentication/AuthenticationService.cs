@@ -289,6 +289,8 @@ public async Task ResetPasswordAsync(
 
     user.ChangePassword(passwordHash);
 
+    user.RevokeAllRefreshTokens();
+
     await _userRepository.UpdateAsync(
         user,
         cancellationToken);

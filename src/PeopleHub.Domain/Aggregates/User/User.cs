@@ -198,6 +198,17 @@ public sealed class User : AuditableEntity
         refreshToken.Revoke();
     }
 
+    public void RevokeAllRefreshTokens()
+{
+    foreach (var refreshToken in _refreshTokens)
+    {
+        if (!refreshToken.IsRevoked)
+        {
+            refreshToken.Revoke();
+        }
+    }
+}
+
     public void RemoveExpiredRefreshTokens()
     {
         _refreshTokens.RemoveAll(
