@@ -1,38 +1,53 @@
 import React from "react";
+
 import {
+  StyleProp,
   StyleSheet,
   View,
-  ViewProps,
+  ViewStyle,
 } from "react-native";
 
-import {
-  colors,
-  radius,
-  shadows,
-  spacing,
-} from "../../theme";
+import { colors } from "../../theme/colors";
+import { radius } from "../../theme/radius";
+import { shadows } from "../../theme/shadows";
 
-export function AppCard(
-  props: ViewProps,
-): React.JSX.Element {
+interface AppCardProps {
+  children: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
+}
+
+export function AppCard({
+  children,
+  style,
+}: AppCardProps): React.JSX.Element {
+
   return (
     <View
-      {...props}
       style={[
         styles.card,
-        props.style,
+        style,
       ]}
-    />
+    >
+      {children}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+
   card: {
-    backgroundColor: colors.card.background,
-    borderRadius: radius.xl,
+
+    backgroundColor: colors.surface,
+
+    borderRadius: radius.lg,
+
+    padding: 16,
+
     borderWidth: 1,
-    borderColor: colors.card.border,
-    padding: spacing.xl,
+    borderColor: colors.border,
+
     ...shadows.sm,
+
   },
+
 });
