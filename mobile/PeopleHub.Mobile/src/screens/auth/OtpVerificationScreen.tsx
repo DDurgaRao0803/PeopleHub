@@ -18,13 +18,14 @@ import {
 } from "react-native";
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-
+import { AppCard } from "../../components/ui/AppCard";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton";
 import { AuthStackParamList } from "../../navigation/AuthStackParamList";
 
 import { colors } from "../../theme/colors";
 import { spacing } from "../../theme/spacing";
 import { radius } from "../../theme/radius";
+import { shadows } from "../../theme/shadows";
 import { typography } from "../../theme/typography";
 import { authService } from "../../services/authService";
 import { useAuth } from "../../context/AuthContext";
@@ -241,19 +242,29 @@ try {
           keyboardShouldPersistTaps="handled"
         >
 
-          <Text style={styles.title}>
-            Verify OTP
-          </Text>
+          <View style={styles.heroContainer}>
 
-          <Text style={styles.subtitle}>
-  {type === "mobile"
-    ? "Enter the verification code sent to your mobile number"
-    : "Enter the verification code sent to your email address"}
-</Text>
+  <Text style={styles.heroEmoji}>
+    🔐
+  </Text>
 
-          <Text style={styles.destination}>
-  {destination}
-</Text>
+  <Text style={styles.title}>
+    Verify Your Account
+  </Text>
+
+  <Text style={styles.subtitle}>
+    {type === "mobile"
+      ? "Enter the verification code sent to your mobile number."
+      : "Enter the verification code sent to your email address."}
+  </Text>
+
+  <Text style={styles.destination}>
+    {destination}
+  </Text>
+
+</View>
+
+<AppCard style={styles.otpCard}>
 
           <Pressable
             onPress={() =>
@@ -300,10 +311,6 @@ try {
 
   if (value.length <= 6) {
     setOtp(value);
-
-    if (value.length <= 6) {
-  setOtp(value);
-}
   }
 }}
 keyboardType="number-pad"
@@ -333,6 +340,12 @@ keyboardType="number-pad"
             </Pressable>
           )}
 
+          </AppCard>
+
+<Text style={styles.version}>
+  PeopleHub v1.0
+</Text>
+
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -352,23 +365,25 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    flexGrow: 1,
-    justifyContent: "center",
-    paddingHorizontal: spacing.lg,
-  },
+  flexGrow: 1,
+  paddingHorizontal: spacing.lg,
+  paddingTop: spacing.xxxl,
+  paddingBottom: spacing.xxl,
+},
 
   title: {
-    ...typography.h2,
-    color: colors.text.primary,
-    textAlign: "center",
-    marginBottom: spacing.sm,
-  },
+  ...typography.h1,
+  color: colors.text.primary,
+  textAlign: "center",
+  marginBottom: spacing.sm,
+},
 
   subtitle: {
-    ...typography.body,
-    color: colors.text.secondary,
-    textAlign: "center",
-  },
+  ...typography.body,
+  color: colors.text.secondary,
+  textAlign: "center",
+  lineHeight: 24,
+},
 
   destination: {
     ...typography.subtitle,
@@ -426,5 +441,27 @@ activeOtpBox: {
     textAlign: "center",
     marginTop: spacing.lg,
   },
+
+  heroContainer: {
+  alignItems: "center",
+  marginBottom: spacing.xxl,
+},
+
+heroEmoji: {
+  fontSize: 56,
+  marginBottom: spacing.md,
+},
+
+otpCard: {
+  borderRadius: radius.xl,
+  ...shadows.md,
+},
+
+version: {
+  marginTop: spacing.xl,
+  textAlign: "center",
+  color: colors.text.secondary,
+  ...typography.caption,
+},
 
 });
