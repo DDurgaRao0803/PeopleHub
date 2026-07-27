@@ -12,7 +12,7 @@ import {
 } from "react-native";
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-
+import { AppCard } from "../../components/ui/AppCard";
 import { AppTextInput } from "../../components/forms/AppTextInput";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton";
 import { AuthStackParamList } from "../../navigation/AuthStackParamList";
@@ -20,6 +20,7 @@ import { AuthStackParamList } from "../../navigation/AuthStackParamList";
 import { colors } from "../../theme/colors";
 import { spacing } from "../../theme/spacing";
 import { radius } from "../../theme/radius";
+import { shadows } from "../../theme/shadows";
 import { typography } from "../../theme/typography";
 import { authService } from "../../services/authService";
 
@@ -191,15 +192,26 @@ const passwordValidation =
         keyboardShouldPersistTaps="handled"
       >
 
-        <Text style={styles.title}>
-          Create Account
-        </Text>
+        <View style={styles.heroContainer}>
 
-        <Text style={styles.subtitle}>
-          Register as a Service Provider
-        </Text>
+  <Text style={styles.heroEmoji}>
+    🛠️
+  </Text>
 
-        <AppTextInput
+  <Text style={styles.title}>
+    Become a Provider
+  </Text>
+
+  <Text style={styles.subtitle}>
+    Join PeopleHub and start{"\n"}
+    offering your professional services.
+  </Text>
+
+</View>
+
+<AppCard style={styles.registerCard}>
+
+<AppTextInput
   label="First Name"
   value={firstName}
   onChangeText={(text) => {
@@ -431,14 +443,20 @@ const passwordValidation =
 />
 
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("Login")
-          }
-        >
-          <Text style={styles.login}>
-            Already have an account? Login
-          </Text>
-        </TouchableOpacity>
+  onPress={() =>
+    navigation.navigate("Login")
+  }
+>
+  <Text style={styles.login}>
+    Already have an account? Sign In →
+  </Text>
+</TouchableOpacity>
+
+</AppCard>
+
+<Text style={styles.version}>
+  PeopleHub v1.0
+</Text>
 
       </ScrollView>
     </KeyboardAvoidingView>
@@ -458,10 +476,11 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    flexGrow: 1,
-    padding: spacing.lg,
-    justifyContent: "center",
-  },
+  flexGrow: 1,
+  paddingHorizontal: spacing.lg,
+  paddingTop: spacing.xxxl,
+  paddingBottom: spacing.xxl,
+},
 
   title: {
     ...typography.h2,
@@ -510,7 +529,7 @@ const styles = StyleSheet.create({
 },
 
 errorText: {
-  color: "#D32F2F",
+  color: colors.error,
   fontSize: 13,
   marginTop: 4,
   marginBottom: 10,
@@ -522,15 +541,37 @@ passwordChecklist: {
 },
 
 checkValid: {
-  color: "#2E7D32",
+  color: colors.success,
   fontSize: 13,
   marginBottom: 4,
 },
 
 checkInvalid: {
-  color: "#757575",
+  color: colors.text.secondary,
   fontSize: 13,
   marginBottom: 4,
+},
+
+heroContainer: {
+  alignItems: "center",
+  marginBottom: spacing.xxl,
+},
+
+heroEmoji: {
+  fontSize: 56,
+  marginBottom: spacing.md,
+},
+
+registerCard: {
+  borderRadius: radius.xl,
+  ...shadows.md,
+},
+
+version: {
+  marginTop: spacing.xl,
+  textAlign: "center",
+  color: colors.text.secondary,
+  ...typography.caption,
 },
 
 });
