@@ -8,10 +8,11 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  View,
 } from "react-native";
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-
+import { AppCard } from "../../components/ui/AppCard";
 import { AppTextInput } from "../../components/forms/AppTextInput";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton";
 
@@ -19,6 +20,8 @@ import { AuthStackParamList } from "../../navigation/AuthStackParamList";
 
 import { colors } from "../../theme/colors";
 import { spacing } from "../../theme/spacing";
+import { radius } from "../../theme/radius";
+import { shadows } from "../../theme/shadows";
 import { typography } from "../../theme/typography";
 
 type Props = NativeStackScreenProps<
@@ -94,38 +97,51 @@ export function ResetPasswordScreen({
           contentContainerStyle={styles.content}
           keyboardShouldPersistTaps="handled"
         >
-          <Text style={styles.title}>
-            Reset Password
-          </Text>
+          <View style={styles.heroContainer}>
+  <Text style={styles.heroEmoji}>🔒</Text>
 
-          <Text style={styles.subtitle}>
-            Create a new password for your account.
-          </Text>
+  <Text style={styles.title}>
+    Reset Password
+  </Text>
 
-          <AppTextInput
-            label="New Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            showPasswordToggle
-            placeholder="Enter new password"
-          />
+  <Text style={styles.subtitle}>
+    Create a strong new password to secure your account.
+  </Text>
+</View>
 
-          <AppTextInput
-            label="Confirm Password"
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry
-            showPasswordToggle
-            placeholder="Confirm new password"
-          />
+<AppCard style={styles.resetCard}>
 
-          <PrimaryButton
-            title="Reset Password"
-            loading={loading}
-            onPress={handleReset}
-          />
-        </ScrollView>
+  <AppTextInput
+    label="New Password"
+    value={password}
+    onChangeText={setPassword}
+    secureTextEntry
+    showPasswordToggle
+    placeholder="Enter new password"
+  />
+
+  <AppTextInput
+    label="Confirm Password"
+    value={confirmPassword}
+    onChangeText={setConfirmPassword}
+    secureTextEntry
+    showPasswordToggle
+    placeholder="Confirm new password"
+  />
+
+  <PrimaryButton
+    title="Reset Password"
+    loading={loading}
+    onPress={handleReset}
+  />
+
+</AppCard>
+
+<Text style={styles.version}>
+  PeopleHub v1.0
+</Text>
+
+</ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -144,23 +160,47 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    flexGrow: 1,
-    justifyContent: "center",
-    paddingHorizontal: spacing.lg,
-  },
+  flexGrow: 1,
+  paddingHorizontal: spacing.lg,
+  paddingTop: spacing.xxxl,
+  paddingBottom: spacing.xxl,
+},
 
   title: {
-    ...typography.h2,
-    color: colors.text.primary,
-    textAlign: "center",
-    marginBottom: spacing.md,
-  },
+  ...typography.h1,
+  color: colors.text.primary,
+  textAlign: "center",
+  marginBottom: spacing.sm,
+},
 
   subtitle: {
-    ...typography.body,
-    color: colors.text.secondary,
-    textAlign: "center",
-    marginBottom: spacing.xl,
-  },
+  ...typography.body,
+  color: colors.text.secondary,
+  textAlign: "center",
+  lineHeight: 24,
+  marginBottom: spacing.xxl,
+},
+
+heroContainer: {
+  alignItems: "center",
+  marginBottom: spacing.xxl,
+},
+
+heroEmoji: {
+  fontSize: 56,
+  marginBottom: spacing.md,
+},
+
+resetCard: {
+  borderRadius: radius.xl,
+  ...shadows.md,
+},
+
+version: {
+  marginTop: spacing.xl,
+  textAlign: "center",
+  color: colors.text.secondary,
+  ...typography.caption,
+},
 
 });
