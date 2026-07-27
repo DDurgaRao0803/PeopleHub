@@ -135,10 +135,10 @@ private readonly ITestOutputHelper _output;
             await response.Content.ReadAsStringAsync();
 
 
-        Console.WriteLine(
+        
             $"SUBMIT BID STATUS: {response.StatusCode}");
 
-        Console.WriteLine(body);
+        
 
 
 

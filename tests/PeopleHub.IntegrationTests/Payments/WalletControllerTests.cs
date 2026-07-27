@@ -213,10 +213,10 @@ public async Task GetWallet_Should_ReturnWallet()
             await response.Content.ReadAsStringAsync();
 
 
-        Console.WriteLine(
+        
             $"API Error ({(int)response.StatusCode}):");
 
 
-        Console.WriteLine(error);
+        
     }
 }

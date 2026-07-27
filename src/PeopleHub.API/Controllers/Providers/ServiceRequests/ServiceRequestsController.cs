@@ -27,7 +27,7 @@ public async Task<ActionResult<ServiceRequestResponse>> Create(
     [FromBody] CreateServiceRequestRequest request,
     CancellationToken cancellationToken)
 {
-    Console.WriteLine(">>> CREATE SERVICE REQUEST HIT");
+
 
     var response = await _serviceRequestService.CreateAsync(
         _currentUserService.UserId,
@@ -62,7 +62,7 @@ public async Task<ActionResult<ServiceRequestResponse>> Create(
         Guid customerId,
         CancellationToken cancellationToken)
     {
-        Console.WriteLine(">>> GetCustomerRequests HIT");
+    
 
         var response = await _serviceRequestService.GetCustomerRequestsAsync(
             customerId,
@@ -76,7 +76,7 @@ public async Task<ActionResult<ServiceRequestResponse>> Create(
         Guid providerProfileId,
         CancellationToken cancellationToken)
     {
-        Console.WriteLine(">>> GetProviderRequests HIT");
+    
 
         var response = await _serviceRequestService.GetProviderRequestsAsync(
             providerProfileId,

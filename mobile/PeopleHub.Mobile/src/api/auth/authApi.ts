@@ -26,6 +26,10 @@ export interface VerifyOtpRequest {
   otp: string;
 }
 
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
 export class AuthApi {
 
   async register(
@@ -64,6 +68,8 @@ export class AuthApi {
     return data;
   }
 
+  
+
   async refreshToken(
     request: RefreshTokenRequest,
   ): Promise<RefreshTokenResponse> {
@@ -77,12 +83,24 @@ export class AuthApi {
     return data;
   }
 
+  async forgotPassword(
+  request: ForgotPasswordRequest,
+): Promise<void> {
+
+  await apiClient.post(
+    API_ENDPOINTS.AUTH.FORGOT_PASSWORD,
+    request,
+  );
+}
+
   async logout(): Promise<void> {
   
 
   await apiClient.post(
     API_ENDPOINTS.AUTH.LOGOUT,
   );
+
+  
 
   
 }

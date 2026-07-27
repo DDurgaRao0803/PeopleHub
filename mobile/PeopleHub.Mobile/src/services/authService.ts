@@ -126,6 +126,15 @@ class AuthService {
     return token;
   }
 
+  async forgotPassword(
+  email: string,
+): Promise<void> {
+
+  await authApi.forgotPassword({
+    email,
+  });
+}
+
   async isAuthenticated(): Promise<boolean> {
 
     const token =

@@ -16,7 +16,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AppCard } from "../../components/ui/AppCard";
 import { AppTextInput } from "../../components/forms/AppTextInput";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton";
-
+import { authService } from "../../services/authService";
 import { AuthStackParamList } from "../../navigation/AuthStackParamList";
 
 import { colors } from "../../theme/colors";
@@ -60,7 +60,9 @@ export function ForgotPasswordScreen({
       // TODO
       // Send Reset OTP API
 
-      navigation.navigate("OtpVerification", {
+      await authService.forgotPassword(value);
+
+navigation.navigate("OtpVerification", {
   destination: value,
   type: "email",
   purpose: "forgot-password",

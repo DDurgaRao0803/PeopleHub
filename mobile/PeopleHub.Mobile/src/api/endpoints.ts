@@ -7,12 +7,15 @@
 
 export const API_ENDPOINTS = {
   AUTH: {
-    LOGIN: "/auth/login",
-    REGISTER: "/auth/register",
-    REFRESH: "/auth/refresh-token",
-    LOGOUT: "/auth/logout",
-    VERIFY_OTP: "/auth/verify-otp",
-  },
+  LOGIN: "/auth/login",
+  REGISTER: "/auth/register",
+  FORGOT_PASSWORD: "/auth/forgot-password",
+  RESET_PASSWORD: "/auth/reset-password",
+  CHANGE_PASSWORD: "/auth/change-password",
+  VERIFY_OTP: "/auth/verify-otp",
+  REFRESH: "/auth/refresh",
+  LOGOUT: "/auth/logout",
+},
 
   PROVIDER: {
     PROFILE: "/provider-profiles",

@@ -51,6 +51,7 @@ using PeopleHub.Application.Location;
 using PeopleHub.Infrastructure.Location;
 using PeopleHub.Application.Payments;
 using PeopleHub.Infrastructure.Payments;
+using PeopleHub.Infrastructure.Emailing;
 
 
 namespace PeopleHub.Infrastructure.DependencyInjection;
@@ -97,13 +98,13 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             OnAuthenticationFailed = context =>
             {
-                Console.WriteLine($"JWT Authentication Failed: {context.Exception}");
+                
                 return Task.CompletedTask;
             },
 
             OnTokenValidated = context =>
             {
-                Console.WriteLine("JWT Token Validated Successfully");
+                
                 return Task.CompletedTask;
             }
         };
@@ -158,6 +159,10 @@ services.AddScoped<ICurrentUserService, CurrentUserService>();
     IProviderLocationRepository,
     ProviderLocationRepository>();
     services.AddScoped<IOtpService, OtpService>();
+    services.Configure<EmailOptions>(
+    configuration.GetSection(EmailOptions.SectionName));
+
+services.AddScoped<IEmailService, EmailService>();
 
 services.AddScoped<
     ILocationService,

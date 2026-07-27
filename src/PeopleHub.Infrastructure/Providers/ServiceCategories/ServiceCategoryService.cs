@@ -59,19 +59,16 @@ public sealed class ServiceCategoryService : IServiceCategoryService
     bool isActive,
     CancellationToken cancellationToken = default)
 {
-    Console.WriteLine("================================");
-    Console.WriteLine($"Service received id: {id}");
-    Console.WriteLine($"Repository type: {_repository.GetType().FullName}");
+    
 
     var category = await _repository.GetByIdAsync(id, cancellationToken);
 
     if (category is null)
     {
-        Console.WriteLine("Repository returned NULL");
+        
         throw new KeyNotFoundException("Service category not found.");
     }
 
-    Console.WriteLine($"Repository returned entity: {category.Id}");
 
     category.Rename(name);
     category.UpdateDescription(description);
@@ -88,7 +85,6 @@ public sealed class ServiceCategoryService : IServiceCategoryService
     await _repository.UpdateAsync(category, cancellationToken);
     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-    Console.WriteLine("Update completed successfully");
-    Console.WriteLine("================================");
+    
 }
 }

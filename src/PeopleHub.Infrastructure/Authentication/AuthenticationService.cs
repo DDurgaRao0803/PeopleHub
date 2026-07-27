@@ -18,6 +18,8 @@ public sealed class AuthenticationService : IAuthenticationService
     private readonly JwtOptions _jwtOptions;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ApplicationDbContext _dbContext;
+    private readonly IOtpService _otpService;
+    private readonly IEmailService _emailService;
 
     public AuthenticationService(
         IUserRepository userRepository,
@@ -26,7 +28,10 @@ public sealed class AuthenticationService : IAuthenticationService
         IRefreshTokenGenerator refreshTokenGenerator,
         IOptions<JwtOptions> jwtOptions,
         IUnitOfWork unitOfWork,
-        ApplicationDbContext dbContext)
+        ApplicationDbContext dbContext,
+        IOtpService otpService,
+        IEmailService emailService)
+        
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
@@ -35,6 +40,8 @@ public sealed class AuthenticationService : IAuthenticationService
         _jwtOptions = jwtOptions.Value;
         _unitOfWork = unitOfWork;
         _dbContext = dbContext;
+        _otpService = otpService;
+        _emailService = emailService;
     }
 
     public async Task<Guid> RegisterAsync(
@@ -260,6 +267,36 @@ public async Task<Guid> ForgotPasswordAsync(
         throw new InvalidOperationException(
             "User not found.");
     }
+
+
+    var otp = await _otpService.GenerateAsync(
+        user.Id,
+        PeopleHub.Domain.Enums.OtpPurpose.ForgotPassword,
+        cancellationToken);
+
+    var htmlBody = $"""
+        <h2>PeopleHub Password Reset</h2>
+
+        <p>Your One-Time Password (OTP) is:</p>
+
+        <h1>{otp}</h1>
+
+        <p>This OTP is valid for 5 minutes.</p>
+
+        <p>If you didn't request a password reset, please ignore this email.</p>
+        """;
+
+
+
+
+    await _emailService.SendEmailAsync(
+
+        
+        user.Email.Value,
+        "PeopleHub Password Reset OTP",
+        htmlBody,
+        cancellationToken);
+
 
     return user.Id;
 }
