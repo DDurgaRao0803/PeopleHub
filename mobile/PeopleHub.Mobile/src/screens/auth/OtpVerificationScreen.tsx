@@ -162,7 +162,7 @@ try {
 
   return;
 
-} catch (error) {
+} catch {
 
   authService.clearPendingRegistration();
 
