@@ -12,7 +12,7 @@ import {
 } from "react-native";
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-
+import { AppCard } from "../../components/ui/AppCard";
 import { AppTextInput } from "../../components/forms/AppTextInput";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton";
 import { AuthStackParamList } from "../../navigation/AuthStackParamList";
@@ -20,6 +20,7 @@ import { AuthStackParamList } from "../../navigation/AuthStackParamList";
 import { colors } from "../../theme/colors";
 import { spacing } from "../../theme/spacing";
 import { radius } from "../../theme/radius";
+import { shadows } from "../../theme/shadows";
 import { typography } from "../../theme/typography";
 import { authService } from "../../services/authService";
 
@@ -199,7 +200,26 @@ const passwordValidation =
           Register as a Customer
         </Text>
 
-        <AppTextInput
+        <View style={styles.heroContainer}>
+
+  <Text style={styles.heroEmoji}>
+    👋
+  </Text>
+
+  <Text style={styles.title}>
+    Create Account
+  </Text>
+
+  <Text style={styles.subtitle}>
+    Join PeopleHub and connect{"\n"}
+    with trusted professionals.
+  </Text>
+
+</View>
+
+<AppCard style={styles.registerCard}>
+
+<AppTextInput
   label="First Name"
   value={firstName}
   onChangeText={(text) => {
@@ -430,17 +450,19 @@ const passwordValidation =
   onPress={handleRegister}
 />
 
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("Login")
-          }
-        >
-          <Text style={styles.login}>
-            Already have an account? Login
-          </Text>
-        </TouchableOpacity>
+        <TouchableOpacity>
+  <Text style={styles.login}>
+    Already have an account? Sign In →
+  </Text>
+</TouchableOpacity>
 
-      </ScrollView>
+</AppCard>
+
+<Text style={styles.version}>
+  PeopleHub v1.0
+</Text>
+
+</ScrollView>
     </KeyboardAvoidingView>
   </SafeAreaView>
 );
@@ -458,23 +480,40 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    flexGrow: 1,
-    padding: spacing.lg,
-    justifyContent: "center",
-  },
+  flexGrow: 1,
+  paddingHorizontal: spacing.lg,
+  paddingTop: spacing.xxxl,
+  paddingBottom: spacing.xxl,
+},
 
   title: {
-    ...typography.h2,
-    color: colors.text.primary,
-    textAlign: "center",
-  },
+  ...typography.h1,
+  color: colors.text.primary,
+  textAlign: "center",
+  marginBottom: spacing.sm,
+},
 
   subtitle: {
-    ...typography.body,
-    color: colors.text.secondary,
-    textAlign: "center",
-    marginBottom: spacing.xl,
-  },
+  ...typography.body,
+  color: colors.text.secondary,
+  textAlign: "center",
+  lineHeight: 24,
+},
+
+heroContainer: {
+  alignItems: "center",
+  marginBottom: spacing.xxl,
+},
+
+heroEmoji: {
+  fontSize: 56,
+  marginBottom: spacing.md,
+},
+
+registerCard: {
+  borderRadius: radius.xl,
+  ...shadows.md,
+},
 
   termsRow: {
     flexDirection: "row",
@@ -503,14 +542,15 @@ const styles = StyleSheet.create({
   },
 
   login: {
-  marginTop: spacing.lg,
+  marginTop: spacing.xl,
   textAlign: "center",
   color: colors.primary,
   ...typography.body,
+  fontWeight: "600",
 },
 
 errorText: {
-  color: "#D32F2F",
+  color: colors.error,
   fontSize: 13,
   marginTop: 4,
   marginBottom: 10,
@@ -522,15 +562,22 @@ passwordChecklist: {
 },
 
 checkValid: {
-  color: "#2E7D32",
+  color: colors.success,
   fontSize: 13,
   marginBottom: 4,
 },
 
 checkInvalid: {
-  color: "#757575",
+  color: colors.text.secondary,
   fontSize: 13,
   marginBottom: 4,
+},
+
+version: {
+  marginTop: spacing.xl,
+  textAlign: "center",
+  color: colors.text.secondary,
+  ...typography.caption,
 },
 
 });
