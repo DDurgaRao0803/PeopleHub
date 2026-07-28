@@ -68,10 +68,10 @@ class ServiceRequestApi {
   }
 
   async completeRequest(id: string): Promise<void> {
-    await apiClient.post(
-      `/service-requests/${id}/complete`
-    );
-  }
+  await apiClient.put(
+    `/service-requests/${id}/complete`
+  );
+}
 }
 
 export const serviceRequestApi = new ServiceRequestApi();
