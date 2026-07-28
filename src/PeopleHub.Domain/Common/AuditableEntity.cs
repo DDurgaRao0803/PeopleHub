@@ -9,4 +9,6 @@ public abstract class AuditableEntity : Entity
     public DateTime? LastModifiedOnUtc { get; protected set; }
 
     public Guid? LastModifiedBy { get; protected set; }
+
+    
 }

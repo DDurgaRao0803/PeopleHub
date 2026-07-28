@@ -13,4 +13,8 @@ public sealed class ReviewResponse
     public int Rating { get; set; }
 
     public string Comment { get; set; } = string.Empty;
+
+    public DateTime CreatedOnUtc { get; set; }
+
+    public DateTime? LastModifiedOnUtc { get; set; }
 }

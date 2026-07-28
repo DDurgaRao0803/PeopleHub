@@ -97,15 +97,17 @@ public sealed class ReviewService : IReviewService
     }
 
     private static ReviewResponse Map(Review review)
+{
+    return new ReviewResponse
     {
-        return new ReviewResponse
-        {
-            Id = review.Id,
-            CustomerId = review.CustomerId,
-            ProviderProfileId = review.ProviderProfileId,
-            ServiceRequestId = review.ServiceRequestId,
-            Rating = review.Rating,
-            Comment = review.Comment
-        };
-    }
+        Id = review.Id,
+        CustomerId = review.CustomerId,
+        ProviderProfileId = review.ProviderProfileId,
+        ServiceRequestId = review.ServiceRequestId,
+        Rating = review.Rating,
+        Comment = review.Comment,
+        CreatedOnUtc = review.CreatedOnUtc,
+        LastModifiedOnUtc = review.LastModifiedOnUtc
+    };
+}
 }
