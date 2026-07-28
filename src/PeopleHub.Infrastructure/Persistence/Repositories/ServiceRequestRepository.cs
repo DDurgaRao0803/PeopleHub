@@ -53,6 +53,19 @@ public async Task<IEnumerable<ServiceRequest>> GetByProviderProfileIdAsync(
         .ToListAsync(cancellationToken);
 }
 
+public async Task<IEnumerable<ServiceRequest>> GetAvailableForProviderAsync(
+    Guid providerProfileId,
+    CancellationToken cancellationToken = default)
+{
+    return await _context.ServiceRequests
+        .Where(x =>
+            x.ProviderProfileId == providerProfileId ||
+            (x.ProviderProfileId == null &&
+             x.Status == Domain.Enums.ServiceRequestStatus.Pending))
+        .OrderByDescending(x => x.CreatedOnUtc)
+        .ToListAsync(cancellationToken);
+}
+
     public Task UpdateAsync(
         ServiceRequest serviceRequest,
         CancellationToken cancellationToken = default)

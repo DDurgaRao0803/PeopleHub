@@ -101,11 +101,23 @@ switch (purpose) {
 
   case "forgot-password":
 
-    navigation.replace("ResetPassword", {
-      destination,
-    });
+  if (!userId) {
+
+    Alert.alert(
+      "Error",
+      "User information is missing.",
+    );
 
     return;
+  }
+
+  navigation.replace("ResetPassword", {
+    userId,
+    otp,
+    destination,
+  });
+
+  return;
 
   case "login":
 

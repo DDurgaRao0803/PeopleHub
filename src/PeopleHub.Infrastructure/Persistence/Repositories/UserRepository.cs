@@ -20,12 +20,12 @@ public sealed class UserRepository : IUserRepository
     CancellationToken cancellationToken = default)
 {
     return await _context.Users
-        .AsNoTracking()
-        .Include(u => u.Roles)
-        .FirstOrDefaultAsync(
-            u => u.Id == id &&
-                 u.Status != UserStatus.Deleted,
-            cancellationToken);
+    .Include(u => u.Roles)
+    .Include(u => u.RefreshTokens)
+    .FirstOrDefaultAsync(
+        u => u.Id == id &&
+             u.Status != UserStatus.Deleted,
+        cancellationToken);
 }
 
     public async Task<User?> GetByEmailAsync(

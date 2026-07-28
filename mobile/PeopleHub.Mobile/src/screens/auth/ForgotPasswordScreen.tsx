@@ -57,16 +57,23 @@ export function ForgotPasswordScreen({
 
       setLoading(true);
 
-      // TODO
-      // Send Reset OTP API
+      const response =
+        await authService.forgotPassword(value);
 
-      await authService.forgotPassword(value);
+      navigation.navigate("OtpVerification", {
+        destination: value,
+        type: "email",
+        purpose: "forgot-password",
+        userId: response.userId,
+      });
 
-navigation.navigate("OtpVerification", {
-  destination: value,
-  type: "email",
-  purpose: "forgot-password",
-});
+    } catch (error: any) {
+
+      Alert.alert(
+        "Forgot Password",
+        error?.response?.data?.message ??
+          "Unable to send OTP. Please try again."
+      );
 
     } finally {
 
@@ -93,42 +100,44 @@ navigation.navigate("OtpVerification", {
 
           <View style={styles.heroContainer}>
 
-  <Text style={styles.heroEmoji}>
-    🔑
-  </Text>
+            <Text style={styles.heroEmoji}>
+              🔑
+            </Text>
 
-  <Text style={styles.title}>
-    Forgot Password?
-  </Text>
+            <Text style={styles.title}>
+              Forgot Password?
+            </Text>
 
-  <Text style={styles.subtitle}>
-    Enter your registered email address and we&apos;ll
-    send you a verification code.
-  </Text>
+            <Text style={styles.subtitle}>
+              Enter your registered email address and we&apos;ll
+send you a verification code.
+            </Text>
 
-</View>
+          </View>
 
-<AppCard style={styles.resetCard}>
+          <AppCard style={styles.resetCard}>
 
-  <AppTextInput
-    label="Email Address"
-    value={email}
-    onChangeText={setEmail}
-    placeholder="Enter your email"
-    keyboardType="email-address"
-  />
+            <AppTextInput
+              label="Email Address"
+              value={email}
+              onChangeText={setEmail}
+              placeholder="Enter your email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
 
-  <PrimaryButton
-    title="Send OTP"
-    loading={loading}
-    onPress={handleContinue}
-  />
+            <PrimaryButton
+              title="Send OTP"
+              loading={loading}
+              onPress={handleContinue}
+            />
 
-</AppCard>
+          </AppCard>
 
-<Text style={styles.version}>
-  PeopleHub v1.0
-</Text>
+          <Text style={styles.version}>
+            PeopleHub v1.0
+          </Text>
 
         </ScrollView>
       </KeyboardAvoidingView>
@@ -149,47 +158,47 @@ const styles = StyleSheet.create({
   },
 
   content: {
-  flexGrow: 1,
-  paddingHorizontal: spacing.lg,
-  paddingTop: spacing.xxxl,
-  paddingBottom: spacing.xxl,
-},
+    flexGrow: 1,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.xxxl,
+    paddingBottom: spacing.xxl,
+  },
 
   title: {
-  ...typography.h1,
-  color: colors.text.primary,
-  textAlign: "center",
-  marginBottom: spacing.sm,
-},
+    ...typography.h1,
+    color: colors.text.primary,
+    textAlign: "center",
+    marginBottom: spacing.sm,
+  },
 
   subtitle: {
-  ...typography.body,
-  color: colors.text.secondary,
-  textAlign: "center",
-  lineHeight: 24,
-  marginBottom: spacing.xxl,
-},
+    ...typography.body,
+    color: colors.text.secondary,
+    textAlign: "center",
+    lineHeight: 24,
+    marginBottom: spacing.xxl,
+  },
 
-heroContainer: {
-  alignItems: "center",
-  marginBottom: spacing.xxl,
-},
+  heroContainer: {
+    alignItems: "center",
+    marginBottom: spacing.xxl,
+  },
 
-heroEmoji: {
-  fontSize: 56,
-  marginBottom: spacing.md,
-},
+  heroEmoji: {
+    fontSize: 56,
+    marginBottom: spacing.md,
+  },
 
-resetCard: {
-  borderRadius: radius.xl,
-  ...shadows.md,
-},
+  resetCard: {
+    borderRadius: radius.xl,
+    ...shadows.md,
+  },
 
-version: {
-  marginTop: spacing.xl,
-  textAlign: "center",
-  color: colors.text.secondary,
-  ...typography.caption,
-},
+  version: {
+    marginTop: spacing.xl,
+    textAlign: "center",
+    color: colors.text.secondary,
+    ...typography.caption,
+  },
 
 });

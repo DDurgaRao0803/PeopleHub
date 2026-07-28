@@ -9,26 +9,55 @@ import {
   View,
 } from "react-native";
 
+import { TouchableOpacity } from "react-native";
+
+import {
+  useNavigation,
+} from "@react-navigation/native";
+
+import type {
+  NativeStackNavigationProp,
+} from "@react-navigation/native-stack";
+
+import type {
+  MainStackParamList,
+} from "../../navigation/MainStackNavigator";
+
 import { serviceRequestService } from "../../services";
 import { ServiceRequest } from "../../types";
 import { useFocusEffect } from "@react-navigation/native";
+import { useAuth } from "../../context/AuthContext";
 
 export function RequestsScreen(): React.JSX.Element {
+
+  const navigation =
+  useNavigation<
+    NativeStackNavigationProp<MainStackParamList>
+  >();
   const [requests, setRequests] = useState<ServiceRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const { user } = useAuth();
 
-  const loadRequests = useCallback(async () => {
-    try {
-      const data = await serviceRequestService.getMyRequests();
-      setRequests(data);
-    } catch {
-  setRequests([]);
-} finally {
-      setLoading(false);
-      setRefreshing(false);
+const loadRequests = useCallback(async () => {
+  try {
+    let data: ServiceRequest[];
+
+    if (user?.isProvider === true) {
+      data = await serviceRequestService.getMyProviderRequests();
+    } else {
+      data = await serviceRequestService.getMyCustomerRequests();
     }
-  }, []);
+
+    setRequests(data);
+  } catch (error) {
+    console.error("Failed to load requests:", error);
+    setRequests([]);
+  } finally {
+    setLoading(false);
+    setRefreshing(false);
+  }
+}, [user]);
 
   useEffect(() => {
   void loadRequests();
@@ -78,19 +107,29 @@ useFocusEffect(
           />
         }
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.title}>{item.title}</Text>
+          <TouchableOpacity
+  style={styles.card}
+  activeOpacity={0.8}
+  onPress={() =>
+    navigation.navigate("RequestDetails", {
+      requestId: item.id,
+    })
+  }
+>
+  <Text style={styles.title}>{item.title}</Text>
 
-            <Text style={styles.status}>{item.status}</Text>
+  <Text style={styles.status}>
+    {item.status}
+  </Text>
 
-            <Text style={styles.description}>
-              {item.description}
-            </Text>
+  <Text style={styles.description}>
+    {item.description}
+  </Text>
 
-            <Text style={styles.date}>
-              {new Date(item.requestedDate).toLocaleDateString()}
-            </Text>
-          </View>
+  <Text style={styles.date}>
+    {new Date(item.requestedDate).toLocaleDateString()}
+  </Text>
+</TouchableOpacity>
         )}
       />
     </SafeAreaView>

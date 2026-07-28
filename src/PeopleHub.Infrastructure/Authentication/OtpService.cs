@@ -80,18 +80,29 @@ public sealed class OtpService : IOtpService
             return OtpVerificationResult.Expired;
         }
 
-        if (!_otpHasher.Verify(otp, existing.CodeHash))
-        {
-            existing.IncrementFailedAttempts();
+        var computedHash = _otpHasher.Hash(otp);
+var isValid = _otpHasher.Verify(otp, existing.CodeHash);
 
-            await _otpRepository.UpdateAsync(
-                existing,
-                cancellationToken);
+Console.WriteLine("====================================");
+Console.WriteLine($"Entered OTP : {otp}");
+Console.WriteLine($"Stored Hash : {existing.CodeHash}");
+Console.WriteLine($"Input Hash  : {computedHash}");
+Console.WriteLine($"Is Valid    : {isValid}");
+Console.WriteLine("====================================");
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+if (!isValid)
+{
+    existing.IncrementFailedAttempts();
 
-            return OtpVerificationResult.InvalidOtp;
-        }
+    await _otpRepository.UpdateAsync(
+        existing,
+        cancellationToken);
+
+    await _unitOfWork.SaveChangesAsync(
+        cancellationToken);
+
+    return OtpVerificationResult.InvalidOtp;
+}
 
         var user = await _userRepository.GetByIdAsync(
             userId,

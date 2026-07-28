@@ -3,8 +3,16 @@ import {
   createNativeStackNavigator,
 } from "@react-navigation/native-stack";
 
+import {
+  CreateRequestScreen,
+  RequestDetailsScreen,
+} from "../screens/serviceRequest";
+
+import {
+  ProviderRequestsScreen,
+} from "../screens/provider";
+
 import { MainNavigator } from "./MainNavigator";
-import { CreateRequestScreen } from "../screens/serviceRequest";
 import { ProviderProfileScreen } from "../screens/provider/ProviderProfileScreen";
 
 import type { NavigatorScreenParams } from "@react-navigation/native";
@@ -14,11 +22,18 @@ export type MainStackParamList = {
   MainTabs: NavigatorScreenParams<MainTabParamList>;
 
   CreateRequest: {
-    categoryId?: string;
-    categoryName?: string;
-  };
+  categoryId?: string;
+  categoryName?: string;
+};
 
-  ProviderProfile: undefined;
+RequestDetails: {
+  requestId: string;
+};
+
+ProviderProfile: undefined;
+
+ProviderRequests: undefined;
+
 };
 
 const Stack =
@@ -42,8 +57,18 @@ export function MainStackNavigator(): React.JSX.Element {
       />
 
       <Stack.Screen
+  name="RequestDetails"
+  component={RequestDetailsScreen}
+/>
+
+      <Stack.Screen
     name="ProviderProfile"
     component={ProviderProfileScreen}
+/>
+
+<Stack.Screen
+  name="ProviderRequests"
+  component={ProviderRequestsScreen}
 />
     </Stack.Navigator>
   );

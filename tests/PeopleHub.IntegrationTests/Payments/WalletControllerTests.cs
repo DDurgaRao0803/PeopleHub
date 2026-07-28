@@ -201,22 +201,16 @@ public async Task GetWallet_Should_ReturnWallet()
 
 
     private static async Task PrintErrorIfFailed(
-        HttpResponseMessage response)
+    HttpResponseMessage response)
+{
+    if (response.IsSuccessStatusCode)
     {
-        if (response.IsSuccessStatusCode)
-        {
-            return;
-        }
-
-
-        var error =
-            await response.Content.ReadAsStringAsync();
-
-
-        
-            $"API Error ({(int)response.StatusCode}):");
-
-
-        
+        return;
     }
+
+    var error = await response.Content.ReadAsStringAsync();
+
+    Console.WriteLine(
+        $"API Error ({(int)response.StatusCode}): {error}");
+}
 }

@@ -17,6 +17,16 @@ class ServiceRequestApi {
     return data;
   }
 
+  async getRequestById(
+  id: string
+): Promise<ServiceRequest> {
+  const { data } = await apiClient.get<ServiceRequest>(
+    `/service-requests/${id}`
+  );
+
+  return data;
+}
+
   // Temporary alias to avoid breaking existing screens
   async getMyRequests(): Promise<ServiceRequest[]> {
     return this.getMyCustomerRequests();
@@ -38,12 +48,17 @@ class ServiceRequestApi {
   // =========================
 
   async getMyProviderRequests(): Promise<ServiceRequest[]> {
-    const { data } = await apiClient.get<ServiceRequest[]>(
-      "/service-requests/my-requests"
-    );
+  const response = await apiClient.get<ServiceRequest[]>(
+    "/service-requests/my-requests"
+  );
 
-    return data;
-  }
+  console.log("========== API RESPONSE ==========");
+  console.log(response.data);
+  console.log("Response Length:", response.data.length);
+  console.log("==================================");
+
+  return response.data;
+}
 
   async acceptRequest(id: string): Promise<void> {
     await apiClient.post(

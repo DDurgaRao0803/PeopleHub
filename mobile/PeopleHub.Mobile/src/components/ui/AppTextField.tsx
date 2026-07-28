@@ -31,7 +31,7 @@ export function AppTextField({
 
       <TextInput
         {...props}
-        placeholderTextColor={colors.input.placeholder}
+        placeholderTextColor={colors.text.secondary}
         style={[
           styles.input,
           error && styles.errorInput,
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   input: {
     height: 54,
     borderWidth: 1,
-    borderColor: colors.input.border,
+    borderColor: colors.border,
     borderRadius: radius.lg,
     paddingHorizontal: spacing.lg,
     backgroundColor: colors.surface,

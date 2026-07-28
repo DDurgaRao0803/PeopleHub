@@ -7,16 +7,19 @@ namespace PeopleHub.Infrastructure.Users;
 
 public sealed class UserService : IUserService
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IUnitOfWork _unitOfWork;
+private readonly IUserRepository _userRepository;
+private readonly IProviderProfileRepository _providerProfileRepository;
+private readonly IUnitOfWork _unitOfWork;
 
     public UserService(
-        IUserRepository userRepository,
-        IUnitOfWork unitOfWork)
-    {
-        _userRepository = userRepository;
-        _unitOfWork = unitOfWork;
-    }
+    IUserRepository userRepository,
+    IProviderProfileRepository providerProfileRepository,
+    IUnitOfWork unitOfWork)
+{
+    _userRepository = userRepository;
+    _providerProfileRepository = providerProfileRepository;
+    _unitOfWork = unitOfWork;
+}
 
     public async Task<CurrentUserResponse> GetCurrentUserAsync(
         Guid userId,
@@ -31,12 +34,17 @@ public sealed class UserService : IUserService
             throw new KeyNotFoundException("User not found.");
         }
 
-        return new CurrentUserResponse(
-            user.Id,
-            user.FirstName,
-            user.LastName,
-            user.Email.Value,
-            user.Role.ToString());
+        var isProvider = await _providerProfileRepository.ExistsByUserIdAsync(
+    user.Id,
+    cancellationToken);
+
+return new CurrentUserResponse(
+    user.Id,
+    user.FirstName,
+    user.LastName,
+    user.Email.Value,
+    user.Role.ToString(),
+    isProvider);
     }
 
     public async Task<UserResponse> GetUserByIdAsync(

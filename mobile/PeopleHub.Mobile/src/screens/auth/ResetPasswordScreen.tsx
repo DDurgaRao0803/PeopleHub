@@ -12,11 +12,13 @@ import {
 } from "react-native";
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
 import { AppCard } from "../../components/ui/AppCard";
 import { AppTextInput } from "../../components/forms/AppTextInput";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton";
 
 import { AuthStackParamList } from "../../navigation/AuthStackParamList";
+import { authService } from "../../services/authService";
 
 import { colors } from "../../theme/colors";
 import { spacing } from "../../theme/spacing";
@@ -31,7 +33,13 @@ type Props = NativeStackScreenProps<
 
 export function ResetPasswordScreen({
   navigation,
+  route,
 }: Props): React.JSX.Element {
+
+  const {
+    userId,
+    otp,
+  } = route.params;
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -65,18 +73,26 @@ export function ResetPasswordScreen({
 
       setLoading(true);
 
-      // TODO:
-      // Reset Password API
+
+      await authService.resetPassword(
+        userId,
+        otp,
+        password,
+        confirmPassword,
+      );
+
+navigation.navigate("Login");
+
+
+    } catch (error: any) {
+
+      const message =
+        error?.response?.data?.message ??
+        "Unable to reset your password.";
 
       Alert.alert(
-        "Success",
-        "Your password has been updated successfully.",
-        [
-          {
-            text: "OK",
-            onPress: () => navigation.navigate("Login"),
-          },
-        ]
+        "Reset Password",
+        message,
       );
 
     } finally {
@@ -91,57 +107,66 @@ export function ResetPasswordScreen({
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         style={styles.flex}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        behavior={
+          Platform.OS === "ios"
+            ? "padding"
+            : undefined
+        }
       >
         <ScrollView
           contentContainerStyle={styles.content}
           keyboardShouldPersistTaps="handled"
         >
+
           <View style={styles.heroContainer}>
-  <Text style={styles.heroEmoji}>🔒</Text>
 
-  <Text style={styles.title}>
-    Reset Password
-  </Text>
+            <Text style={styles.heroEmoji}>
+              🔒
+            </Text>
 
-  <Text style={styles.subtitle}>
-    Create a strong new password to secure your account.
-  </Text>
-</View>
+            <Text style={styles.title}>
+              Reset Password
+            </Text>
 
-<AppCard style={styles.resetCard}>
+            <Text style={styles.subtitle}>
+              Create a strong new password to secure your account.
+            </Text>
 
-  <AppTextInput
-    label="New Password"
-    value={password}
-    onChangeText={setPassword}
-    secureTextEntry
-    showPasswordToggle
-    placeholder="Enter new password"
-  />
+          </View>
 
-  <AppTextInput
-    label="Confirm Password"
-    value={confirmPassword}
-    onChangeText={setConfirmPassword}
-    secureTextEntry
-    showPasswordToggle
-    placeholder="Confirm new password"
-  />
+          <AppCard style={styles.resetCard}>
 
-  <PrimaryButton
-    title="Reset Password"
-    loading={loading}
-    onPress={handleReset}
-  />
+            <AppTextInput
+              label="New Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              showPasswordToggle
+              placeholder="Enter new password"
+            />
 
-</AppCard>
+            <AppTextInput
+              label="Confirm Password"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry
+              showPasswordToggle
+              placeholder="Confirm new password"
+            />
 
-<Text style={styles.version}>
-  PeopleHub v1.0
-</Text>
+            <PrimaryButton
+              title="Reset Password"
+              loading={loading}
+              onPress={handleReset}
+            />
 
-</ScrollView>
+          </AppCard>
+
+          <Text style={styles.version}>
+            PeopleHub v1.0
+          </Text>
+
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -160,47 +185,47 @@ const styles = StyleSheet.create({
   },
 
   content: {
-  flexGrow: 1,
-  paddingHorizontal: spacing.lg,
-  paddingTop: spacing.xxxl,
-  paddingBottom: spacing.xxl,
-},
+    flexGrow: 1,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.xxxl,
+    paddingBottom: spacing.xxl,
+  },
 
   title: {
-  ...typography.h1,
-  color: colors.text.primary,
-  textAlign: "center",
-  marginBottom: spacing.sm,
-},
+    ...typography.h1,
+    color: colors.text.primary,
+    textAlign: "center",
+    marginBottom: spacing.sm,
+  },
 
   subtitle: {
-  ...typography.body,
-  color: colors.text.secondary,
-  textAlign: "center",
-  lineHeight: 24,
-  marginBottom: spacing.xxl,
-},
+    ...typography.body,
+    color: colors.text.secondary,
+    textAlign: "center",
+    lineHeight: 24,
+    marginBottom: spacing.xxl,
+  },
 
-heroContainer: {
-  alignItems: "center",
-  marginBottom: spacing.xxl,
-},
+  heroContainer: {
+    alignItems: "center",
+    marginBottom: spacing.xxl,
+  },
 
-heroEmoji: {
-  fontSize: 56,
-  marginBottom: spacing.md,
-},
+  heroEmoji: {
+    fontSize: 56,
+    marginBottom: spacing.md,
+  },
 
-resetCard: {
-  borderRadius: radius.xl,
-  ...shadows.md,
-},
+  resetCard: {
+    borderRadius: radius.xl,
+    ...shadows.md,
+  },
 
-version: {
-  marginTop: spacing.xl,
-  textAlign: "center",
-  color: colors.text.secondary,
-  ...typography.caption,
-},
+  version: {
+    marginTop: spacing.xl,
+    textAlign: "center",
+    color: colors.text.secondary,
+    ...typography.caption,
+  },
 
 });

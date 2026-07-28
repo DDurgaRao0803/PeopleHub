@@ -99,9 +99,28 @@ export function ProviderProfileScreen({ navigation }: any): React.JSX.Element {
             </Text>
           )}
         </TouchableOpacity>
+
+        <TouchableOpacity
+  style={[
+    styles.button,
+    {
+      backgroundColor: "#16A34A",
+      marginTop: 12,
+    },
+  ]}
+  onPress={() => navigation.navigate("ProviderRequests")}
+>
+  <Text style={styles.buttonText}>
+    My Provider Requests
+  </Text>
+</TouchableOpacity>
+
+
       </ScrollView>
     </SafeAreaView>
   );
+
+  
 }
 
 const styles = StyleSheet.create({

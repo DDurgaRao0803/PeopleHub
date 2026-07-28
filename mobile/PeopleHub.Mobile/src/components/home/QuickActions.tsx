@@ -7,10 +7,7 @@ import {
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { MainStackParamList } from "../../navigation/MainStackNavigator";
 
 const actions = [
   { title: "My Requests", icon: "clipboard" },
@@ -20,8 +17,6 @@ const actions = [
 ] as const;
 
 export function QuickActions(): React.JSX.Element {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<MainStackParamList>>();
 
   const handlePress = (title: string) => {
     switch (title) {

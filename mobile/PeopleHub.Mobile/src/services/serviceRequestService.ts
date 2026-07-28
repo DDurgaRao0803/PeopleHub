@@ -23,6 +23,10 @@ class ServiceRequestService {
     return await serviceRequestApi.createRequest(request);
   }
 
+  async getRequestById(id: string) {
+  return await serviceRequestApi.getRequestById(id);
+}
+
   // =========================
   // Provider
   // =========================

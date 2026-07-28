@@ -83,14 +83,11 @@ public async Task<IActionResult> ForgotPassword(
             request,
             cancellationToken);
 
-        await _otpService.GenerateAsync(
-            userId,
-            OtpPurpose.ForgotPassword,
-            cancellationToken);
 
         return Ok(new
         {
-            message = "Password reset OTP has been sent successfully."
+            message = "Password reset OTP has been sent successfully.",
+            userId
         });
     }
     catch (InvalidOperationException)
@@ -114,6 +111,8 @@ public async Task<IActionResult> ResetPassword(
         request.Otp,
         OtpPurpose.ForgotPassword,
         cancellationToken);
+
+
 
     if (verificationResult != OtpVerificationResult.Success)
     {

@@ -52,7 +52,7 @@ export function AppButton({
       : variant === "danger"
       ? colors.error
       : variant === "secondary"
-      ? colors.secondary
+      ? colors.surfaceSecondary
       : colors.primary;
 
   const borderColor =

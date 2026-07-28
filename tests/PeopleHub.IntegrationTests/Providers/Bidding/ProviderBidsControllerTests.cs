@@ -134,13 +134,7 @@ private readonly ITestOutputHelper _output;
         var body =
             await response.Content.ReadAsStringAsync();
 
-
-        
-            $"SUBMIT BID STATUS: {response.StatusCode}");
-
-        
-
-
+    
 
         response.StatusCode
             .Should()

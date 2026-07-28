@@ -106,9 +106,9 @@ public class ServiceRequestService : IServiceRequestService
             "Provider profile not found.");
     }
 
-    var requests = await _serviceRequestRepository.GetByProviderProfileIdAsync(
-        provider.Id,
-        cancellationToken);
+    var requests = await _serviceRequestRepository.GetAvailableForProviderAsync(
+    provider.Id,
+    cancellationToken);
 
     return requests
         .Select(MapToResponse)
@@ -141,11 +141,27 @@ public async Task<IReadOnlyList<ServiceRequestResponse>> GetMyCustomerRequestsAs
                 "Service request not found.");
         }
 
-        await ValidateProviderOwnershipAsync(
-            serviceRequest,
-            cancellationToken);
+        var provider = await _providerRepository.GetByUserIdAsync(
+    _currentUserService.UserId,
+    cancellationToken);
 
-        serviceRequest.Accept();
+if (provider is null)
+{
+    throw new KeyNotFoundException(
+        "Provider profile not found.");
+}
+
+if (serviceRequest.ProviderProfileId is null)
+{
+    serviceRequest.AssignProvider(provider.Id);
+}
+else if (serviceRequest.ProviderProfileId != provider.Id)
+{
+    throw new UnauthorizedAccessException(
+        "Provider is not assigned to this request.");
+}
+
+serviceRequest.Accept();
 
         await _serviceRequestRepository.UpdateAsync(
             serviceRequest,

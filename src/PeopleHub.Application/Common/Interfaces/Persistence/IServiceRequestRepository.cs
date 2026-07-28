@@ -20,6 +20,10 @@ public interface IServiceRequestRepository
         Guid providerProfileId,
         CancellationToken cancellationToken = default);
 
+    Task<IEnumerable<ServiceRequest>> GetAvailableForProviderAsync(
+    Guid providerProfileId,
+    CancellationToken cancellationToken = default);
+
     Task UpdateAsync(
         ServiceRequest serviceRequest,
         CancellationToken cancellationToken = default);

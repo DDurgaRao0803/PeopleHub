@@ -42,4 +42,8 @@ Task<ProviderProfile?> GetByUserIdWithAvailabilityAsync(
 
     Task<IReadOnlyList<ProviderProfile>> GetNearbyAsync(
     CancellationToken cancellationToken = default);
+
+    Task<bool> ExistsByUserIdAsync(
+    Guid userId,
+    CancellationToken cancellationToken = default);
 }

@@ -14,8 +14,8 @@ public interface IUserService
         CancellationToken cancellationToken = default);
 
     Task<PagedResponse<UserResponse>> GetAllUsersAsync(
-    GetUsersRequest request,
-    CancellationToken cancellationToken = default);
+        GetUsersRequest request,
+        CancellationToken cancellationToken = default);
 
     Task<UserResponse> UpdateUserAsync(
         Guid userId,

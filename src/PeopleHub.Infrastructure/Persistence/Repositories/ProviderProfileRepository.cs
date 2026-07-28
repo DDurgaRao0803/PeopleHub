@@ -4,6 +4,7 @@ using PeopleHub.Domain.Aggregates.Provider;
 using PeopleHub.Infrastructure.Persistence.Context;
 using PeopleHub.Contracts.Providers.Search;
 
+
 namespace PeopleHub.Infrastructure.Persistence.Repositories;
 
 public sealed class ProviderProfileRepository : IProviderProfileRepository
@@ -115,6 +116,16 @@ public async Task<IReadOnlyList<ProviderProfile>> GetNearbyAsync(
         .AsNoTracking()
         .OrderByDescending(p => p.LastActiveUtc)
         .ToListAsync(cancellationToken);
+}
+
+public async Task<bool> ExistsByUserIdAsync(
+    Guid userId,
+    CancellationToken cancellationToken = default)
+{
+    return await _dbContext.ProviderProfiles
+    .AnyAsync(
+        x => x.UserId == userId,
+        cancellationToken);
 }
 
 }
