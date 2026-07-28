@@ -1,4 +1,8 @@
 using PeopleHub.Domain.Common;
+using PeopleHub.Domain.Entities;
+
+using ProviderProfile = PeopleHub.Domain.Aggregates.Provider.ProviderProfile;
+using UserEntity = PeopleHub.Domain.Aggregates.User.User;
 
 namespace PeopleHub.Domain.Aggregates.Review;
 
@@ -14,17 +18,16 @@ public sealed class Review : AuditableEntity
         Guid providerProfileId,
         Guid serviceRequestId,
         int rating,
-        string comment)
+        string? comment)
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(rating, 1);
         ArgumentOutOfRangeException.ThrowIfGreaterThan(rating, 5);
-        ArgumentException.ThrowIfNullOrWhiteSpace(comment);
 
         CustomerId = customerId;
         ProviderProfileId = providerProfileId;
         ServiceRequestId = serviceRequestId;
         Rating = rating;
-        Comment = comment.Trim();
+        Comment = comment?.Trim() ?? string.Empty;
     }
 
     public Guid CustomerId { get; private set; }
@@ -37,15 +40,21 @@ public sealed class Review : AuditableEntity
 
     public string Comment { get; private set; }
 
+    // Navigation Properties
+    public UserEntity Customer { get; private set; } = null!;
+
+    public ProviderProfile ProviderProfile { get; private set; } = null!;
+
+    public ServiceRequest ServiceRequest { get; private set; } = null!;
+
     public void Update(
         int rating,
-        string comment)
+        string? comment)
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(rating, 1);
         ArgumentOutOfRangeException.ThrowIfGreaterThan(rating, 5);
-        ArgumentException.ThrowIfNullOrWhiteSpace(comment);
 
         Rating = rating;
-        Comment = comment.Trim();
+        Comment = comment?.Trim() ?? string.Empty;
     }
 }

@@ -4,38 +4,36 @@ using PeopleHub.Domain.Aggregates.Review;
 
 namespace PeopleHub.Infrastructure.Persistence.Configurations;
 
-public sealed class ReviewConfiguration
-    : IEntityTypeConfiguration<Review>
+public sealed class ReviewConfiguration : IEntityTypeConfiguration<Review>
 {
     public void Configure(EntityTypeBuilder<Review> builder)
     {
         builder.ToTable("Reviews");
 
-        builder.HasKey(review => review.Id);
+        builder.HasKey(x => x.Id);
 
-        builder.Property(review => review.CustomerId)
+        builder.Property(x => x.Rating)
             .IsRequired();
 
-        builder.Property(review => review.ProviderProfileId)
-            .IsRequired();
+        builder.Property(x => x.Comment)
+            .HasMaxLength(1000);
 
-        builder.Property(review => review.ServiceRequestId)
-            .IsRequired();
+        builder.HasIndex(x => x.ServiceRequestId)
+            .IsUnique();
 
-        builder.Property(review => review.Rating)
-            .IsRequired();
+        builder.HasOne(x => x.Customer)
+            .WithMany(x => x.Reviews)
+            .HasForeignKey(x => x.CustomerId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-        builder.Property(review => review.Comment)
-            .HasMaxLength(1000)
-            .IsRequired();
+        builder.HasOne(x => x.ProviderProfile)
+            .WithMany(x => x.Reviews)
+            .HasForeignKey(x => x.ProviderProfileId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-        builder.Property(review => review.CreatedOnUtc)
-    .IsRequired();
-
-builder.Property(review => review.CreatedBy);
-
-builder.Property(review => review.LastModifiedOnUtc);
-
-builder.Property(review => review.LastModifiedBy);
+        builder.HasOne(x => x.ServiceRequest)
+            .WithOne(x => x.Review)
+            .HasForeignKey<Review>(x => x.ServiceRequestId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -1,5 +1,6 @@
 using PeopleHub.Domain.Common;
 using PeopleHub.Domain.Enums;
+using PeopleHub.Domain.Aggregates.Review;
 
 namespace PeopleHub.Domain.Entities;
 
@@ -43,8 +44,11 @@ public class ServiceRequest : AuditableEntity
     public ServiceRequestStatus Status { get; private set; }
 
     public decimal? CustomerLatitude { get; private set; }
+    
 
 public decimal? CustomerLongitude { get; private set; }
+
+public Review? Review { get; private set; }
 
 
     public void AssignProvider(Guid providerProfileId)

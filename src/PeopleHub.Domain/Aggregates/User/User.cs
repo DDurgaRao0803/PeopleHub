@@ -4,6 +4,7 @@ using PeopleHub.Domain.Exceptions;
 using PeopleHub.Domain.ValueObjects;
 using System.ComponentModel.DataAnnotations.Schema;
 using PeopleHub.Domain.Aggregates.Otp;
+using ReviewEntity = PeopleHub.Domain.Aggregates.Review.Review;
 
 namespace PeopleHub.Domain.Aggregates.User;
 
@@ -12,6 +13,8 @@ public sealed class User : AuditableEntity
     private readonly List<UserRole> _roles = [];
     private readonly List<RefreshToken> _refreshTokens = [];
     private readonly List<OtpCode> _otpCodes = [];
+
+    private readonly List<ReviewEntity> _reviews = [];
 
     private User()
     {
@@ -74,6 +77,9 @@ public sealed class User : AuditableEntity
 
     public IReadOnlyCollection<OtpCode> OtpCodes =>
         _otpCodes.AsReadOnly();
+
+    public IReadOnlyCollection<ReviewEntity> Reviews =>
+    _reviews.AsReadOnly();
 
     public void Activate()
     {

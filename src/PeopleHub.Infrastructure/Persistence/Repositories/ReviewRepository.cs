@@ -26,9 +26,12 @@ public sealed class ReviewRepository : IReviewRepository
         CancellationToken cancellationToken = default)
     {
         return await _context.Reviews
-            .FirstOrDefaultAsync(
-                x => x.Id == reviewId,
-                cancellationToken);
+    .Include(x => x.Customer)
+    .Include(x => x.ProviderProfile)
+    .Include(x => x.ServiceRequest)
+    .FirstOrDefaultAsync(
+        x => x.Id == reviewId,
+        cancellationToken);
     }
 
     public async Task<IReadOnlyList<Review>> GetByProviderAsync(
@@ -36,10 +39,12 @@ public sealed class ReviewRepository : IReviewRepository
         CancellationToken cancellationToken = default)
     {
         return await _context.Reviews
-            .Where(x => x.ProviderProfileId == providerProfileId)
-            .OrderByDescending(x => x.CreatedOnUtc)
-            .ToListAsync(cancellationToken);
+    .Include(x => x.Customer)
+    .Where(x => x.ProviderProfileId == providerProfileId)
+    .OrderByDescending(x => x.CreatedOnUtc)
+    .ToListAsync(cancellationToken);
     }
+
 
     public async Task<bool> ExistsForServiceRequestAsync(
     Guid serviceRequestId,

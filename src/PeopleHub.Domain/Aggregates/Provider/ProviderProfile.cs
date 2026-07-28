@@ -1,5 +1,6 @@
 using PeopleHub.Domain.Common;
 using PeopleHub.Domain.Enums;
+using ReviewEntity = PeopleHub.Domain.Aggregates.Review.Review;
 
 namespace PeopleHub.Domain.Aggregates.Provider;
 
@@ -8,6 +9,8 @@ public class ProviderProfile : AuditableEntity
     private readonly List<ProviderSkill> _skills = [];
 
     private readonly List<ProviderAvailability> _availabilities = [];
+
+    private readonly List<ReviewEntity> _reviews = [];
 
     private ProviderProfile()
     {
@@ -56,6 +59,9 @@ public decimal? Longitude { get; private set; }
 
     public IReadOnlyCollection<ProviderAvailability> Availabilities =>
         _availabilities.AsReadOnly();
+
+    public IReadOnlyCollection<ReviewEntity> Reviews =>
+    _reviews.AsReadOnly();
 
     public void UpdateBio(string bio)
     {
