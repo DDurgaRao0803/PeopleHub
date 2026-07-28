@@ -52,19 +52,14 @@ class ServiceRequestApi {
     "/service-requests/my-requests"
   );
 
-  console.log("========== API RESPONSE ==========");
-  console.log(response.data);
-  console.log("Response Length:", response.data.length);
-  console.log("==================================");
-
   return response.data;
 }
 
   async acceptRequest(id: string): Promise<void> {
-    await apiClient.post(
-      `/service-requests/${id}/accept`
-    );
-  }
+  await apiClient.put(
+    `/service-requests/${id}/accept`
+  );
+}
 
   async rejectRequest(id: string): Promise<void> {
     await apiClient.post(

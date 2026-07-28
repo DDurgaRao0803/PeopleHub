@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useEffect,
   useState,
 } from "react";
@@ -11,15 +12,21 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity,
 } from "react-native";
 
 import {
+  useNavigation,
   useRoute,
 } from "@react-navigation/native";
 
 import type {
   RouteProp,
 } from "@react-navigation/native";
+
+import type {
+  NativeStackNavigationProp,
+} from "@react-navigation/native-stack";
 
 import {
   serviceRequestService,
@@ -34,6 +41,12 @@ import type {
 } from "../../navigation/MainStackNavigator";
 
 export function RequestDetailsScreen(): React.JSX.Element {
+
+  const navigation =
+  useNavigation<
+    NativeStackNavigationProp<MainStackParamList>
+  >();
+
   const route =
     useRoute<
       RouteProp<
@@ -50,27 +63,77 @@ export function RequestDetailsScreen(): React.JSX.Element {
   const [loading, setLoading] =
     useState(true);
 
-  useEffect(() => {
-    const loadRequest = async () => {
-      try {
-        const result =
-          await serviceRequestService.getRequestById(
-            requestId
-          );
+    const [processing, setProcessing] =
+  useState(false);
 
-        setRequest(result);
-      } catch {
-        Alert.alert(
-          "Error",
-          "Unable to load request."
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadRequest = useCallback(async () => {
+  try {
+    const result =
+      await serviceRequestService.getRequestById(
+        requestId
+      );
 
-    void loadRequest();
-  }, [requestId]);
+    setRequest(result);
+  } catch {
+    Alert.alert(
+      "Error",
+      "Unable to load request."
+    );
+  } finally {
+    setLoading(false);
+  }
+}, [requestId]);
+
+const handleAccept = async () => {
+  if (!request) {
+    return;
+  }
+
+  try {
+    setProcessing(true);
+
+    await serviceRequestService.acceptRequest(request.id);
+
+    navigation.goBack();
+  } catch {
+    Alert.alert(
+      "Error",
+      "Unable to accept the request."
+    );
+  } finally {
+    setProcessing(false);
+  }
+};
+
+const handleReject = async () => {
+  if (!request) {
+    return;
+  }
+
+  try {
+    setProcessing(true);
+
+    await serviceRequestService.rejectRequest(request.id);
+
+    Alert.alert(
+      "Success",
+      "Request rejected successfully."
+    );
+
+    navigation.goBack();
+  } catch {
+    Alert.alert(
+      "Error",
+      "Unable to reject the request."
+    );
+  } finally {
+    setProcessing(false);
+  }
+};
+
+useEffect(() => {
+  void loadRequest();
+}, [requestId, loadRequest]);
 
   if (loading) {
     return (
@@ -128,6 +191,46 @@ export function RequestDetailsScreen(): React.JSX.Element {
             {request.serviceCategoryId}
           </Text>
 
+          {request.status === "Pending" && (
+
+  <View style={styles.buttonContainer}>
+
+    <TouchableOpacity
+      style={[
+        styles.button,
+        styles.rejectButton,
+      ]}
+      disabled={processing}
+      onPress={() => {
+        void handleReject();
+      }}
+    >
+      <Text style={styles.buttonText}>
+        Reject
+      </Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={[
+        styles.button,
+        styles.acceptButton,
+      ]}
+      disabled={processing}
+      onPress={() => {
+        void handleAccept();
+      }}
+    >
+      <Text style={styles.buttonText}>
+        {processing
+          ? "Processing..."
+          : "Accept"}
+      </Text>
+    </TouchableOpacity>
+
+  </View>
+
+)}
+
         </View>
 
       </ScrollView>
@@ -178,4 +281,33 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#555",
   },
+
+  buttonContainer: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  marginTop: 24,
+},
+
+button: {
+  flex: 1,
+  paddingVertical: 14,
+  borderRadius: 10,
+  alignItems: "center",
+},
+
+acceptButton: {
+  backgroundColor: "#16A34A",
+  marginLeft: 8,
+},
+
+rejectButton: {
+  backgroundColor: "#DC2626",
+  marginRight: 8,
+},
+
+buttonText: {
+  color: "#FFFFFF",
+  fontWeight: "700",
+  fontSize: 16,
+},
 });

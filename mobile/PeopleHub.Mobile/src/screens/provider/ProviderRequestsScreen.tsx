@@ -39,8 +39,6 @@ import type {
 
 
 export function ProviderRequestsScreen(): React.JSX.Element {
-
-  console.log("******** ProviderRequestsScreen Loaded ********");
   
   const navigation =
     useNavigation<
@@ -61,12 +59,8 @@ export function ProviderRequestsScreen(): React.JSX.Element {
       const data =
   await serviceRequestService.getMyProviderRequests();
 
-console.log("Provider Requests:", data);
-console.log("Count:", data.length);
-
 setRequests(data);
     } catch (error) {
-  console.log("Provider Request Error:", error);
   setRequests([]);
 } finally {
       setLoading(false);
