@@ -36,13 +36,11 @@ export function ProviderProfileScreen(): React.JSX.Element {
       const data = await providerService.getProfile();
       setProfile(data);
     } catch {
-      console.error(error);
-
-      Alert.alert(
-        "Error",
-        "Unable to load provider profile."
-      );
-    } finally {
+  Alert.alert(
+    "Error",
+    "Unable to load provider requests."
+  );
+} finally {
       setLoading(false);
     }
   }, []);
