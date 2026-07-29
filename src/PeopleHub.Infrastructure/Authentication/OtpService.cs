@@ -83,13 +83,6 @@ public sealed class OtpService : IOtpService
         var computedHash = _otpHasher.Hash(otp);
 var isValid = _otpHasher.Verify(otp, existing.CodeHash);
 
-Console.WriteLine("====================================");
-Console.WriteLine($"Entered OTP : {otp}");
-Console.WriteLine($"Stored Hash : {existing.CodeHash}");
-Console.WriteLine($"Input Hash  : {computedHash}");
-Console.WriteLine($"Is Valid    : {isValid}");
-Console.WriteLine("====================================");
-
 if (!isValid)
 {
     existing.IncrementFailedAttempts();

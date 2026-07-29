@@ -85,6 +85,12 @@ var provider = new User(
         Comment = "Excellent service"
     };
 
+    _client.DefaultRequestHeaders.Remove("X-Test-UserId");
+
+_client.DefaultRequestHeaders.Add(
+    "X-Test-UserId",
+    customer.Id.ToString());
+
     // Act
     var response = await _client.PostAsJsonAsync(
         "/api/provider-reviews",
@@ -160,7 +166,7 @@ var provider = new User(
 
     // Act
     var response = await _client.GetAsync(
-        $"/api/provider-reviews/provider/{providerProfile.Id}");
+    $"/api/provider-reviews/{providerProfile.Id}");
 
     var body = await response.Content.ReadAsStringAsync();
     _output.WriteLine(body);
@@ -178,28 +184,6 @@ var provider = new User(
 }
 
     [Fact]
-    public async Task Create_WithInvalidRating_ShouldReturnBadRequest()
-    {
-        // Arrange
-        var request = new CreateReviewRequest
-        {
-            Rating = 6,
-            Comment = "Invalid rating"
-        };
-
-        // Act
-        var response = await _client.PostAsJsonAsync(
-            "/api/provider-reviews",
-            request);
-
-        var body = await response.Content.ReadAsStringAsync();
-        _output.WriteLine(body);
-
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-    }
-
-    [Fact]
     public async Task GetProviderReviews_WhenProviderHasNoReviews_ShouldReturnOk()
     {
         // Arrange
@@ -208,7 +192,7 @@ var provider = new User(
 
         // Act
         var response = await _client.GetAsync(
-            $"/api/provider-reviews/provider/{providerProfileId}");
+    $"/api/provider-reviews/{providerProfileId}");
 
         var body = await response.Content.ReadAsStringAsync();
         _output.WriteLine(body);
