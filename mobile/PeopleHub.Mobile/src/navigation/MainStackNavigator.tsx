@@ -69,58 +69,88 @@ export function MainStackNavigator(): React.JSX.Element {
 
   return (
     <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
+  screenOptions={{
+    headerShown: true,
+  }}
+>
       <Stack.Screen
   name="MainTabs"
   component={MainNavigator}
+  options={{
+    headerShown: false,
+  }}
 />
 
       <Stack.Screen
-        name="CreateRequest"
-        component={CreateRequestScreen}
-      />
+  name="CreateRequest"
+  component={CreateRequestScreen}
+  options={{
+    title: "Create Request",
+  }}
+/>
 
       <Stack.Screen
-        name="RequestDetails"
-        component={RequestDetailsScreen}
-      />
+  name="RequestDetails"
+  component={RequestDetailsScreen}
+  options={{
+    title: "Request Details",
+  }}
+/>
 
       <Stack.Screen
-        name="ProviderProfile"
-        component={ProviderProfileScreen}
-      />
+  name="ProviderProfile"
+  component={ProviderProfileScreen}
+  options={{
+    title: "Provider Profile",
+  }}
+/>
 
       <Stack.Screen
-        name="ProviderRequests"
-        component={ProviderRequestsScreen}
-      />
+  name="ProviderRequests"
+  component={ProviderRequestsScreen}
+  options={{
+    title: "Requests",
+  }}
+/>
 
       <Stack.Screen
-        name="ProviderServices"
-        component={ProviderServicesScreen}
-      />
+  name="ProviderServices"
+  component={ProviderServicesScreen}
+  options={{
+    title: "Services",
+  }}
+/>
 
       <Stack.Screen
   name="AddProviderService"
   component={AddProviderServiceScreen}
+  options={{
+    title: "Add Service",
+  }}
 />
 
 <Stack.Screen
   name="EditProviderService"
   component={EditProviderServiceScreen}
+  options={{
+    title: "Edit Service",
+  }}
 />
 
 <Stack.Screen
   name="AddProviderAvailability"
   component={AddProviderAvailabilityScreen}
+  options={{
+    title: "Add Availability",
+  }}
 />
 
 <Stack.Screen
   name="EditProviderAvailability"
   component={EditProviderAvailabilityScreen}
+  options={{
+    title: "Edit Availability",
+  }}
 />
 
 <Stack.Screen
