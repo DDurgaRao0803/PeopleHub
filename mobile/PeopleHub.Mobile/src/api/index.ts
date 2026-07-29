@@ -5,3 +5,4 @@ export * from "./user";
 export * from "./serviceCategoriesApi";
 export * from "./providerApi";
 export * from "./serviceRequest";
+export * from "./providerAvailabilityApi";

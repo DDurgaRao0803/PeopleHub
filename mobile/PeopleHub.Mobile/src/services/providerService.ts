@@ -1,32 +1,40 @@
 import { providerApi } from "../api/providerApi";
+import providerServiceApi from "../api/provider/providerServiceApi";
+
 import type {
   CreateProviderProfileRequest,
   ProviderProfile,
 } from "../api/providerApi";
 
-class ProviderService {
+import type {
+  ProviderService,
+  CreateProviderServiceRequest,
+  UpdateProviderServiceRequest,
+} from "../types/provider";
+
+class ProviderServiceManager {
   // =========================
   // Provider Profile
   // =========================
 
   async getProfile(): Promise<ProviderProfile> {
-    return await providerApi.getProfile();
+    return providerApi.getProfile();
   }
 
   async createProfile(
     request: CreateProviderProfileRequest
   ): Promise<ProviderProfile> {
-    return await providerApi.createProfile(request);
+    return providerApi.createProfile(request);
   }
 
   async updateProfile(
     request: CreateProviderProfileRequest
   ): Promise<ProviderProfile> {
-    return await providerApi.updateProfile(request);
+    return providerApi.updateProfile(request);
   }
 
   async deleteProfile(): Promise<void> {
-    return await providerApi.deleteProfile();
+    return providerApi.deleteProfile();
   }
 
   // =========================
@@ -34,8 +42,43 @@ class ProviderService {
   // =========================
 
   async getNearby() {
-    return await providerApi.getNearby();
+    return providerApi.getNearby();
+  }
+
+  // =========================
+  // Provider Services
+  // =========================
+
+  async getProviderServices(
+    providerProfileId: string
+  ): Promise<ProviderService[]> {
+    return providerServiceApi.getByProvider(providerProfileId);
+  }
+
+  async getProviderService(
+    id: string
+  ): Promise<ProviderService> {
+    return providerServiceApi.getById(id);
+  }
+
+  async createProviderService(
+    request: CreateProviderServiceRequest
+  ): Promise<ProviderService> {
+    return providerServiceApi.create(request);
+  }
+
+  async updateProviderService(
+    id: string,
+    request: UpdateProviderServiceRequest
+  ): Promise<ProviderService> {
+    return providerServiceApi.update(id, request);
+  }
+
+  async deleteProviderService(
+    id: string
+  ): Promise<void> {
+    return providerServiceApi.delete(id);
   }
 }
 
-export const providerService = new ProviderService();
+export const providerService = new ProviderServiceManager();

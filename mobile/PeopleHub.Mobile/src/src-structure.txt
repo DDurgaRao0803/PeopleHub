@@ -1,0 +1,164 @@
+.
+├── api
+│   ├── auth
+│   │   ├── authApi.ts
+│   │   └── index.ts
+│   ├── client.ts
+│   ├── common
+│   ├── customer
+│   ├── endpoints.ts
+│   ├── index.ts
+│   ├── notification
+│   ├── provider
+│   ├── providerApi.ts
+│   ├── serviceCategoriesApi.ts
+│   ├── serviceRequest
+│   │   ├── index.ts
+│   │   └── serviceRequestApi.ts
+│   ├── user
+│   │   ├── index.ts
+│   │   └── userApi.ts
+│   └── wallet
+├── assets
+│   └── logo
+│       ├── peoplehub-icon.png
+│       └── peoplehub-logo.png
+├── components
+│   ├── buttons
+│   │   ├── PrimaryButton.tsx
+│   │   ├── SocialButton.tsx
+│   │   └── index.ts
+│   ├── cards
+│   │   ├── NotificationCard.tsx
+│   │   ├── ProviderCard.tsx
+│   │   ├── RequestCard.tsx
+│   │   └── ReviewCard.tsx
+│   ├── common
+│   │   ├── EmptyState.tsx
+│   │   ├── ErrorView.tsx
+│   │   └── LoadingView.tsx
+│   ├── forms
+│   │   ├── AppTextInput.tsx
+│   │   ├── RegistrationForm.tsx
+│   │   └── index.ts
+│   ├── home
+│   │   ├── CategorySection.tsx
+│   │   ├── HomeHeader.tsx
+│   │   ├── NearbyProviders.tsx
+│   │   ├── QuickActions.tsx
+│   │   ├── RecentActivity.tsx
+│   │   ├── SearchBar.tsx
+│   │   └── index.ts
+│   ├── index.ts
+│   ├── layout
+│   ├── provider
+│   │   └── OnboardingLayout.tsx
+│   └── ui
+│       ├── AppButton.tsx
+│       ├── AppCard.tsx
+│       ├── AppDivider.tsx
+│       ├── AppHeader.tsx
+│       ├── AppScreen.tsx
+│       ├── AppSection.tsx
+│       ├── AppTextField.tsx
+│       ├── SearchBar.tsx
+│       └── SectionHeader.tsx
+├── config
+│   └── appConfig.ts
+├── constants
+│   ├── colors.ts
+│   └── routes.ts
+├── context
+│   └── AuthContext.tsx
+├── hooks
+│   ├── useNotifications.ts
+│   ├── useServiceRequests.ts
+│   └── useWallet.ts
+├── navigation
+│   ├── AppNavigator.tsx
+│   ├── AuthNavigator.tsx
+│   ├── AuthStackParamList.ts
+│   ├── MainNavigator.tsx
+│   ├── MainStackNavigator.tsx
+│   └── index.ts
+├── screens
+│   ├── auth
+│   │   ├── AccountTypeScreen.tsx
+│   │   ├── CustomerRegisterScreen.tsx
+│   │   ├── ForgotPasswordScreen.tsx
+│   │   ├── LoadingScreen.tsx
+│   │   ├── LoginScreen.tsx
+│   │   ├── OtpVerificationScreen.tsx
+│   │   ├── ProviderRegisterScreen.tsx
+│   │   ├── ResetPasswordScreen.tsx
+│   │   ├── SplashScreen.tsx
+│   │   ├── WelcomeScreen.tsx
+│   │   └── index.ts
+│   ├── customer
+│   │   ├── BookingHistoryScreen.tsx
+│   │   ├── BookingScreen.tsx
+│   │   ├── ProfileScreen.tsx
+│   │   ├── SearchScreen.tsx
+│   │   └── index.ts
+│   ├── home
+│   │   └── HomeScreen.tsx
+│   ├── notification
+│   │   ├── NotificationsScreen.tsx
+│   │   └── index.ts
+│   ├── provider
+│   │   ├── ProfileSetupScreen.tsx
+│   │   ├── ProviderProfileScreen.tsx
+│   │   ├── ProviderRequestsScreen.tsx
+│   │   ├── ProviderServicesScreen.tsx
+│   │   ├── ReviewsScreen.tsx
+│   │   └── index.ts
+│   ├── serviceRequest
+│   │   ├── CreateRequestScreen.tsx
+│   │   ├── RequestDetailsScreen.tsx
+│   │   ├── RequestsScreen.tsx
+│   │   └── index.ts
+│   └── wallet
+│       └── WalletScreen.tsx
+├── services
+│   ├── authService.ts
+│   ├── index.ts
+│   ├── notificationService.ts
+│   ├── providerService.ts
+│   ├── reviewService.ts
+│   ├── serviceCategoryService.ts
+│   ├── serviceRequestService.ts
+│   ├── userService.ts
+│   └── walletService.ts
+├── src-structure.txt
+├── storage
+│   ├── index.ts
+│   └── secureStorage.ts
+├── theme
+│   ├── colors.ts
+│   ├── fonts.ts
+│   ├── index.ts
+│   ├── radius.ts
+│   ├── shadows.ts
+│   ├── spacing.ts
+│   ├── theme.ts
+│   └── typography.ts
+├── types
+│   ├── api.ts
+│   ├── auth.ts
+│   ├── common.ts
+│   ├── customer.ts
+│   ├── index.ts
+│   ├── notification.ts
+│   ├── payment.ts
+│   ├── provider.ts
+│   ├── review.ts
+│   ├── serviceCategory.ts
+│   ├── serviceRequest.ts
+│   ├── user.ts
+│   └── wallet.ts
+└── utils
+    ├── index.ts
+    ├── password.ts
+    └── validation.ts
+
+39 directories, 123 files

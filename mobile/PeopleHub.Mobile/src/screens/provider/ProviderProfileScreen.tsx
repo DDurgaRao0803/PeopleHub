@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+
 import {
   ActivityIndicator,
   Alert,
@@ -6,172 +7,191 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
+  View,
 } from "react-native";
+
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+import type { MainStackParamList } from "../../navigation/MainStackNavigator";
+
 import { providerService } from "../../services/providerService";
-import { colors } from "../../theme/colors";
+import type { ProviderProfile } from "../../api/providerApi";
 
-export function ProviderProfileScreen({ navigation }: any): React.JSX.Element {
-  const [bio, setBio] = useState("");
-  const [experienceYears, setExperienceYears] = useState("");
-  const [loading, setLoading] = useState(false);
+export function ProviderProfileScreen(): React.JSX.Element {
+  const navigation =
+    useNavigation<
+      NativeStackNavigationProp<MainStackParamList>
+    >();
 
-  const handleCreateProfile = async () => {
-    if (!bio.trim()) {
-      Alert.alert("Validation", "Please enter your bio.");
-      return;
-    }
+  const [profile, setProfile] =
+    useState<ProviderProfile | null>(null);
 
-    const years = Number(experienceYears);
+  const [loading, setLoading] =
+    useState(true);
 
-    if (isNaN(years) || years < 0) {
-      Alert.alert("Validation", "Please enter valid experience.");
-      return;
-    }
-
+  const loadProfile = useCallback(async () => {
     try {
-      setLoading(true);
+      const data = await providerService.getProfile();
+      setProfile(data);
+    } catch {
+      console.error(error);
 
-      await providerService.createProfile({
-        bio: bio.trim(),
-        experienceYears: years,
-      });
-
-      Alert.alert(
-        "Success",
-        "Provider profile created successfully."
-      );
-
-      // Uncomment after ProviderServices screen
-      // navigation.navigate("ProviderServices");
-    } catch (error: any) {
       Alert.alert(
         "Error",
-        error?.response?.data?.message ??
-          "Unable to create provider profile."
+        "Unable to load provider profile."
       );
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    void loadProfile();
+  }, [loadProfile]);
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.center}>
+        <ActivityIndicator size="large" />
+      </SafeAreaView>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <SafeAreaView style={styles.center}>
+        <Text style={styles.title}>
+          Provider Profile
+        </Text>
+
+        <Text style={styles.empty}>
+          Provider profile not found.
+        </Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         contentContainerStyle={styles.content}
-        keyboardShouldPersistTaps="handled"
       >
-        <Text style={styles.title}>Become a Provider</Text>
+        <Text style={styles.title}>
+          Provider Profile
+        </Text>
 
-        <Text style={styles.label}>Bio</Text>
+        <View style={styles.card}>
+          <Text style={styles.label}>Bio</Text>
+          <Text style={styles.value}>
+            {profile.bio || "-"}
+          </Text>
+        </View>
 
-        <TextInput
-          style={[styles.input, styles.bioInput]}
-          placeholder="Tell customers about yourself..."
-          placeholderTextColor={colors.text.secondary}
-          multiline
-          value={bio}
-          onChangeText={setBio}
-        />
+        <View style={styles.card}>
+          <Text style={styles.label}>
+            Experience
+          </Text>
+          <Text style={styles.value}>
+            {profile.experienceYears} Years
+          </Text>
+        </View>
 
-        <Text style={styles.label}>Years of Experience</Text>
-
-        <TextInput
-          style={styles.input}
-          placeholder="0"
-          placeholderTextColor={colors.text.secondary}
-          keyboardType="numeric"
-          value={experienceYears}
-          onChangeText={setExperienceYears}
-        />
 
         <TouchableOpacity
-          style={styles.button}
-          disabled={loading}
-          onPress={handleCreateProfile}
+          style={styles.primaryButton}
+          onPress={() =>
+            navigation.navigate(
+              "ProviderServices"
+            )
+          }
         >
-          {loading ? (
-            <ActivityIndicator color={colors.text.inverse} />
-          ) : (
-            <Text style={styles.buttonText}>
-              Continue
-            </Text>
-          )}
+          <Text style={styles.buttonText}>
+            My Services
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-  style={[
-    styles.button,
-    {
-      backgroundColor: "#16A34A",
-      marginTop: 12,
-    },
-  ]}
-  onPress={() => navigation.navigate("ProviderRequests")}
->
-  <Text style={styles.buttonText}>
-    My Provider Requests
-  </Text>
-</TouchableOpacity>
-
-
+          style={styles.secondaryButton}
+          onPress={() => {
+            // TODO: Edit Profile
+          }}
+        >
+          <Text style={styles.buttonText}>
+            Edit Profile
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
-
-  
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: "#F5F6FA",
   },
 
   content: {
     padding: 20,
   },
 
+  center: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 24,
+  },
+
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "700",
     marginBottom: 24,
-    color: colors.text.primary,
+  },
+
+  empty: {
+    marginTop: 10,
+    color: "#666",
+  },
+
+  card: {
+    backgroundColor: "#FFFFFF",
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
   },
 
   label: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 6,
+  },
+
+  value: {
     fontSize: 16,
     fontWeight: "600",
-    marginBottom: 8,
-    color: colors.text.primary,
+    color: "#111",
   },
 
-  input: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 20,
-    backgroundColor: colors.surface,
-    color: colors.text.primary,
-  },
-
-  bioInput: {
-    minHeight: 120,
-    textAlignVertical: "top",
-  },
-
-  button: {
-    backgroundColor: colors.primary,
+  primaryButton: {
+    marginTop: 20,
+    backgroundColor: "#2563EB",
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 10,
     alignItems: "center",
-    marginTop: 8,
+  },
+
+  secondaryButton: {
+    marginTop: 12,
+    backgroundColor: "#10B981",
+    padding: 16,
+    borderRadius: 10,
+    alignItems: "center",
   },
 
   buttonText: {
-    color: colors.text.inverse,
+    color: "#FFFFFF",
     fontWeight: "700",
     fontSize: 16,
   },

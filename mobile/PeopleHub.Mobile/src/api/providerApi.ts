@@ -11,9 +11,6 @@ export interface ProviderProfile {
   userId: string;
   bio: string;
   experienceYears: number;
-  rating: number;
-  totalReviews: number;
-  isVerified: boolean;
 }
 
 class ProviderApi {

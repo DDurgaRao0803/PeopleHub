@@ -1,9 +1,18 @@
+import { ProviderAvailability } from "../types";
+
 export type AuthStackParamList = {
   Splash: undefined;
 
   Login: undefined;
 
   ProviderRegister: undefined;
+
+  AddProviderAvailability: undefined;
+
+EditProviderAvailability: {
+  availabilityId: string;
+  availability: ProviderAvailability;
+};
 
   EmailPassword: {
     email: string;

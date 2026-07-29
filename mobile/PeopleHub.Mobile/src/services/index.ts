@@ -3,3 +3,4 @@ export * from "./userService";
 export * from "./serviceCategoryService";
 export * from "./providerService";
 export * from "./serviceRequestService";
+export * from "./providerAvailability";
