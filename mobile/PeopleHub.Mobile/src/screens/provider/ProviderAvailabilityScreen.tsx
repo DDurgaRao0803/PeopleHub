@@ -57,8 +57,6 @@ export function ProviderAvailabilityScreen() {
 
       setAvailability(response);
     } catch (error: any) {
-  console.log("DELETE STATUS:", error.response?.status);
-  console.log("DELETE DATA:", error.response?.data);
 
   Alert.alert(
     "Error",
@@ -230,9 +228,6 @@ export function ProviderAvailabilityScreen() {
       "Availability deleted successfully."
     );
   } catch (error: any) {
-    console.log(error.response?.status);
-    console.log(error.response?.data);
-
     Alert.alert(
       "Error",
       JSON.stringify(error.response?.data ?? error.message)

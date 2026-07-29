@@ -4,11 +4,13 @@ import type { NearbyProvider } from "../types/provider";
 export interface CreateProviderProfileRequest {
   bio: string;
   experienceYears: number;
+  acceptingRequests: boolean;
 }
 
 export interface UpdateProviderProfileRequest {
   bio: string;
   experienceYears: number;
+  acceptingRequests: boolean;
 }
 
 
@@ -17,6 +19,7 @@ export interface ProviderProfile {
   userId: string;
   bio: string;
   experienceYears: number;
+  acceptingRequests: boolean;
 }
 
 class ProviderApi {

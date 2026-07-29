@@ -10,4 +10,6 @@ public sealed class UpdateProviderProfileRequest
 
     [Range(0, 100)]
     public int ExperienceYears { get; init; }
+
+    public bool AcceptingRequests { get; init; }
 }

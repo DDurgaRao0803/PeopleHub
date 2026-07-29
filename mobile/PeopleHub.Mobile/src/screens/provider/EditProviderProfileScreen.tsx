@@ -28,6 +28,9 @@ export function EditProviderProfileScreen(): React.JSX.Element {
   const [profile, setProfile] =
     useState<ProviderProfile | null>(null);
 
+    useEffect(() => {
+}, [profile]);
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -52,23 +55,17 @@ export function EditProviderProfileScreen(): React.JSX.Element {
   const handleSubmit = async (
   values: UpdateProviderProfileRequest
 ) => {
-  console.log("EditProviderProfileScreen: handleSubmit", values);
 
   try {
     setSaving(true);
 
-    console.log("Calling updateProfile...");
-
     await providerApi.updateProfile(values);
-
-    console.log("updateProfile succeeded");
 
     Alert.alert("Success", "Profile updated.");
 
 navigation.goBack();
 
   } catch (error) {
-    console.log("updateProfile failed", error);
 
     Alert.alert(
       "Error",

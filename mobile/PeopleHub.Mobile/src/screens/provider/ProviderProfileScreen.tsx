@@ -113,7 +113,6 @@ export function ProviderProfileScreen(): React.JSX.Element {
         <TouchableOpacity
   style={styles.secondaryButton}
   onPress={() => {
-    console.log("Edit Profile pressed");
     Alert.alert("Pressed");
     navigation.navigate("EditProviderProfile");
   }}

@@ -11,4 +11,6 @@ public sealed class ProviderProfileResponse
     public int ExperienceYears { get; init; }
 
     public string VerificationStatus { get; init; } = string.Empty;
+
+    public bool AcceptingRequests { get; init; }
 }

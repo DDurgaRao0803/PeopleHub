@@ -73,6 +73,7 @@ public sealed class ProviderProfileService : IProviderProfileService
 
         profile.UpdateBio(request.Bio);
         profile.UpdateExperience(request.ExperienceYears);
+        profile.SetAcceptingRequests(request.AcceptingRequests);
 
         await _providerRepository.UpdateAsync(
             profile,
@@ -126,7 +127,12 @@ public sealed class ProviderProfileService : IProviderProfileService
             UserId = profile.UserId,
             Bio = profile.Bio,
             ExperienceYears = profile.ExperienceYears,
-            VerificationStatus = profile.VerificationStatus.ToString()
+            VerificationStatus = profile.VerificationStatus.ToString(),
+
+            // TEMPORARY TEST
+            AcceptingRequests = profile.AcceptingRequests
+
+            
         };
     }
     

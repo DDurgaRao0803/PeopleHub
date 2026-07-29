@@ -23,13 +23,10 @@ export function AddProviderAvailabilityScreen() {
     try {
       const profile = await providerApi.getProfile();
 
-      console.log("Provider Profile:", profile);
 
       setProviderProfileId(profile.id);
 
-      console.log("Provider Profile Id:", profile.id);
     } catch (error) {
-      console.log("Load Profile Error:", error);
 
       Alert.alert(
         "Error",

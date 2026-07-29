@@ -83,8 +83,6 @@ export function EditProviderAvailabilityScreen() {
 
       navigation.goBack();
     } catch (error: any) {
-  console.log("UPDATE STATUS:", error.response?.status);
-  console.log("UPDATE DATA:", error.response?.data);
 
   Alert.alert(
     "Error",

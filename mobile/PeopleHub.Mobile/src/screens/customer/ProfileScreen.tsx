@@ -33,9 +33,6 @@ export function ProfileScreen(): React.JSX.Element {
     logout,
   } = useAuth();
 
-   console.log("User:", user);
-  console.log("Role:", user?.role);
-
   const navigation =
   useNavigation<
     NativeStackNavigationProp<MainStackParamList>

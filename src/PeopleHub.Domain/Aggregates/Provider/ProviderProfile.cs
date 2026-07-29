@@ -55,6 +55,8 @@ public class ProviderProfile : AuditableEntity
 
 public decimal? Longitude { get; private set; }
 
+public bool AcceptingRequests { get; private set; } = true;
+
     public IReadOnlyCollection<ProviderSkill> Skills => _skills;
 
     public IReadOnlyCollection<ProviderAvailability> Availabilities =>
@@ -236,6 +238,11 @@ public decimal? Longitude { get; private set; }
 
     Latitude = latitude;
     Longitude = longitude;
+}
+
+public void SetAcceptingRequests(bool acceptingRequests)
+{
+    AcceptingRequests = acceptingRequests;
 }
 
 

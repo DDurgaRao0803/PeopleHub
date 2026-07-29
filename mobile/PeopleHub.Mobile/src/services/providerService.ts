@@ -4,6 +4,7 @@ import providerServiceApi from "../api/provider/providerServiceApi";
 import type {
   CreateProviderProfileRequest,
   ProviderProfile,
+  UpdateProviderProfileRequest,
 } from "../api/providerApi";
 
 import type {
@@ -28,10 +29,10 @@ class ProviderServiceManager {
   }
 
   async updateProfile(
-    request: CreateProviderProfileRequest
-  ): Promise<ProviderProfile> {
-    return providerApi.updateProfile(request);
-  }
+  request: UpdateProviderProfileRequest
+): Promise<ProviderProfile> {
+  return providerApi.updateProfile(request);
+}
 
   async deleteProfile(): Promise<void> {
     return providerApi.deleteProfile();

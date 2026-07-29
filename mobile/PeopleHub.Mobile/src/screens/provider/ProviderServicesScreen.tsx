@@ -121,13 +121,9 @@ useEffect(() => {
   };
 
   const deleteService = async (serviceId: string) => {
-  console.log("deleteService called", serviceId);
 
   try {
     await providerService.deleteProviderService(serviceId);
-
-    console.log("Delete API succeeded");
-
     await loadServices();
 
     Alert.alert(
@@ -135,7 +131,6 @@ useEffect(() => {
       "Provider service deleted successfully."
     );
   } catch (error) {
-    console.log("Delete failed", error);
 
     Alert.alert(
       "Error",
@@ -201,7 +196,6 @@ useEffect(() => {
         <TouchableOpacity
   style={styles.deleteButton}
   onPress={() => {
-    console.log("Delete pressed", item.id);
     deleteService(item.id);
   }}
 >
@@ -252,7 +246,7 @@ useEffect(() => {
       <TouchableOpacity
         style={styles.fab}
         onPress={() => {
-  console.log("Create Service pressed");
+
 
   Alert.alert("Debug", "Button pressed");
 

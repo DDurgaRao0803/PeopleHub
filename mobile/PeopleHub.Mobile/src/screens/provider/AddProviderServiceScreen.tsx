@@ -76,9 +76,7 @@ Alert.alert(
 navigation.goBack();
 
     } catch (error: any) {
-  console.log(
-  JSON.stringify(error.response?.data, null, 2)
-);
+
 
   Alert.alert(
     "Error",
