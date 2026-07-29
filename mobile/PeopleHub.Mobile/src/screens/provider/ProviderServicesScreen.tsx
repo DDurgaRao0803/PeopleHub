@@ -43,11 +43,26 @@ export function ProviderServicesScreen(): React.JSX.Element {
   const navigation =
     useNavigation<NavigationProp>();
 
-  /**
-   * TODO
-   * Replace with authenticated provider profile id.
-   */
-  const providerProfileId = "";
+  const [providerProfileId, setProviderProfileId] =
+  useState("");
+
+useEffect(() => {
+  const loadProfile = async () => {
+    try {
+      const profile =
+        await providerService.getProfile();
+
+      setProviderProfileId(profile.id);
+    } catch {
+      Alert.alert(
+        "Error",
+        "Unable to load provider profile."
+      );
+    }
+  };
+
+  void loadProfile();
+}, []);
 
   const [services, setServices] =
     useState<ProviderService[]>([]);
@@ -57,8 +72,14 @@ export function ProviderServicesScreen(): React.JSX.Element {
 
   const [refreshing, setRefreshing] =
     useState(false);
+    
 
   const loadServices = async () => {
+
+    if (!providerProfileId) {
+    return;
+  }
+
     try {
 
       const data =
@@ -77,54 +98,50 @@ export function ProviderServicesScreen(): React.JSX.Element {
   };
 
   useEffect(() => {
-    void loadServices();
-  }, []);
+  if (!providerProfileId) {
+    return;
+  }
+
+  void loadServices();
+}, [providerProfileId]);
 
   useFocusEffect(
-    useCallback(() => {
-      void loadServices();
-    }, [])
-  );
+  useCallback(() => {
+    if (!providerProfileId) {
+      return;
+    }
+
+    void loadServices();
+  }, [providerProfileId])
+);
 
   const refresh = () => {
     setRefreshing(true);
     void loadServices();
   };
 
-  const deleteService = (serviceId: string) => {
-  Alert.alert(
-    "Delete Service",
-    "Are you sure you want to delete this service?",
-    [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Delete",
-        style: "destructive",
-        onPress: async () => {
-          try {
-            await providerService.deleteProviderService(
-              serviceId
-            );
+  const deleteService = async (serviceId: string) => {
+  console.log("deleteService called", serviceId);
 
-            await loadServices();
+  try {
+    await providerService.deleteProviderService(serviceId);
 
-            Alert.alert(
-              "Success",
-              "Provider service deleted successfully."
-            );
-          } catch {
-            Alert.alert(
-              "Error",
-              "Unable to delete provider service."
-            );
-          }
-        },
-      },
-    ]
-  );
+    console.log("Delete API succeeded");
+
+    await loadServices();
+
+    Alert.alert(
+      "Success",
+      "Provider service deleted successfully."
+    );
+  } catch (error) {
+    console.log("Delete failed", error);
+
+    Alert.alert(
+      "Error",
+      "Unable to delete provider service."
+    );
+  }
 };
 
   const renderItem = ({
@@ -183,11 +200,12 @@ export function ProviderServicesScreen(): React.JSX.Element {
 
         <TouchableOpacity
   style={styles.deleteButton}
-  onPress={() => deleteService(item.id)}
+  onPress={() => {
+    console.log("Delete pressed", item.id);
+    deleteService(item.id);
+  }}
 >
-  <Text style={styles.buttonText}>
-    Delete
-  </Text>
+  <Text style={styles.buttonText}>Delete</Text>
 </TouchableOpacity>
 
       </View>
@@ -233,11 +251,13 @@ export function ProviderServicesScreen(): React.JSX.Element {
 
       <TouchableOpacity
         style={styles.fab}
-        onPress={() =>
-          navigation.navigate(
-            "AddProviderService"
-          )
-        }
+        onPress={() => {
+  console.log("Create Service pressed");
+
+  Alert.alert("Debug", "Button pressed");
+
+  navigation.navigate("AddProviderService");
+}}
       >
         <Text style={styles.fabText}>
           +

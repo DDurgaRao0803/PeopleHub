@@ -66,6 +66,7 @@ const Stack =
   createNativeStackNavigator<MainStackParamList>();
 
 export function MainStackNavigator(): React.JSX.Element {
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -73,9 +74,9 @@ export function MainStackNavigator(): React.JSX.Element {
       }}
     >
       <Stack.Screen
-        name="MainTabs"
-        component={MainNavigator}
-      />
+  name="MainTabs"
+  component={MainNavigator}
+/>
 
       <Stack.Screen
         name="CreateRequest"

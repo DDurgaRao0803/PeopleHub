@@ -1,4 +1,7 @@
-import React from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
 
 import {
   Alert,
@@ -37,43 +40,51 @@ export function AddProviderServiceScreen(): React.JSX.Element {
       NativeStackNavigationProp<MainStackParamList>
     >();
 
-  /**
-   * TODO
-   *
-   * Replace this with the authenticated
-   * provider profile id.
-   */
-  const providerProfileId = "";
+  const [providerProfileId, setProviderProfileId] =
+  useState("");
+
+useEffect(() => {
+  const loadProfile = async () => {
+    try {
+      const profile =
+        await providerService.getProfile();
+
+      setProviderProfileId(profile.id);
+    } catch {
+      Alert.alert(
+        "Error",
+        "Unable to load provider profile."
+      );
+    }
+  };
+
+  void loadProfile();
+}, []);
 
   const createService = async (
     request: CreateProviderServiceRequest
   ) => {
     try {
 
-      await providerService.createProviderService(
-        request
-      );
+      await providerService.createProviderService(request);
 
-      Alert.alert(
-        "Success",
-        "Provider service created successfully.",
-        [
-          {
-            text: "OK",
-            onPress: () =>
-              navigation.goBack(),
-          },
-        ]
-      );
+Alert.alert(
+  "Success",
+  "Provider service created successfully."
+);
 
-    } catch {
+navigation.goBack();
 
-      Alert.alert(
-        "Error",
-        "Unable to create provider service."
-      );
+    } catch (error: any) {
+  console.log(
+  JSON.stringify(error.response?.data, null, 2)
+);
 
-    }
+  Alert.alert(
+    "Error",
+    JSON.stringify(error.response?.data ?? error.message)
+  );
+}
   };
 
   return (

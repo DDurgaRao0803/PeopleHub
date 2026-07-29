@@ -1,6 +1,7 @@
 export * from "./ProviderProfileScreen";
 export * from "./ProviderRequestsScreen";
 export * from "./ProviderServicesScreen";
+export * from "./ProviderAvailabilityScreen";
 export * from "./AddProviderServiceScreen";
 export * from "./EditProviderServiceScreen";
 export * from "./AddProviderAvailabilityScreen";

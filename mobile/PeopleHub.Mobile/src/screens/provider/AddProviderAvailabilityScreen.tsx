@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { providerApi } from "../../api/providerApi";
+
 import { Alert, SafeAreaView, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+
+
 
 import { ProviderAvailabilityForm } from "../../components/provider";
 import { providerAvailabilityService } from "../../services";
@@ -11,31 +15,62 @@ import {
 export function AddProviderAvailabilityScreen() {
   const navigation = useNavigation<any>();
 
-  // TODO: Replace with authenticated provider profile id
-  const providerProfileId = "";
+  const [providerProfileId, setProviderProfileId] =
+  useState("");
 
-  const handleSubmit = async (
-    request: CreateProviderAvailabilityRequest
-  ) => {
+  useEffect(() => {
+  const loadProfile = async () => {
     try {
-      await providerAvailabilityService.createAvailability(
-        providerProfileId,
-        request
-      );
+      const profile = await providerApi.getProfile();
 
-      Alert.alert(
-        "Success",
-        "Availability added successfully."
-      );
+      console.log("Provider Profile:", profile);
 
-      navigation.goBack();
-    } catch {
+      setProviderProfileId(profile.id);
+
+      console.log("Provider Profile Id:", profile.id);
+    } catch (error) {
+      console.log("Load Profile Error:", error);
+
       Alert.alert(
         "Error",
-        "Unable to add availability."
+        "Unable to load provider profile."
       );
     }
   };
+
+  void loadProfile();
+}, []);
+
+  const handleSubmit = async (
+  request: CreateProviderAvailabilityRequest
+) => {
+  if (!providerProfileId) {
+    Alert.alert(
+      "Error",
+      "Provider profile is not loaded yet."
+    );
+    return;
+  }
+
+  try {
+    await providerAvailabilityService.createAvailability(
+      providerProfileId,
+      request
+    );
+
+    Alert.alert(
+      "Success",
+      "Availability added successfully."
+    );
+
+    navigation.goBack();
+  } catch {
+    Alert.alert(
+      "Error",
+      "Unable to add availability."
+    );
+  }
+};
 
   return (
     <SafeAreaView style={styles.container}>

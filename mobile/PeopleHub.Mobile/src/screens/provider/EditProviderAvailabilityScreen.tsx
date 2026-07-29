@@ -1,4 +1,11 @@
-import React, { useMemo } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
+import { providerApi } from "../../api/providerApi";
+
 import {
   Alert,
   SafeAreaView,
@@ -20,8 +27,24 @@ export function EditProviderAvailabilityScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
 
-  // TODO: Replace with authenticated provider profile id
-  const providerProfileId = "";
+  const [providerProfileId, setProviderProfileId] =
+  useState("");
+
+  useEffect(() => {
+  const loadProfile = async () => {
+    try {
+      const profile = await providerApi.getProfile();
+      setProviderProfileId(profile.id);
+    } catch {
+      Alert.alert(
+        "Error",
+        "Unable to load provider profile."
+      );
+    }
+  };
+
+  void loadProfile();
+}, []);
 
   const {
     availabilityId,
@@ -37,6 +60,15 @@ export function EditProviderAvailabilityScreen() {
   const handleSubmit = async (
     request: UpdateProviderAvailabilityRequest
   ) => {
+
+    if (!providerProfileId) {
+  Alert.alert(
+    "Error",
+    "Provider profile not loaded."
+  );
+  return;
+}
+
     try {
       await providerAvailabilityService.updateAvailability(
         providerProfileId,
@@ -50,12 +82,15 @@ export function EditProviderAvailabilityScreen() {
       );
 
       navigation.goBack();
-    } catch {
-      Alert.alert(
-        "Error",
-        "Unable to update availability."
-      );
-    }
+    } catch (error: any) {
+  console.log("UPDATE STATUS:", error.response?.status);
+  console.log("UPDATE DATA:", error.response?.data);
+
+  Alert.alert(
+    "Error",
+    JSON.stringify(error.response?.data ?? error.message)
+  );
+}
   };
 
   return (

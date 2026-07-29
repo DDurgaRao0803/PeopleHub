@@ -1,5 +1,10 @@
 import React, { useCallback, useState } from "react";
 
+import { useEffect } from "react";
+import { providerApi } from "../../api/providerApi";
+
+import { Platform } from "react-native";
+
 import {
   useFocusEffect,
   useNavigation,
@@ -26,7 +31,8 @@ import {
 } from "../../services";
 
 export function ProviderAvailabilityScreen() {
-  const providerProfileId = "";
+  const [providerProfileId, setProviderProfileId] =
+  useState("");
 
   const [availability, setAvailability] = useState<
     ProviderAvailability[]
@@ -40,6 +46,9 @@ export function ProviderAvailabilityScreen() {
     useState(false);
 
   const loadAvailability = async () => {
+  if (!providerProfileId) {
+    return;
+  }
     try {
       const response =
         await providerAvailabilityService.getAvailability(
@@ -47,31 +56,81 @@ export function ProviderAvailabilityScreen() {
         );
 
       setAvailability(response);
-    } catch {
-      Alert.alert(
-        "Error",
-        "Unable to load provider availability."
-      );
-    } finally {
+    } catch (error: any) {
+  console.log("DELETE STATUS:", error.response?.status);
+  console.log("DELETE DATA:", error.response?.data);
+
+  Alert.alert(
+    "Error",
+    JSON.stringify(error.response?.data ?? error.message)
+  );
+} finally {
       setLoading(false);
       setRefreshing(false);
     }
   };
 
   useFocusEffect(
-    useCallback(() => {
-      loadAvailability();
-    }, [])
-  );
+  useCallback(() => {
+    if (!providerProfileId) {
+      return;
+    }
 
-  const refresh = () => {
-    setRefreshing(true);
-    loadAvailability();
+    void loadAvailability();
+  }, [providerProfileId])
+);
+
+  useEffect(() => {
+  const loadProviderProfile = async () => {
+    try {
+      const profile = await providerApi.getProfile();
+      setProviderProfileId(profile.id);
+    } catch {
+      Alert.alert(
+        "Error",
+        "Unable to load provider profile."
+      );
+    }
   };
 
-  const deleteAvailability = (
-  availabilityId: string
-) => {
+  void loadProviderProfile();
+}, []);
+
+  const refresh = () => {
+  if (!providerProfileId) {
+    return;
+  }
+
+  setRefreshing(true);
+  void loadAvailability();
+};
+
+  const deleteAvailability = (availabilityId: string) => {
+  if (Platform.OS === "web") {
+    void (async () => {
+      try {
+        await providerAvailabilityService.deleteAvailability(
+          providerProfileId,
+          availabilityId
+        );
+
+        await loadAvailability();
+
+        Alert.alert(
+          "Success",
+          "Availability deleted successfully."
+        );
+      } catch {
+        Alert.alert(
+          "Error",
+          "Unable to delete availability."
+        );
+      }
+    })();
+
+    return;
+  }
+
   Alert.alert(
     "Delete Availability",
     "Are you sure you want to delete this availability?",
@@ -157,7 +216,29 @@ export function ProviderAvailabilityScreen() {
 
       <TouchableOpacity
         style={styles.deleteButton}
-        onPress={() => deleteAvailability(item.id)}
+        onPress={async () => {
+  try {
+    await providerAvailabilityService.deleteAvailability(
+      providerProfileId,
+      item.id
+    );
+
+    await loadAvailability();
+
+    Alert.alert(
+      "Success",
+      "Availability deleted successfully."
+    );
+  } catch (error: any) {
+    console.log(error.response?.status);
+    console.log(error.response?.data);
+
+    Alert.alert(
+      "Error",
+      JSON.stringify(error.response?.data ?? error.message)
+    );
+  }
+}}
       >
         <Text style={styles.buttonText}>Delete</Text>
       </TouchableOpacity>
