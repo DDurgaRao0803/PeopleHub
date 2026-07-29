@@ -16,6 +16,11 @@ import {
   View,
 } from "react-native";
 
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+import type { MainStackParamList } from "../../navigation/MainStackNavigator";
+
 import { useAuth } from "../../context/AuthContext";
 import { colors } from "../../theme/colors";
 import { spacing } from "../../theme/spacing";
@@ -27,6 +32,14 @@ export function ProfileScreen(): React.JSX.Element {
     user,
     logout,
   } = useAuth();
+
+   console.log("User:", user);
+  console.log("Role:", user?.role);
+
+  const navigation =
+  useNavigation<
+    NativeStackNavigationProp<MainStackParamList>
+  >();
 
   const handleLogout = async (): Promise<void> => {
 
@@ -75,18 +88,22 @@ export function ProfileScreen(): React.JSX.Element {
         </View>
 
         <TouchableOpacity
-          style={styles.menuButton}
-          onPress={() =>
-            Alert.alert(
-              "Coming Soon",
-              "Edit Profile will be available soon.",
-            )
-          }
-        >
-          <Text style={styles.menuText}>
-            Edit Profile
-          </Text>
-        </TouchableOpacity>
+  style={styles.menuButton}
+  onPress={() => {
+    if (user?.isProvider) {
+      navigation.navigate("EditProviderProfile");
+    } else {
+      Alert.alert(
+        "Coming Soon",
+        "Customer profile editing will be available soon."
+      );
+    }
+  }}
+>
+  <Text style={styles.menuText}>
+    Edit Profile
+  </Text>
+</TouchableOpacity>
 
         <TouchableOpacity
           style={styles.menuButton}

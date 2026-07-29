@@ -8,3 +8,4 @@ export * from "./user";
 export * from "./serviceCategory";
 export * from "./serviceRequest";
 export * from "./providerAvailability";
+export * from "./providerProfile";

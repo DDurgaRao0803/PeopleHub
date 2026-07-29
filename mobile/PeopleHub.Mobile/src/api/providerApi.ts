@@ -6,6 +6,12 @@ export interface CreateProviderProfileRequest {
   experienceYears: number;
 }
 
+export interface UpdateProviderProfileRequest {
+  bio: string;
+  experienceYears: number;
+}
+
+
 export interface ProviderProfile {
   id: string;
   userId: string;
@@ -38,8 +44,8 @@ class ProviderApi {
   }
 
   async updateProfile(
-    request: CreateProviderProfileRequest
-  ): Promise<ProviderProfile> {
+  request: UpdateProviderProfileRequest
+): Promise<ProviderProfile> {
     const { data } = await apiClient.put<ProviderProfile>(
       "/provider-profiles",
       request

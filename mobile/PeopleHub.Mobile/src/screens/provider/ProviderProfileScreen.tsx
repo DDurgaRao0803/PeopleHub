@@ -111,15 +111,17 @@ export function ProviderProfileScreen(): React.JSX.Element {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.secondaryButton}
-          onPress={() => {
-            // TODO: Edit Profile
-          }}
-        >
-          <Text style={styles.buttonText}>
-            Edit Profile
-          </Text>
-        </TouchableOpacity>
+  style={styles.secondaryButton}
+  onPress={() => {
+    console.log("Edit Profile pressed");
+    Alert.alert("Pressed");
+    navigation.navigate("EditProviderProfile");
+  }}
+>
+  <Text style={styles.buttonText}>
+    Edit Profile
+  </Text>
+</TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );

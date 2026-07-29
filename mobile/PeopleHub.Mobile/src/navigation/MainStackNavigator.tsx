@@ -15,6 +15,8 @@ import {
   RequestDetailsScreen,
 } from "../screens/serviceRequest";
 
+import { EditProviderProfileScreen } from "../screens/provider";
+
 import {
   AddProviderServiceScreen,
   EditProviderServiceScreen,
@@ -55,6 +57,8 @@ EditProviderAvailability: {
   availabilityId: string;
   availability: ProviderAvailability;
 };
+
+EditProviderProfile: undefined;
 
 };
 
@@ -116,6 +120,12 @@ export function MainStackNavigator(): React.JSX.Element {
 <Stack.Screen
   name="EditProviderAvailability"
   component={EditProviderAvailabilityScreen}
+/>
+
+<Stack.Screen
+  name="EditProviderProfile"
+  component={EditProviderProfileScreen}
+  options={{ title: "Edit Profile" }}
 />
 
     </Stack.Navigator>

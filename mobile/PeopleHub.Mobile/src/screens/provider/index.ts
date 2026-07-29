@@ -5,3 +5,4 @@ export * from "./AddProviderServiceScreen";
 export * from "./EditProviderServiceScreen";
 export * from "./AddProviderAvailabilityScreen";
 export * from "./EditProviderAvailabilityScreen";
+export * from "./EditProviderProfileScreen";
