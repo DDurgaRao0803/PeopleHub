@@ -134,7 +134,9 @@ export function ProfileScreen(): React.JSX.Element {
 
         <TouchableOpacity
           style={styles.logoutButton}
-          onPress={handleLogout}
+          onPress={async () => {
+  await logout();
+}}
         >
           <Text style={styles.logoutText}>
             Logout

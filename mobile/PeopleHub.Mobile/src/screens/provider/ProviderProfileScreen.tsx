@@ -148,11 +148,8 @@ export function ProviderProfileScreen(): React.JSX.Element {
         <TouchableOpacity
   style={styles.logoutButton}
   onPress={async () => {
-    console.log("Before logout");
 
     await logout();
-
-    console.log("After logout");
   }}
 >
   <Text style={styles.buttonText}>
