@@ -1,0 +1,772 @@
+.
+├── Directory.Packages.props
+├── PeopleHub.sln
+├── README.md
+├── docs
+│   ├── API_ROADMAP.md
+│   └── PROJECT_CONTEXT.md
+├── dotnet-install.sh
+├── election and related fixes"
+├── global.json
+├── mobile
+│   ├── PeopleHub.Mobile
+│   │   ├── AGENTS.md
+│   │   ├── App.tsx
+│   │   ├── CLAUDE.md
+│   │   ├── LICENSE
+│   │   ├── PROJECT_CONTEXT.md
+│   │   ├── api
+│   │   │   ├── customer
+│   │   │   │   ├── bookingApi.ts
+│   │   │   │   ├── customerApi.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── notification
+│   │   │   │   ├── index.ts
+│   │   │   │   └── notificationApi.ts
+│   │   │   ├── provider
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── providerProfileApi.ts
+│   │   │   │   ├── providerServiceApi.ts
+│   │   │   │   └── reviewApi.ts
+│   │   │   ├── serviceRequest
+│   │   │   │   ├── index.ts
+│   │   │   │   └── serviceRequestApi.ts
+│   │   │   └── wallet
+│   │   │       ├── index.ts
+│   │   │       └── walletApi.ts
+│   │   ├── app
+│   │   ├── app.json
+│   │   ├── assets
+│   │   │   ├── fonts
+│   │   │   ├── icons
+│   │   │   └── images
+│   │   │       ├── android-icon-background.png
+│   │   │       ├── android-icon-foreground.png
+│   │   │       ├── android-icon-monochrome.png
+│   │   │       ├── favicon.png
+│   │   │       ├── icon.png
+│   │   │       └── splash-icon.png
+│   │   ├── babel.config.js
+│   │   ├── docs
+│   │   │   └── UI_ROADMAP.md
+│   │   ├── eslint.config.js
+│   │   ├── index.ts
+│   │   ├── package-lock.json
+│   │   ├── package.json
+│   │   ├── src
+│   │   │   ├── api
+│   │   │   │   ├── auth
+│   │   │   │   ├── client.ts
+│   │   │   │   ├── common
+│   │   │   │   ├── customer
+│   │   │   │   ├── endpoints.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── notification
+│   │   │   │   ├── provider
+│   │   │   │   ├── providerApi.ts
+│   │   │   │   ├── providerAvailabilityApi.ts
+│   │   │   │   ├── serviceCategoriesApi.ts
+│   │   │   │   ├── serviceRequest
+│   │   │   │   ├── user
+│   │   │   │   └── wallet
+│   │   │   ├── assets
+│   │   │   │   └── logo
+│   │   │   ├── components
+│   │   │   │   ├── buttons
+│   │   │   │   ├── cards
+│   │   │   │   ├── common
+│   │   │   │   ├── forms
+│   │   │   │   ├── home
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── layout
+│   │   │   │   ├── provider
+│   │   │   │   └── ui
+│   │   │   ├── config
+│   │   │   │   └── appConfig.ts
+│   │   │   ├── constants
+│   │   │   │   ├── colors.ts
+│   │   │   │   └── routes.ts
+│   │   │   ├── context
+│   │   │   │   └── AuthContext.tsx
+│   │   │   ├── hooks
+│   │   │   │   ├── useNotifications.ts
+│   │   │   │   ├── useServiceRequests.ts
+│   │   │   │   └── useWallet.ts
+│   │   │   ├── navigation
+│   │   │   │   ├── AppNavigator.tsx
+│   │   │   │   ├── AuthNavigator.tsx
+│   │   │   │   ├── AuthStackParamList.ts
+│   │   │   │   ├── MainNavigator.tsx
+│   │   │   │   ├── MainStackNavigator.tsx
+│   │   │   │   ├── ProviderNavigator.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── screens
+│   │   │   │   ├── auth
+│   │   │   │   ├── customer
+│   │   │   │   ├── home
+│   │   │   │   ├── notification
+│   │   │   │   ├── provider
+│   │   │   │   ├── serviceRequest
+│   │   │   │   └── wallet
+│   │   │   ├── services
+│   │   │   │   ├── authService.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── notificationService.ts
+│   │   │   │   ├── providerAvailability.ts
+│   │   │   │   ├── providerService.ts
+│   │   │   │   ├── reviewService.ts
+│   │   │   │   ├── serviceCategoryService.ts
+│   │   │   │   ├── serviceRequestService.ts
+│   │   │   │   ├── userService.ts
+│   │   │   │   └── walletService.ts
+│   │   │   ├── src-structure.txt
+│   │   │   ├── storage
+│   │   │   │   ├── index.ts
+│   │   │   │   └── secureStorage.ts
+│   │   │   ├── theme
+│   │   │   │   ├── colors.ts
+│   │   │   │   ├── fonts.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── radius.ts
+│   │   │   │   ├── shadows.ts
+│   │   │   │   ├── spacing.ts
+│   │   │   │   ├── theme.ts
+│   │   │   │   └── typography.ts
+│   │   │   ├── types
+│   │   │   │   ├── api.ts
+│   │   │   │   ├── auth.ts
+│   │   │   │   ├── common.ts
+│   │   │   │   ├── customer.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── notification.ts
+│   │   │   │   ├── payment.ts
+│   │   │   │   ├── provider.ts
+│   │   │   │   ├── providerAvailability.ts
+│   │   │   │   ├── providerProfile.ts
+│   │   │   │   ├── review.ts
+│   │   │   │   ├── serviceCategory.ts
+│   │   │   │   ├── serviceRequest.ts
+│   │   │   │   ├── user.ts
+│   │   │   │   └── wallet.ts
+│   │   │   └── utils
+│   │   │       ├── index.ts
+│   │   │       ├── password.ts
+│   │   │       └── validation.ts
+│   │   └── tsconfig.json
+│   └── src
+│       ├── obj
+│       │   └── PeopleHub.Infrastructure.EntityFrameworkCore.targets
+│       └── src
+│           └── obj
+│               └── PeopleHub.Infrastructure.EntityFrameworkCore.targets
+├── package-lock.json
+├── project-structure.txt
+├── src
+│   ├── PeopleHub.API
+│   │   ├── Controllers
+│   │   │   ├── Administration
+│   │   │   │   ├── AdminDashboardController.cs
+│   │   │   │   ├── AdminProviderVerificationsController.cs
+│   │   │   │   └── AdminUsersController.cs
+│   │   │   ├── Authentication
+│   │   │   │   └── AuthenticationController.cs
+│   │   │   ├── Bidding
+│   │   │   │   └── ProviderBidsController.cs
+│   │   │   ├── Location
+│   │   │   │   └── LocationController.cs
+│   │   │   ├── Notifications
+│   │   │   │   └── NotificationsController.cs
+│   │   │   ├── Payments
+│   │   │   │   ├── PaymentsController.cs
+│   │   │   │   └── WalletController.cs
+│   │   │   ├── Providers
+│   │   │   │   ├── Availability
+│   │   │   │   ├── Dashboard
+│   │   │   │   ├── Profiles
+│   │   │   │   ├── Reviews
+│   │   │   │   ├── Search
+│   │   │   │   ├── ServiceCategories
+│   │   │   │   ├── ServiceRequests
+│   │   │   │   ├── Services
+│   │   │   │   ├── Skills
+│   │   │   │   ├── SmartMatch
+│   │   │   │   └── Verification
+│   │   │   ├── Search
+│   │   │   └── Users
+│   │   │       └── UsersController.cs
+│   │   ├── Hubs
+│   │   │   ├── LocationHub.cs
+│   │   │   └── SignalRLocationNotifier.cs
+│   │   ├── Middleware
+│   │   │   └── ExceptionHandlingMiddleware.cs
+│   │   ├── PeopleHub.API.csproj
+│   │   ├── PeopleHub.API.http
+│   │   ├── Program.cs
+│   │   ├── Properties
+│   │   │   └── launchSettings.json
+│   │   ├── appsettings.Development.json
+│   │   ├── appsettings.json
+│   │   ├── bin
+│   │   │   └── Debug
+│   │   │       └── net9.0
+│   │   ├── obj
+│   │   │   ├── Debug
+│   │   │   │   └── net9.0
+│   │   │   ├── PeopleHub.API.csproj.EntityFrameworkCore.targets
+│   │   │   ├── PeopleHub.API.csproj.nuget.dgspec.json
+│   │   │   ├── PeopleHub.API.csproj.nuget.g.props
+│   │   │   ├── PeopleHub.API.csproj.nuget.g.targets
+│   │   │   ├── project.assets.json
+│   │   │   └── project.nuget.cache
+│   │   └── src
+│   │       └── obj
+│   │           └── PeopleHub.Infrastructure.EntityFrameworkCore.targets
+│   ├── PeopleHub.Application
+│   │   ├── Administration
+│   │   │   ├── IAdminDashboardService.cs
+│   │   │   ├── IAdminProviderVerificationService.cs
+│   │   │   └── IAdminUserService.cs
+│   │   ├── Authentication
+│   │   │   ├── IAuthenticationService.cs
+│   │   │   ├── IOtpService.cs
+│   │   │   ├── OtpVerificationResult.cs
+│   │   │   └── Validators
+│   │   │       └── LoginRequestValidator.cs
+│   │   ├── Common
+│   │   │   ├── Interfaces
+│   │   │   │   ├── Persistence
+│   │   │   │   ├── Realtime
+│   │   │   │   └── Services
+│   │   │   └── Models
+│   │   │       └── JwtTokenResult.cs
+│   │   ├── Location
+│   │   │   └── ILocationService.cs
+│   │   ├── Notifications
+│   │   │   └── INotificationService.cs
+│   │   ├── Payments
+│   │   │   ├── IPaymentService.cs
+│   │   │   ├── IWalletService.cs
+│   │   │   └── Models
+│   │   │       ├── PaymentResponse.cs
+│   │   │       └── WalletResponse.cs
+│   │   ├── PeopleHub.Application.csproj
+│   │   ├── Providers
+│   │   │   ├── Availability
+│   │   │   │   └── IProviderAvailabilityService.cs
+│   │   │   ├── Bidding
+│   │   │   │   └── IProviderBidService.cs
+│   │   │   ├── Dashboard
+│   │   │   │   └── IProviderDashboardService.cs
+│   │   │   ├── Profiles
+│   │   │   │   └── IProviderProfileService.cs
+│   │   │   ├── Reviews
+│   │   │   │   └── IReviewService.cs
+│   │   │   ├── Search
+│   │   │   │   └── IProviderSearchService.cs
+│   │   │   ├── ServiceCategories
+│   │   │   │   └── IServiceCategoryService.cs
+│   │   │   ├── ServiceRequests
+│   │   │   │   └── IServiceRequestService.cs
+│   │   │   ├── Services
+│   │   │   │   └── IProviderServiceService.cs
+│   │   │   ├── Skills
+│   │   │   └── Verification
+│   │   │       └── IProviderVerificationService.cs
+│   │   ├── SmartMatch
+│   │   │   ├── Interfaces
+│   │   │   │   └── ISmartMatchService.cs
+│   │   │   └── Models
+│   │   │       └── SmartMatchResponse.cs
+│   │   ├── Users
+│   │   │   ├── Dtos
+│   │   │   │   ├── CurrentUserDto.cs
+│   │   │   │   ├── LoginRequest.cs
+│   │   │   │   ├── LoginResponse.cs
+│   │   │   │   ├── RegisterUserRequest.cs
+│   │   │   │   ├── RegisterUserResponse.cs
+│   │   │   │   └── UserDto.cs
+│   │   │   ├── IUserService.cs
+│   │   │   └── Validators
+│   │   │       ├── RegisterUserValidator.cs
+│   │   │       └── UpdateUserRequestValidator.cs
+│   │   ├── bin
+│   │   │   └── Debug
+│   │   │       └── net9.0
+│   │   └── obj
+│   │       ├── Debug
+│   │       │   └── net9.0
+│   │       ├── PeopleHub.Application.csproj.nuget.dgspec.json
+│   │       ├── PeopleHub.Application.csproj.nuget.g.props
+│   │       ├── PeopleHub.Application.csproj.nuget.g.targets
+│   │       ├── project.assets.json
+│   │       └── project.nuget.cache
+│   ├── PeopleHub.Common
+│   │   ├── PeopleHub.Common.csproj
+│   │   ├── bin
+│   │   │   └── Debug
+│   │   │       └── net9.0
+│   │   └── obj
+│   │       ├── Debug
+│   │       │   └── net9.0
+│   │       ├── PeopleHub.Common.csproj.nuget.dgspec.json
+│   │       ├── PeopleHub.Common.csproj.nuget.g.props
+│   │       ├── PeopleHub.Common.csproj.nuget.g.targets
+│   │       ├── project.assets.json
+│   │       └── project.nuget.cache
+│   ├── PeopleHub.Contracts
+│   │   ├── Administration
+│   │   │   ├── DashboardResponse.cs
+│   │   │   ├── ProviderVerificationSummaryResponse.cs
+│   │   │   ├── UpdateUserStatusRequest.cs
+│   │   │   ├── UserDetailsResponse.cs
+│   │   │   └── UserSummaryResponse.cs
+│   │   ├── Authentication
+│   │   │   ├── ChangePasswordRequest.cs
+│   │   │   ├── ForgotPasswordRequest.cs
+│   │   │   ├── JwtOptions.cs
+│   │   │   ├── LoginRequest.cs
+│   │   │   ├── LoginResponse.cs
+│   │   │   ├── LogoutRequest.cs
+│   │   │   ├── RefreshTokenRequest.cs
+│   │   │   ├── RefreshTokenResponse.cs
+│   │   │   ├── RegisterRequest.cs
+│   │   │   ├── ResetPasswordRequest.cs
+│   │   │   └── VerifyOtpRequest.cs
+│   │   ├── Common
+│   │   │   └── PagedResponse.cs
+│   │   ├── Location
+│   │   │   ├── ProviderLocationResponse.cs
+│   │   │   └── UpdateLocationRequest.cs
+│   │   ├── Notifications
+│   │   │   ├── CreateNotificationRequest.cs
+│   │   │   └── NotificationResponse.cs
+│   │   ├── PeopleHub.Contracts.csproj
+│   │   ├── Providers
+│   │   │   ├── Availability
+│   │   │   │   ├── CreateProviderAvailabilityRequest.cs
+│   │   │   │   ├── ProviderAvailabilityResponse.cs
+│   │   │   │   └── UpdateProviderAvailabilityRequest.cs
+│   │   │   ├── Bidding
+│   │   │   │   ├── CreateProviderBidRequest.cs
+│   │   │   │   └── ProviderBidResponse.cs
+│   │   │   ├── Dashboard
+│   │   │   │   └── ProviderDashboardResponse.cs
+│   │   │   ├── Profiles
+│   │   │   │   ├── CreateProviderProfileRequest.cs
+│   │   │   │   ├── NearbyProviderResponse.cs
+│   │   │   │   ├── ProviderProfileResponse.cs
+│   │   │   │   └── UpdateProviderProfileRequest.cs
+│   │   │   ├── Reviews
+│   │   │   │   ├── CreateReviewRequest.cs
+│   │   │   │   └── ReviewResponse.cs
+│   │   │   ├── Search
+│   │   │   │   ├── ProviderSearchResponse.cs
+│   │   │   │   └── SearchProvidersRequest.cs
+│   │   │   ├── ServiceCategories
+│   │   │   │   ├── CreateServiceCategoryRequest.cs
+│   │   │   │   ├── ServiceCategoryResponse.cs
+│   │   │   │   └── UpdateServiceCategoryRequest.cs
+│   │   │   ├── ServiceRequests
+│   │   │   │   ├── CreateServiceRequestRequest.cs
+│   │   │   │   └── ServiceRequestResponse.cs
+│   │   │   ├── Services
+│   │   │   │   ├── CreateProviderServiceRequest.cs
+│   │   │   │   ├── ProviderServiceResponse.cs
+│   │   │   │   └── UpdateProviderServiceRequest.cs
+│   │   │   ├── Skills
+│   │   │   └── Verification
+│   │   │       ├── CreateProviderVerificationRequest.cs
+│   │   │       ├── GovernmentIdType.cs
+│   │   │       ├── ProviderVerificationResponse.cs
+│   │   │       └── RejectProviderVerificationRequest.cs
+│   │   ├── Users
+│   │   │   ├── CurrentUserResponse.cs
+│   │   │   ├── GetUsersRequest.cs
+│   │   │   ├── UpdateUserRequest.cs
+│   │   │   └── UserResponse.cs
+│   │   ├── bin
+│   │   │   └── Debug
+│   │   │       └── net9.0
+│   │   └── obj
+│   │       ├── Debug
+│   │       │   └── net9.0
+│   │       ├── PeopleHub.Contracts.csproj.nuget.dgspec.json
+│   │       ├── PeopleHub.Contracts.csproj.nuget.g.props
+│   │       ├── PeopleHub.Contracts.csproj.nuget.g.targets
+│   │       ├── project.assets.json
+│   │       └── project.nuget.cache
+│   ├── PeopleHub.Domain
+│   │   ├── Aggregates
+│   │   │   ├── Bidding
+│   │   │   │   └── ProviderBid.cs
+│   │   │   ├── Location
+│   │   │   │   └── ProviderLocation.cs
+│   │   │   ├── Notifications
+│   │   │   │   └── Notification.cs
+│   │   │   ├── Otp
+│   │   │   │   └── OtpCode.cs
+│   │   │   ├── Payments
+│   │   │   │   ├── PaymentTransaction.cs
+│   │   │   │   ├── Wallet.cs
+│   │   │   │   └── WalletTransaction.cs
+│   │   │   ├── Provider
+│   │   │   │   ├── ProviderAvailability.cs
+│   │   │   │   ├── ProviderProfile.cs
+│   │   │   │   ├── ProviderService.cs
+│   │   │   │   ├── ProviderSkill.cs
+│   │   │   │   ├── ProviderVerification.cs
+│   │   │   │   └── ServiceCategory.cs
+│   │   │   ├── Review
+│   │   │   │   └── Review.cs
+│   │   │   ├── ServiceRequest
+│   │   │   │   └── ServiceRequest.cs
+│   │   │   └── User
+│   │   │       ├── RefreshToken.cs
+│   │   │       ├── User.cs
+│   │   │       └── UserRole.cs
+│   │   ├── Common
+│   │   │   ├── AuditableEntity.cs
+│   │   │   ├── Entity.cs
+│   │   │   └── ValueObject.cs
+│   │   ├── Enums
+│   │   │   ├── GovernmentIdType.cs
+│   │   │   ├── NotificationType.cs
+│   │   │   ├── OtpPurpose.cs
+│   │   │   ├── PaymentStatus.cs
+│   │   │   ├── ProviderBidStatus.cs
+│   │   │   ├── Role.cs
+│   │   │   ├── ServiceRequestStatus.cs
+│   │   │   ├── UserRoleType.cs
+│   │   │   ├── UserStatus.cs
+│   │   │   ├── VerificationStatus.cs
+│   │   │   └── WalletTransactionType.cs
+│   │   ├── Exceptions
+│   │   │   └── DomainException.cs
+│   │   ├── Interfaces
+│   │   │   ├── IEntity.cs
+│   │   │   └── Repositories
+│   │   ├── PeopleHub.Domain.csproj
+│   │   ├── ValueObjects
+│   │   │   ├── Email.cs
+│   │   │   └── PhoneNumber.cs
+│   │   ├── bin
+│   │   │   └── Debug
+│   │   │       └── net9.0
+│   │   └── obj
+│   │       ├── Debug
+│   │       │   └── net9.0
+│   │       ├── PeopleHub.Domain.csproj.nuget.dgspec.json
+│   │       ├── PeopleHub.Domain.csproj.nuget.g.props
+│   │       ├── PeopleHub.Domain.csproj.nuget.g.targets
+│   │       ├── project.assets.json
+│   │       └── project.nuget.cache
+│   ├── PeopleHub.Infrastructure
+│   │   ├── Administration
+│   │   │   ├── AdminDashboardService.cs
+│   │   │   ├── AdminProviderVerificationService.cs
+│   │   │   └── AdminUserService.cs
+│   │   ├── Authentication
+│   │   │   ├── AuthenticationService.cs
+│   │   │   ├── OtpGenerator.cs
+│   │   │   ├── OtpHasher.cs
+│   │   │   └── OtpService.cs
+│   │   ├── DependencyInjection
+│   │   │   └── InfrastructureServiceCollectionExtensions.cs
+│   │   ├── Emailing
+│   │   │   ├── EmailOptions.cs
+│   │   │   └── EmailService.cs
+│   │   ├── Location
+│   │   │   ├── LocationService.cs
+│   │   │   └── ProviderLocationRepository.cs
+│   │   ├── Notifications
+│   │   │   └── NotificationService.cs
+│   │   ├── Payments
+│   │   │   ├── PaymentService.cs
+│   │   │   ├── PaymentTransactionRepository.cs
+│   │   │   ├── WalletRepository.cs
+│   │   │   ├── WalletService.cs
+│   │   │   └── WalletTransactionRepository.cs
+│   │   ├── PeopleHub.Infrastructure.csproj
+│   │   ├── Persistence
+│   │   │   ├── Configurations
+│   │   │   │   ├── NotificationConfiguration.cs
+│   │   │   │   ├── OtpCodeConfiguration.cs
+│   │   │   │   ├── PaymentTransactionConfiguration.cs
+│   │   │   │   ├── ProviderAvailabilityConfiguration.cs
+│   │   │   │   ├── ProviderBidConfiguration.cs
+│   │   │   │   ├── ProviderLocationConfiguration.cs
+│   │   │   │   ├── ProviderProfileConfiguration.cs
+│   │   │   │   ├── ProviderServiceConfiguration.cs
+│   │   │   │   ├── ProviderSkillConfiguration.cs
+│   │   │   │   ├── ProviderVerificationConfiguration.cs
+│   │   │   │   ├── RefreshTokenConfiguration.cs
+│   │   │   │   ├── ReviewConfiguration.cs
+│   │   │   │   ├── ServiceCategoryConfiguration.cs
+│   │   │   │   ├── ServiceRequestConfiguration.cs
+│   │   │   │   ├── UserConfiguration.cs
+│   │   │   │   ├── UserRoleConfiguration.cs
+│   │   │   │   ├── WalletConfiguration.cs
+│   │   │   │   └── WalletTransactionConfiguration.cs
+│   │   │   ├── Context
+│   │   │   │   └── ApplicationDbContext.cs
+│   │   │   ├── Migrations
+│   │   │   │   ├── 20260717130107_InitialCreate.Designer.cs
+│   │   │   │   ├── 20260717130107_InitialCreate.cs
+│   │   │   │   ├── 20260717160939_AddPasswordHashToUser.Designer.cs
+│   │   │   │   ├── 20260717160939_AddPasswordHashToUser.cs
+│   │   │   │   ├── 20260717174807_AddRefreshTokens.Designer.cs
+│   │   │   │   ├── 20260717174807_AddRefreshTokens.cs
+│   │   │   │   ├── 20260718104208_AddUserRole.Designer.cs
+│   │   │   │   ├── 20260718104208_AddUserRole.cs
+│   │   │   │   ├── 20260720064020_AddProviderAvailability.Designer.cs
+│   │   │   │   ├── 20260720064020_AddProviderAvailability.cs
+│   │   │   │   ├── 20260720085539_AddServiceRequest.Designer.cs
+│   │   │   │   ├── 20260720085539_AddServiceRequest.cs
+│   │   │   │   ├── 20260721121232_AddProviderServices.Designer.cs
+│   │   │   │   ├── 20260721121232_AddProviderServices.cs
+│   │   │   │   ├── 20260722111733_ConfigureDecimalPrecision.Designer.cs
+│   │   │   │   ├── 20260722111733_ConfigureDecimalPrecision.cs
+│   │   │   │   ├── 20260722112001_AddProviderProfileMetricsAndLocation.Designer.cs
+│   │   │   │   ├── 20260722112001_AddProviderProfileMetricsAndLocation.cs
+│   │   │   │   ├── 20260722133055_RemoveUserRoleColumn.Designer.cs
+│   │   │   │   ├── 20260722133055_RemoveUserRoleColumn.cs
+│   │   │   │   ├── 20260723051940_MakeProviderOptional.Designer.cs
+│   │   │   │   ├── 20260723051940_MakeProviderOptional.cs
+│   │   │   │   ├── 20260723072649_AddProviderBids.Designer.cs
+│   │   │   │   ├── 20260723072649_AddProviderBids.cs
+│   │   │   │   ├── 20260723083942_AddNotifications.Designer.cs
+│   │   │   │   ├── 20260723083942_AddNotifications.cs
+│   │   │   │   ├── 20260723090306_AddProviderLocations.Designer.cs
+│   │   │   │   ├── 20260723090306_AddProviderLocations.cs
+│   │   │   │   ├── 20260723102051_AddPayments.Designer.cs
+│   │   │   │   ├── 20260723102051_AddPayments.cs
+│   │   │   │   ├── 20260723131750_AddPaymentModule.Designer.cs
+│   │   │   │   ├── 20260723131750_AddPaymentModule.cs
+│   │   │   │   ├── 20260726080609_VerifyPendingChanges.Designer.cs
+│   │   │   │   ├── 20260726080609_VerifyPendingChanges.cs
+│   │   │   │   ├── 20260728155216_AddReviews.Designer.cs
+│   │   │   │   ├── 20260728155216_AddReviews.cs
+│   │   │   │   ├── 20260729132934_AddAcceptingRequestsToProviderProfile.Designer.cs
+│   │   │   │   ├── 20260729132934_AddAcceptingRequestsToProviderProfile.cs
+│   │   │   │   └── ApplicationDbContextModelSnapshot.cs
+│   │   │   ├── Repositories
+│   │   │   │   ├── NotificationRepository.cs
+│   │   │   │   ├── OtpRepository.cs
+│   │   │   │   ├── ProviderBidRepository.cs
+│   │   │   │   ├── ProviderProfileRepository.cs
+│   │   │   │   ├── ProviderRepository.cs
+│   │   │   │   ├── ProviderSearchRepository.cs
+│   │   │   │   ├── ProviderServiceRepository.cs
+│   │   │   │   ├── ProviderVerificationRepository.cs
+│   │   │   │   ├── ReviewRepository.cs
+│   │   │   │   ├── ServiceCategoryRepository.cs
+│   │   │   │   ├── ServiceRequestRepository.cs
+│   │   │   │   └── UserRepository.cs
+│   │   │   ├── Seeders
+│   │   │   │   ├── AdminSeeder.cs
+│   │   │   │   └── ServiceCategorySeeder.cs
+│   │   │   └── UnitOfWork.cs
+│   │   ├── Providers
+│   │   │   ├── Availability
+│   │   │   │   └── ProviderAvailabilityService.cs
+│   │   │   ├── Bidding
+│   │   │   │   └── ProviderBidService.cs
+│   │   │   ├── Dashboard
+│   │   │   │   └── ProviderDashboardService.cs
+│   │   │   ├── Profiles
+│   │   │   │   └── ProviderProfileService.cs
+│   │   │   ├── Reviews
+│   │   │   │   └── ReviewService.cs
+│   │   │   ├── Search
+│   │   │   │   └── ProviderSearchService.cs
+│   │   │   ├── ServiceCategories
+│   │   │   │   └── ServiceCategoryService.cs
+│   │   │   ├── ServiceRequests
+│   │   │   │   └── ServiceRequestService.cs
+│   │   │   ├── Services
+│   │   │   │   └── ProviderServiceService.cs
+│   │   │   ├── Skills
+│   │   │   ├── SmartMatch
+│   │   │   │   └── SmartMatchService.cs
+│   │   │   └── Verification
+│   │   │       └── ProviderVerificationService.cs
+│   │   ├── Security
+│   │   │   ├── CurrentUserService.cs
+│   │   │   ├── JwtTokenGenerator.cs
+│   │   │   ├── PasswordHasher.cs
+│   │   │   └── RefreshTokenGenerator.cs
+│   │   ├── Users
+│   │   │   └── UserService.cs
+│   │   ├── bin
+│   │   │   └── Debug
+│   │   │       └── net9.0
+│   │   └── obj
+│   │       ├── Debug
+│   │       │   └── net9.0
+│   │       ├── PeopleHub.Infrastructure.csproj.EntityFrameworkCore.targets
+│   │       ├── PeopleHub.Infrastructure.csproj.nuget.dgspec.json
+│   │       ├── PeopleHub.Infrastructure.csproj.nuget.g.props
+│   │       ├── PeopleHub.Infrastructure.csproj.nuget.g.targets
+│   │       ├── project.assets.json
+│   │       └── project.nuget.cache
+│   └── PeopleHub.SmartMatch
+│       ├── Distance
+│       │   └── HaversineDistanceCalculator.cs
+│       ├── Extensions
+│       ├── Interfaces
+│       │   ├── IDistanceCalculator.cs
+│       │   └── ISmartMatchEngine.cs
+│       ├── Models
+│       │   ├── ProviderScore.cs
+│       │   ├── ScoreContext.cs
+│       │   ├── SmartMatchCandidate.cs
+│       │   └── SmartMatchResult.cs
+│       ├── PeopleHub.SmartMatch.csproj
+│       ├── Ranking
+│       │   ├── Interfaces
+│       │   │   └── IScoreRule.cs
+│       │   ├── Rules
+│       │   │   ├── CompletedJobsScoreRule.cs
+│       │   │   ├── DistanceScoreRule.cs
+│       │   │   ├── ExperienceScoreRule.cs
+│       │   │   ├── RatingScoreRule.cs
+│       │   │   ├── ResponseRateScoreRule.cs
+│       │   │   └── VerificationScoreRule.cs
+│       │   ├── ScoreCalculator.cs
+│       │   └── ScoreWeights.cs
+│       ├── Rules
+│       │   ├── AvailabilityRule.cs
+│       │   ├── SkillRule.cs
+│       │   └── VerificationRule.cs
+│       ├── Services
+│       │   └── SmartMatchEngine.cs
+│       ├── bin
+│       │   └── Debug
+│       │       └── net9.0
+│       └── obj
+│           ├── Debug
+│           │   └── net9.0
+│           ├── PeopleHub.SmartMatch.csproj.nuget.dgspec.json
+│           ├── PeopleHub.SmartMatch.csproj.nuget.g.props
+│           ├── PeopleHub.SmartMatch.csproj.nuget.g.targets
+│           ├── project.assets.json
+│           └── project.nuget.cache
+├── src-structure.txt
+└── tests
+    ├── PeopleHub.IntegrationTests
+    │   ├── Administration
+    │   │   ├── AdminDashboardControllerTests.cs
+    │   │   ├── AdminProviderVerificationsControllerTests.cs
+    │   │   └── AdminUsersControllerTests.cs
+    │   ├── Authentication
+    │   │   ├── LoginTests.cs
+    │   │   └── RegisterTests.cs
+    │   ├── Controllers
+    │   ├── Infrastructure
+    │   │   ├── AuthenticationHelper.cs
+    │   │   ├── CustomWebApplicationFactory.cs
+    │   │   ├── IntegrationTestBase.cs
+    │   │   ├── IntegrationTestCollection.cs
+    │   │   ├── TestAuthenticationHandler.cs
+    │   │   └── TestDataSeeder.cs
+    │   ├── Location
+    │   │   ├── LocationControllerTests.cs
+    │   │   └── LocationHubTests.cs
+    │   ├── Notifications
+    │   │   └── NotificationsControllerTests.cs
+    │   ├── Payments
+    │   │   └── WalletControllerTests.cs
+    │   ├── PeopleHub.IntegrationTests.csproj
+    │   ├── Providers
+    │   │   ├── Availability
+    │   │   ├── Bidding
+    │   │   │   └── ProviderBidsControllerTests.cs
+    │   │   ├── Dashboard
+    │   │   │   └── ProviderDashboardControllerTests.cs
+    │   │   ├── Profiles
+    │   │   │   ├── ProviderProfileTests.cs
+    │   │   │   └── ProviderProfilesControllerTests.cs
+    │   │   ├── ProviderProfileServiceTests.cs
+    │   │   ├── Reviews
+    │   │   │   └── ReviewControllerTests.cs
+    │   │   ├── Search
+    │   │   │   └── ProviderSearchControllerTests.cs
+    │   │   ├── ServiceCategories
+    │   │   │   └── ServiceCategoriesControllerTests.cs
+    │   │   ├── ServiceRequests
+    │   │   │   └── ServiceRequestsControllerTests.cs
+    │   │   ├── Services
+    │   │   │   └── ProviderServicesControllerTests.cs
+    │   │   ├── Skills
+    │   │   ├── SmartMatch
+    │   │   │   └── SmartMatchControllerTests.cs
+    │   │   └── Verification
+    │   │       └── ProviderVerificationControllerTests.cs
+    │   ├── Users
+    │   │   └── GetUsersTests.cs
+    │   ├── bin
+    │   │   └── Debug
+    │   │       └── net9.0
+    │   └── obj
+    │       ├── Debug
+    │       │   └── net9.0
+    │       ├── PeopleHub.IntegrationTests.csproj.nuget.dgspec.json
+    │       ├── PeopleHub.IntegrationTests.csproj.nuget.g.props
+    │       ├── PeopleHub.IntegrationTests.csproj.nuget.g.targets
+    │       ├── project.assets.json
+    │       └── project.nuget.cache
+    └── PeopleHub.UnitTests
+        ├── Authentication
+        │   ├── AuthenticationControllerTests.cs
+        │   └── OtpServiceTests.cs
+        ├── Domain
+        │   ├── Provider
+        │   │   └── ProviderProfileTests.cs
+        │   ├── ServiceRequest
+        │   │   └── ServiceRequestTests.cs
+        │   └── User
+        │       └── UserTests.cs
+        ├── PeopleHub.UnitTests.csproj
+        ├── Providers
+        │   ├── Availability
+        │   ├── Profiles
+        │   │   └── ProviderProfilesControllerTests.cs
+        │   ├── Reviews
+        │   │   └── ReviewServiceTests.cs
+        │   ├── ServiceCategories
+        │   │   └── ServiceCategoryServiceTests.cs
+        │   ├── ServiceRequests
+        │   │   └── ServiceRequestServiceTests.cs
+        │   ├── Services
+        │   │   └── ProviderServicesControllerTests.cs
+        │   ├── Skills
+        │   └── Verification
+        │       └── ProviderVerificationControllerTests.cs
+        ├── SmartMatch
+        │   ├── Distance
+        │   │   └── HaversineDistanceCalculatorTests.cs
+        │   ├── Ranking
+        │   │   ├── RatingScoreRuleTests.cs
+        │   │   ├── Rules
+        │   │   └── ScoreCalculatorTests.cs
+        │   ├── Rules
+        │   │   ├── AvailabilityRuleTests.cs
+        │   │   ├── ExperienceScoreRuleTests.cs
+        │   │   ├── SkillRuleTests.cs
+        │   │   └── VerificationRuleTests.cs
+        │   └── Services
+        │       └── SmartMatchEngineTests.cs
+        ├── Users
+        ├── bin
+        │   └── Debug
+        │       └── net9.0
+        └── obj
+            ├── Debug
+            │   └── net9.0
+            ├── PeopleHub.UnitTests.csproj.nuget.dgspec.json
+            ├── PeopleHub.UnitTests.csproj.nuget.g.props
+            ├── PeopleHub.UnitTests.csproj.nuget.g.targets
+            ├── project.assets.json
+            └── project.nuget.cache
+
+294 directories, 476 files

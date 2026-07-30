@@ -1,5 +1,6 @@
 import { providerApi } from "../api/providerApi";
 import providerServiceApi from "../api/provider/providerServiceApi";
+import providerDashboardApi from "../api/provider/providerDashboardApi";
 
 import type {
   CreateProviderProfileRequest,
@@ -41,6 +42,10 @@ class ProviderServiceManager {
   // =========================
   // Nearby Providers
   // =========================
+
+  async getDashboard() {
+  return providerDashboardApi.getDashboard();
+}
 
   async getNearby() {
     return providerApi.getNearby();

@@ -50,6 +50,12 @@ export const providerServiceApi = {
   ): Promise<void> {
     await apiClient.delete(`${BASE_URL}/${id}`);
   },
+
+  //async getDashboard() {
+    //return providerDashboardApi.getDashboard();
+//}
+
+
 };
 
 export default providerServiceApi;

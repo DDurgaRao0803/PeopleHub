@@ -55,7 +55,8 @@ public class ProviderProfile : AuditableEntity
 
 public decimal? Longitude { get; private set; }
 
-public bool AcceptingRequests { get; private set; } = true;
+public bool AcceptingRequests { get; set; } = true;
+
 
     public IReadOnlyCollection<ProviderSkill> Skills => _skills;
 

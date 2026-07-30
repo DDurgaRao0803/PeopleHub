@@ -5,10 +5,10 @@ using PeopleHub.Contracts.Providers.Dashboard;
 
 namespace PeopleHub.API.Controllers;
 
-[ApiController]
 [Authorize]
+[ApiController]
 [Route("api/provider/dashboard")]
-public class ProviderDashboardController : ControllerBase
+public sealed class ProviderDashboardController : ControllerBase
 {
     private readonly IProviderDashboardService _dashboardService;
 
@@ -18,24 +18,14 @@ public class ProviderDashboardController : ControllerBase
         _dashboardService = dashboardService;
     }
 
-
     [HttpGet]
+    [ProducesResponseType(typeof(ProviderDashboardResponse), StatusCodes.Status200OK)]
     public async Task<ActionResult<ProviderDashboardResponse>> GetDashboard(
         CancellationToken cancellationToken)
     {
-        try
-        {
-            var response = await _dashboardService.GetDashboardAsync(
-                cancellationToken);
+        var dashboard = await _dashboardService.GetDashboardAsync(
+            cancellationToken);
 
-            return Ok(response);
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new
-            {
-                message = ex.Message
-            });
-        }
+        return Ok(dashboard);
     }
 }

@@ -6,7 +6,7 @@ public sealed record ProviderDashboardResponse(
     decimal AverageRating,
     int CompletedJobs,
     decimal ResponseRate,
-    DateTime LastActiveUtc,
+    DateTime? LastActiveUtc,
     int PendingRequests,
     int AcceptedRequests,
     int CompletedRequests,

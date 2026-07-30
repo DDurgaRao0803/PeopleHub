@@ -128,8 +128,6 @@ public sealed class ProviderProfileService : IProviderProfileService
             Bio = profile.Bio,
             ExperienceYears = profile.ExperienceYears,
             VerificationStatus = profile.VerificationStatus.ToString(),
-
-            // TEMPORARY TEST
             AcceptingRequests = profile.AcceptingRequests
 
             

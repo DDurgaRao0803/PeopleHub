@@ -14,13 +14,13 @@ public interface IProviderProfileService
         CancellationToken cancellationToken = default);
 
     Task<ProviderProfileResponse> UpdateAsync(
-        Guid userId,
-        UpdateProviderProfileRequest request,
-        CancellationToken cancellationToken = default);
+    Guid userId,
+    UpdateProviderProfileRequest request,
+    CancellationToken cancellationToken = default);
 
-    Task DeleteAsync(
-        Guid userId,
-        CancellationToken cancellationToken = default);
+Task DeleteAsync(
+    Guid userId,
+    CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<NearbyProviderResponse>> GetNearbyAsync(
     CancellationToken cancellationToken = default);

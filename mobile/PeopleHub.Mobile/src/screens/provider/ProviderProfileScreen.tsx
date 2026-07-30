@@ -145,7 +145,16 @@ export function ProviderProfileScreen(): React.JSX.Element {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
+<TouchableOpacity
+  style={styles.secondaryButton}
+  onPress={() => navigation.navigate("EditProviderProfile")}
+>
+  <Text style={styles.buttonText}>
+    Edit Profile
+  </Text>
+</TouchableOpacity>
+
+<TouchableOpacity
   style={styles.logoutButton}
   onPress={async () => {
 
@@ -157,14 +166,6 @@ export function ProviderProfileScreen(): React.JSX.Element {
   </Text>
 </TouchableOpacity>
 
-<TouchableOpacity
-  style={styles.secondaryButton}
-  onPress={() => navigation.navigate("EditProviderProfile")}
->
-  <Text style={styles.buttonText}>
-    Edit Profile
-  </Text>
-</TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
