@@ -38,16 +38,32 @@ export function ProfileScreen(): React.JSX.Element {
     NativeStackNavigationProp<MainStackParamList>
   >();
 
-  const handleLogout = async (): Promise<void> => {
-
-
-    try {
-      await logout();
-
-    } catch  {
-      
-    }
-  };
+  const handleLogout = (): void => {
+  Alert.alert(
+    "Logout",
+    "Are you sure you want to logout?",
+    [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Logout",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await logout();
+          } catch {
+            Alert.alert(
+              "Error",
+              "Unable to logout. Please try again."
+            );
+          }
+        },
+      },
+    ]
+  );
+};
 
   return (
     <SafeAreaView style={styles.container}>

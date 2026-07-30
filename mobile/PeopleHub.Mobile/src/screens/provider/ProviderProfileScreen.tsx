@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Button,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -15,15 +16,22 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import type { MainStackParamList } from "../../navigation/MainStackNavigator";
+import { useAuth } from "../../context/AuthContext";
 
 import { providerService } from "../../services/providerService";
 import type { ProviderProfile } from "../../api/providerApi";
 
 export function ProviderProfileScreen(): React.JSX.Element {
+  
+  
   const navigation =
     useNavigation<
       NativeStackNavigationProp<MainStackParamList>
     >();
+
+  const { logout } = useAuth();
+
+  const [clicked, setClicked] = useState(false);
 
   const [profile, setProfile] =
     useState<ProviderProfile | null>(null);
@@ -49,6 +57,33 @@ export function ProviderProfileScreen(): React.JSX.Element {
     void loadProfile();
   }, [loadProfile]);
 
+  const handleLogout = (): void => {
+  Alert.alert(
+    "Logout",
+    "Are you sure you want to logout?",
+    [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Logout",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await logout();
+          } catch {
+            Alert.alert(
+              "Error",
+              "Unable to logout. Please try again."
+            );
+          }
+        },
+      },
+    ]
+  );
+};
+
   if (loading) {
     return (
       <SafeAreaView style={styles.center}>
@@ -61,8 +96,8 @@ export function ProviderProfileScreen(): React.JSX.Element {
     return (
       <SafeAreaView style={styles.center}>
         <Text style={styles.title}>
-          Provider Profile
-        </Text>
+  {clicked ? "BUTTON WORKED" : "Provider Profile"}
+</Text>
 
         <Text style={styles.empty}>
           Provider profile not found.
@@ -72,13 +107,13 @@ export function ProviderProfileScreen(): React.JSX.Element {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.content}
-      >
-        <Text style={styles.title}>
-          Provider Profile
-        </Text>
+  <SafeAreaView style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.content}
+    >
+      <Text style={styles.title}>
+        {clicked ? "BUTTON WORKED" : "Provider Profile"}
+      </Text>
 
         <View style={styles.card}>
           <Text style={styles.label}>Bio</Text>
@@ -111,11 +146,23 @@ export function ProviderProfileScreen(): React.JSX.Element {
         </TouchableOpacity>
 
         <TouchableOpacity
-  style={styles.secondaryButton}
-  onPress={() => {
-    Alert.alert("Pressed");
-    navigation.navigate("EditProviderProfile");
+  style={styles.logoutButton}
+  onPress={async () => {
+    console.log("Before logout");
+
+    await logout();
+
+    console.log("After logout");
   }}
+>
+  <Text style={styles.buttonText}>
+    Logout
+  </Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+  style={styles.secondaryButton}
+  onPress={() => navigation.navigate("EditProviderProfile")}
 >
   <Text style={styles.buttonText}>
     Edit Profile
@@ -194,4 +241,14 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 16,
   },
+
+
+  logoutButton: {
+  marginTop: 12,
+  backgroundColor: "#E53935",
+  padding: 16,
+  borderRadius: 10,
+  alignItems: "center",
+},
+
 });

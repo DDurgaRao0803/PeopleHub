@@ -87,14 +87,19 @@ class AuthService {
   }
 
   async logout(): Promise<void> {
-    try {
-      await authApi.logout();
-    } catch {
-      // Ignore logout failures.
-    } finally {
-      await secureStorage.clearAuthentication();
+  try {
+    const refreshToken =
+      await secureStorage.getRefreshToken();
+
+    if (refreshToken) {
+      await authApi.logout(refreshToken);
     }
+  } catch {
+    // Ignore logout failures.
+  } finally {
+    await secureStorage.clearAuthentication();
   }
+}
 
   async getAccessToken(): Promise<string | null> {
     return await secureStorage.getAccessToken();

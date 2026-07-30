@@ -279,18 +279,30 @@ public async Task<IActionResult> VerifyOtp(
         }
     }
 
-    [HttpPost("logout")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> Logout(
-        [FromBody] LogoutRequest request,
-        CancellationToken cancellationToken)
+    [Authorize]
+[HttpPost("logout")]
+[Consumes("application/json")]
+[ProducesResponseType(StatusCodes.Status204NoContent)]
+[ProducesResponseType(StatusCodes.Status400BadRequest)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+public async Task<IActionResult> Logout(
+    [FromBody] LogoutRequest request,
+    CancellationToken cancellationToken)
+{
+    if (string.IsNullOrWhiteSpace(request.RefreshToken))
     {
-        await _authenticationService.LogoutAsync(
-            request,
-            cancellationToken);
-
-        return NoContent();
+        return BadRequest(new
+        {
+            message = "Refresh token is required."
+        });
     }
+
+    await _authenticationService.LogoutAsync(
+        request,
+        cancellationToken);
+
+    return NoContent();
+}
 
     [Authorize]
     [HttpGet("me")]

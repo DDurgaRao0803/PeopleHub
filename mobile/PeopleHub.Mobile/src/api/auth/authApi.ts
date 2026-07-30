@@ -108,11 +108,16 @@ export class AuthApi {
     );
   }
 
-  async logout(): Promise<void> {
-    await apiClient.post(
-      API_ENDPOINTS.AUTH.LOGOUT,
-    );
-  }
+  async logout(
+  refreshToken: string,
+): Promise<void> {
+  await apiClient.post(
+    API_ENDPOINTS.AUTH.LOGOUT,
+    {
+      refreshToken,
+    },
+  );
+}
 }
 
 export const authApi = new AuthApi();
