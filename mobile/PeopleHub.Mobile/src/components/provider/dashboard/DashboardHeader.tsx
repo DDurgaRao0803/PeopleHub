@@ -1,5 +1,13 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
+
+import {
+  colors,
+  radius,
+  shadows,
+  spacing,
+  typography,
+} from "../../../theme";
 
 type DashboardHeaderProps = {
   firstName: string;
@@ -20,31 +28,136 @@ export default function DashboardHeader({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.greeting}>
-        {greeting}, {firstName} 👋
+      <View style={styles.topRow}>
+        <View>
+          <Text style={styles.logo}>PeopleHub</Text>
+          <Text style={styles.provider}>PROVIDER</Text>
+        </View>
+
+        <View style={styles.rightSection}>
+          <View style={styles.notificationContainer}>
+            <Text style={styles.notificationIcon}>🔔</Text>
+
+            <View style={styles.notificationBadge}>
+              <Text style={styles.notificationCount}>3</Text>
+            </View>
+          </View>
+
+          <Image
+            source={{
+              uri: "https://i.pravatar.cc/120?img=12",
+            }}
+            style={styles.avatar}
+          />
+        </View>
+      </View>
+
+      <Text style={styles.greeting}>{greeting}</Text>
+
+      <Text style={styles.name}>
+        {firstName} 👋
       </Text>
 
-      <Text style={styles.subtitle}>
-        Ready to accept work today?
-      </Text>
+      <View style={styles.badge}>
+        <Text style={styles.badgeText}>⭐ Gold Provider</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 24,
+    marginBottom: spacing.xxl,
+  },
+
+  topRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: spacing.xl,
+  },
+
+  logo: {
+    ...typography.h2,
+    color: colors.text.primary,
+  },
+
+  provider: {
+    ...typography.caption,
+    color: colors.text.secondary,
+    letterSpacing: 1,
+  },
+
+  rightSection: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  notificationContainer: {
+    marginRight: spacing.lg,
+    position: "relative",
+  },
+
+  notificationIcon: {
+    fontSize: 24,
+  },
+
+  notificationBadge: {
+    position: "absolute",
+    top: -4,
+    right: -6,
+
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+
+    backgroundColor: colors.error,
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  notificationCount: {
+    color: colors.white,
+    fontSize: 10,
+    fontWeight: "700",
+  },
+
+  avatar: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
   },
 
   greeting: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: "#1F2937",
+    ...typography.subtitle,
+    color: colors.text.secondary,
   },
 
-  subtitle: {
-    marginTop: 6,
-    fontSize: 16,
-    color: "#6B7280",
+  name: {
+    ...typography.display,
+    color: colors.text.primary,
+    marginTop: spacing.xs,
+  },
+
+  badge: {
+    alignSelf: "flex-start",
+
+    marginTop: spacing.lg,
+
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+
+    borderRadius: radius.round,
+
+    backgroundColor: "#FFF8E6",
+
+    ...shadows.sm,
+  },
+
+  badgeText: {
+    ...typography.caption,
+    color: "#B7791F",
+    fontWeight: "700",
   },
 });

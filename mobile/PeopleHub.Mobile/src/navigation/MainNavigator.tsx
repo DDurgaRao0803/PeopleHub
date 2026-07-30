@@ -43,11 +43,45 @@ export function MainNavigator(): React.JSX.Element {
       tabBarActiveTintColor: colors.primary,
       tabBarInactiveTintColor: "#8E8E93",
 
+      tabBarLabelStyle: {
+  fontSize: 12,
+  fontWeight: "600",
+  marginBottom: 2,
+},
+
+tabBarItemStyle: {
+  paddingVertical: 4,
+},
+
       tabBarStyle: {
-        height: 62,
-        paddingBottom: 8,
-        paddingTop: 6,
-      },
+  position: "absolute",
+
+  left: 16,
+  right: 16,
+  bottom: 16,
+
+  height: 82,
+
+  paddingTop: 10,
+  paddingBottom: 12,
+
+  borderTopWidth: 0,
+
+  backgroundColor: "#FFFFFF",
+
+  borderRadius: 24,
+
+  elevation: 10,
+
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: -2,
+  },
+  shadowOpacity: 0.08,
+  shadowRadius: 10,
+
+},
 
       tabBarIcon: ({ color, size }) => {
         let iconName: keyof typeof Ionicons.glyphMap = "home";

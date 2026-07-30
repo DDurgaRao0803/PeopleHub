@@ -1,52 +1,118 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+import {
+  colors,
+  radius,
+  shadows,
+  spacing,
+  typography,
+} from "../../../theme";
+
 type SummaryCardProps = {
   title: string;
   value: string;
+};
+
+const getConfig = (title: string) => {
+  switch (title.toLowerCase()) {
+    case "jobs":
+      return {
+        icon: "💼",
+        background: "#EEF5FF",
+      };
+
+    case "pending":
+      return {
+        icon: "📥",
+        background: "#FFF8E7",
+      };
+
+    case "earnings":
+      return {
+        icon: "💰",
+        background: "#ECFDF5",
+      };
+
+    case "rating":
+      return {
+        icon: "⭐",
+        background: "#F5EEFF",
+      };
+
+    default:
+      return {
+        icon: "📊",
+        background: colors.surface,
+      };
+  }
 };
 
 export default function SummaryCard({
   title,
   value,
 }: SummaryCardProps): React.JSX.Element {
-  return (
-    <View style={styles.card}>
-      <Text style={styles.title}>{title}</Text>
+  const config = getConfig(title);
 
-      <Text style={styles.value}>{value}</Text>
+  return (
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: config.background,
+        },
+      ]}
+    >
+      <Text style={styles.icon}>
+        {config.icon}
+      </Text>
+
+      <Text
+        numberOfLines={1}
+        style={styles.title}
+      >
+        {title}
+      </Text>
+
+      <Text
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        style={styles.value}
+      >
+        {value}
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 16,
-    padding: 18,
-    marginHorizontal: 4,
+    width: "23%",
+    aspectRatio: 1,
 
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    borderRadius: radius.xl,
 
-    elevation: 3,
+    justifyContent: "center",
+    alignItems: "center",
+
+    ...shadows.sm,
+  },
+
+  icon: {
+    fontSize: 24,
+    marginBottom: spacing.sm,
   },
 
   title: {
-    fontSize: 14,
-    color: "#6B7280",
-    marginBottom: 8,
+    ...typography.caption,
+    color: colors.text.secondary,
+    textAlign: "center",
+    marginBottom: spacing.xs,
   },
 
   value: {
-    fontSize: 22,
+    ...typography.title,
+    color: colors.text.primary,
     fontWeight: "700",
-    color: "#1F2937",
   },
 });

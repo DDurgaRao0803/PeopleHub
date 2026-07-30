@@ -42,4 +42,20 @@ export const colors = {
   black: "#000000",
   transparent: "transparent",
 
+  // Dashboard
+
+dashboard: {
+  heroBackground: "#E8F7EE",
+  heroBorder: "#CDEFD8",
+
+  rating: "#FBBF24",
+  jobs: "#3B82F6",
+  pending: "#FB923C",
+  earnings: "#8B5CF6",
+
+  requestNew: "#FFF7ED",
+  requestAccepted: "#DCFCE7",
+  requestCompleted: "#DBEAFE",
+},
+
 };

@@ -6,6 +6,14 @@ import {
   View,
 } from "react-native";
 
+import {
+  colors,
+  radius,
+  shadows,
+  spacing,
+  typography,
+} from "../../../theme";
+
 type QuickAction = {
   title: string;
   onPress: () => void;
@@ -15,23 +23,91 @@ type QuickActionsProps = {
   actions: QuickAction[];
 };
 
+const getConfig = (title: string) => {
+  switch (title.toLowerCase()) {
+    case "Requests":
+    case "requests":
+      return {
+        icon: "📥",
+        background: "#EEF8F1",
+      };
+
+    case "my services":
+    case "services":
+      return {
+        icon: "🛠",
+        background: "#EEF5FF",
+      };
+
+    case "availability":
+      return {
+        icon: "📅",
+        background: "#F5EEFF",
+      };
+
+    case "reviews":
+      return {
+        icon: "⭐",
+        background: "#FFF8E7",
+      };
+
+    default:
+      return {
+        icon: "📌",
+        background: colors.surface,
+      };
+  }
+};
+
 export default function QuickActions({
   actions,
 }: QuickActionsProps): React.JSX.Element {
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Quick Actions</Text>
+      <View style={styles.header}>
+        <Text style={styles.heading}>
+          Quick Actions
+        </Text>
+
+        <Pressable>
+          <Text style={styles.viewAll}>
+            View All &gt;
+          </Text>
+        </Pressable>
+      </View>
 
       <View style={styles.grid}>
-        {actions.map((action) => (
-          <Pressable
-            key={action.title}
-            style={styles.card}
-            onPress={action.onPress}
-          >
-            <Text style={styles.cardTitle}>{action.title}</Text>
-          </Pressable>
-        ))}
+        {actions.map((action) => {
+          const config = getConfig(action.title);
+
+          return (
+            <Pressable
+              key={action.title}
+              onPress={action.onPress}
+              android_ripple={{
+                color: "#E5E7EB",
+              }}
+              style={({ pressed }) => [
+                styles.card,
+                {
+                  backgroundColor: config.background,
+                  opacity: pressed ? 0.85 : 1,
+                },
+              ]}
+            >
+              <Text style={styles.icon}>
+                {config.icon}
+              </Text>
+
+              <Text
+                numberOfLines={2}
+                style={styles.cardTitle}
+              >
+                {action.title}
+              </Text>
+            </Pressable>
+          );
+        })}
       </View>
     </View>
   );
@@ -39,45 +115,54 @@ export default function QuickActions({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 24,
+    marginBottom: spacing.xxxl,
+  },
+
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: spacing.lg,
   },
 
   heading: {
-    fontSize: 20,
+    ...typography.h3,
+    color: colors.text.primary,
+  },
+
+  viewAll: {
+    ...typography.body,
+    color: colors.primary,
     fontWeight: "700",
-    color: "#1F2937",
-    marginBottom: 16,
   },
 
   grid: {
     flexDirection: "row",
-    flexWrap: "wrap",
     justifyContent: "space-between",
   },
 
   card: {
-    width: "48%",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 16,
-    paddingVertical: 20,
+    width: "23%",
+    aspectRatio: 1,
+
+    borderRadius: radius.xl,
+
     alignItems: "center",
-    marginBottom: 12,
+    justifyContent: "center",
 
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    padding: spacing.sm,
 
-    elevation: 3,
+    ...shadows.sm,
+  },
+
+  icon: {
+    fontSize: 26,
+    marginBottom: spacing.sm,
   },
 
   cardTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#1F2937",
+    ...typography.caption,
+    color: colors.text.primary,
     textAlign: "center",
   },
 });

@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
+
+import {
+  colors,
+  spacing,
+} from "../../../theme";
 
 import DashboardHeader from "./DashboardHeader";
 import AvailabilityCard from "./AvailabilityCard";
 import SummaryCard from "./SummaryCard";
 import ProviderQuickActions from "./QuickActions";
-import RecentActivity from "./RecentActivity";
+import RecentActivity from "./RecentRequests";
 
 import { providerService } from "../../../services/providerService";
 import type { ProviderProfile } from "../../../api/providerApi";
@@ -22,6 +32,7 @@ export default function ProviderDashboard({
   const [profile, setProfile] = useState<ProviderProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [dashboard, setDashboard] = useState<ProviderDashboard | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const quickActions = [
     { title: "View Requests", onPress: () => {} },
@@ -45,6 +56,17 @@ setDashboard(dashboardData);
       setLoading(false);
     }
   };
+
+const handleRefresh = async () => {
+  setRefreshing(true);
+
+  try {
+    await loadProfile();
+  } finally {
+    setRefreshing(false);
+  }
+};
+
 
   const handleAvailabilityToggle = async (value: boolean) => {
     if (!profile) {
@@ -73,9 +95,17 @@ setDashboard(dashboardData);
   }
 
   return (
+  <View style={styles.container}>
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.content}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          tintColor={colors.primary}
+        />
+      }
     >
       <DashboardHeader firstName={firstName} />
 
@@ -85,47 +115,51 @@ setDashboard(dashboardData);
       />
 
       <View style={styles.row}>
-  <SummaryCard
-    title="⭐ Rating"
-    value={(dashboard?.averageRating ?? 0).toFixed(1)}
-  />
+        <SummaryCard
+          title="Jobs"
+          value={(dashboard?.completedJobs ?? 0).toString()}
+        />
 
-  <SummaryCard
-    title="📦 Jobs"
-    value={(dashboard?.completedJobs ?? 0).toString()}
-  />
-</View>
+        <SummaryCard
+          title="Pending"
+          value={(dashboard?.pendingRequests ?? 0).toString()}
+        />
 
-<SummaryCard
-  title="📈 Response"
-  value={`${dashboard?.responseRate ?? 0}%`}
-/>
+        <SummaryCard
+          title="Earnings"
+          value="₹0"
+        />
 
-<ProviderQuickActions actions={quickActions} />
+        <SummaryCard
+          title="Rating"
+          value={(dashboard?.averageRating ?? 0).toFixed(1)}
+        />
+      </View>
+
+      <ProviderQuickActions actions={quickActions} />
 
       <RecentActivity />
     </ScrollView>
-  );
+
+  </View>
+);
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+
   content: {
-    paddingBottom: 32,
-  },
-
-  section: {
-    marginBottom: 24,
-  },
-
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#1F2937",
-    marginBottom: 16,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.lg,
+    paddingBottom: 110,
   },
 
   row: {
     flexDirection: "row",
-    marginBottom: 12,
+    justifyContent: "space-between",
+    marginBottom: spacing.lg,
   },
 });
