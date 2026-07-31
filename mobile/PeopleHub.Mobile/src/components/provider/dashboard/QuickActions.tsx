@@ -16,44 +16,44 @@ import {
 
 type QuickAction = {
   title: string;
+  subtitle?: string;
   onPress: () => void;
 };
 
 type QuickActionsProps = {
   actions: QuickAction[];
+  onViewAll?: () => void;
 };
 
 const getConfig = (title: string) => {
-  switch (title.toLowerCase()) {
+  switch (title) {
     case "Requests":
-    case "requests":
       return {
         icon: "📥",
-        background: "#EEF8F1",
-      };
-
-    case "my services":
-    case "services":
-      return {
-        icon: "🛠",
         background: "#EEF5FF",
       };
 
-    case "availability":
+    case "My Services":
       return {
-        icon: "📅",
-        background: "#F5EEFF",
+        icon: "🛠️",
+        background: "#ECFDF5",
       };
 
-    case "reviews":
+    case "Availability":
+      return {
+        icon: "🟢",
+        background: "#FFF8E7",
+      };
+
+    case "Reviews":
       return {
         icon: "⭐",
-        background: "#FFF8E7",
+        background: "#F5EEFF",
       };
 
     default:
       return {
-        icon: "📌",
+        icon: "📋",
         background: colors.surface,
       };
   }
@@ -61,6 +61,7 @@ const getConfig = (title: string) => {
 
 export default function QuickActions({
   actions,
+  onViewAll,
 }: QuickActionsProps): React.JSX.Element {
   return (
     <View style={styles.container}>
@@ -69,11 +70,11 @@ export default function QuickActions({
           Quick Actions
         </Text>
 
-        <Pressable>
-          <Text style={styles.viewAll}>
-            View All &gt;
-          </Text>
-        </Pressable>
+        <Pressable onPress={onViewAll}>
+  <Text style={styles.viewAll}>
+    View All &gt;
+  </Text>
+</Pressable>
       </View>
 
       <View style={styles.grid}>
@@ -95,16 +96,23 @@ export default function QuickActions({
                 },
               ]}
             >
-              <Text style={styles.icon}>
-                {config.icon}
-              </Text>
+              <View
+    style={[
+        styles.iconContainer,
+        { backgroundColor: config.background },
+    ]}
+>
+    <Text style={styles.icon}>
+        {config.icon}
+    </Text>
+</View>
 
-              <Text
-                numberOfLines={2}
-                style={styles.cardTitle}
-              >
-                {action.title}
-              </Text>
+ <Text
+  numberOfLines={2}
+  style={styles.cardTitle}
+>
+  {action.title}
+</Text>
             </Pressable>
           );
         })}
@@ -137,32 +145,54 @@ const styles = StyleSheet.create({
   },
 
   grid: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "stretch",
+},
 
   card: {
-    width: "23%",
-    aspectRatio: 1,
+  width: "23%",
+  height: 82,
 
-    borderRadius: radius.xl,
+  borderRadius: 18,
 
-    alignItems: "center",
-    justifyContent: "center",
+  alignItems: "center",
+  justifyContent: "center",
 
-    padding: spacing.sm,
+  paddingVertical: 10,
+  paddingHorizontal: 6,
 
-    ...shadows.sm,
-  },
+  ...shadows.sm,
+},
 
   icon: {
-    fontSize: 26,
-    marginBottom: spacing.sm,
-  },
+  fontSize: 22,
+  marginBottom: 6,
+},
 
   cardTitle: {
-    ...typography.caption,
-    color: colors.text.primary,
+  fontSize: 11,
+  fontWeight: "600",
+  color: colors.text.primary,
+  textAlign: "center",
+  lineHeight: 14,
+},
+
+  iconContainer: {
+  width: 34,
+  height: 34,
+  borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 14,
+},
+
+cardSubtitle: {
+    marginTop: 6,
+    fontSize: 12,
+    color: "#6B7280",
     textAlign: "center",
-  },
+    lineHeight: 18,
+},
+
 });

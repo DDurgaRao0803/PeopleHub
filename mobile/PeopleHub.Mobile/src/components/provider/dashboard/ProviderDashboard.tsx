@@ -4,6 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   View,
+  Text,
 } from "react-native";
 
 import {
@@ -13,9 +14,12 @@ import {
 
 import DashboardHeader from "./DashboardHeader";
 import AvailabilityCard from "./AvailabilityCard";
-import SummaryCard from "./SummaryCard";
+import StatisticsGrid from "./StatisticsGrid";
 import ProviderQuickActions from "./QuickActions";
 import RecentActivity from "./RecentRequests";
+import { Ionicons } from "@expo/vector-icons";
+import OnlineStatusCard from "./OnlineStatusCard";
+import { useNavigation } from "@react-navigation/native";
 
 import { providerService } from "../../../services/providerService";
 import type { ProviderProfile } from "../../../api/providerApi";
@@ -29,17 +33,35 @@ export default function ProviderDashboard({
   firstName,
 }: ProviderDashboardProps): React.JSX.Element {
 
+  const navigation = useNavigation();
+
   const [profile, setProfile] = useState<ProviderProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [dashboard, setDashboard] = useState<ProviderDashboard | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
   const quickActions = [
-    { title: "View Requests", onPress: () => {} },
-    { title: "My Services", onPress: () => {} },
-    { title: "Availability", onPress: () => {} },
-    { title: "Reviews", onPress: () => {} },
-  ];
+  {
+    title: "View Requests",
+    subtitle: "View new jobs",
+    onPress: () => {},
+  },
+  {
+    title: "My Services",
+    subtitle: "Manage services",
+    onPress: () => {},
+  },
+  {
+    title: "Availability",
+    subtitle: "Set working hours",
+    onPress: () => {},
+  },
+  {
+    title: "Reviews",
+    subtitle: "Customer ratings",
+    onPress: () => {},
+  },
+];
 
   const loadProfile = async () => {
     try {
@@ -109,34 +131,27 @@ const handleRefresh = async () => {
     >
       <DashboardHeader firstName={firstName} />
 
-      <AvailabilityCard
-        acceptingRequests={profile?.acceptingRequests ?? false}
-        onToggle={handleAvailabilityToggle}
-      />
+<OnlineStatusCard
+    acceptingRequests={profile?.acceptingRequests ?? false}
+    todayEarnings={1250}
+    onToggle={handleAvailabilityToggle}
+/>
 
-      <View style={styles.row}>
-        <SummaryCard
-          title="Jobs"
-          value={(dashboard?.completedJobs ?? 0).toString()}
-        />
+      
 
-        <SummaryCard
-          title="Pending"
-          value={(dashboard?.pendingRequests ?? 0).toString()}
-        />
+      <StatisticsGrid
+    completedJobs={dashboard?.completedJobs ?? 0}
+    pendingRequests={dashboard?.pendingRequests ?? 0}
+    earnings={0}
+    rating={dashboard?.averageRating ?? 0}
+/>
 
-        <SummaryCard
-          title="Earnings"
-          value="₹0"
-        />
-
-        <SummaryCard
-          title="Rating"
-          value={(dashboard?.averageRating ?? 0).toFixed(1)}
-        />
-      </View>
-
-      <ProviderQuickActions actions={quickActions} />
+      <ProviderQuickActions
+  actions={quickActions}
+  onViewAll={() =>
+    navigation.navigate("ProviderQuickActions" as never)
+  }
+/>
 
       <RecentActivity />
     </ScrollView>
@@ -147,19 +162,73 @@ const handleRefresh = async () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
+  flex: 1,
+  backgroundColor: "#F8FAFC",
+},
 
   content: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
-    paddingBottom: 110,
-  },
+  paddingHorizontal: 20,
+  paddingTop: 20,
+  paddingBottom: 120,
+},
 
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: spacing.lg,
-  },
+  heroBanner: {
+  backgroundColor: "#22C55E",
+  borderRadius: 24,
+  padding: 24,
+  marginBottom: 24,
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+},
+
+heroContent: {
+  flex: 1,
+  paddingRight: 16,
+},
+
+badge: {
+  alignSelf: "flex-start",
+  backgroundColor: "rgba(255,255,255,0.18)",
+  borderRadius: 50,
+  paddingHorizontal: 12,
+  paddingVertical: 5,
+  marginBottom: 14,
+},
+
+badgeText: {
+  color: "#FFFFFF",
+  fontSize: 11,
+  fontWeight: "700",
+  letterSpacing: 1,
+},
+
+heroTitle: {
+  color: "#FFFFFF",
+  fontSize: 26,
+  fontWeight: "700",
+},
+
+heroSubtitle: {
+  color: "#F0FDF4",
+  fontSize: 15,
+  marginTop: 8,
+  lineHeight: 22,
+},
+
+heroIcon: {
+  width: 90,
+  height: 90,
+  borderRadius: 45,
+  backgroundColor: "rgba(255,255,255,0.15)",
+  alignItems: "center",
+  justifyContent: "center",
+},
+
+row: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  marginBottom: spacing.lg,
+},
+
 });

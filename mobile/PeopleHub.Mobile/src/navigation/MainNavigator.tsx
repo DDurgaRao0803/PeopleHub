@@ -12,11 +12,12 @@ import { colors } from "../theme/colors";
 
 import { useAuth } from "../context/AuthContext";
 
+
 import {
   ProviderProfileScreen,
   ProviderServicesScreen,
   ProviderRequestsScreen,
-  ProviderAvailabilityScreen,
+  ProviderEarningsScreen,
 } from "../screens/provider";
 
 export type MainTabParamList = {
@@ -50,37 +51,30 @@ export function MainNavigator(): React.JSX.Element {
 },
 
 tabBarItemStyle: {
-  paddingVertical: 4,
+  justifyContent: "center",
+  alignItems: "center",
 },
 
       tabBarStyle: {
-  position: "absolute",
+  height: 72,
 
-  left: 16,
-  right: 16,
-  bottom: 16,
-
-  height: 82,
-
-  paddingTop: 10,
-  paddingBottom: 12,
-
-  borderTopWidth: 0,
+  paddingTop: 8,
+  paddingBottom: 8,
 
   backgroundColor: "#FFFFFF",
 
-  borderRadius: 24,
+  borderTopWidth: 1,
+  borderTopColor: "#E5E7EB",
 
-  elevation: 10,
+  elevation: 8,
 
   shadowColor: "#000",
   shadowOffset: {
     width: 0,
     height: -2,
   },
-  shadowOpacity: 0.08,
-  shadowRadius: 10,
-
+  shadowOpacity: 0.05,
+  shadowRadius: 6,
 },
 
       tabBarIcon: ({ color, size }) => {
@@ -92,20 +86,22 @@ tabBarItemStyle: {
             break;
 
           case "Search":
-            iconName = user?.isProvider
-              ? "construct"
-              : "search";
-            break;
+  iconName = user?.isProvider
+    ? "clipboard"
+    : "search";
+  break;
 
-          case "Requests":
-            iconName = "clipboard";
-            break;
+case "Requests":
+  iconName = user?.isProvider
+    ? "construct"
+    : "clipboard";
+  break;
 
-          case "Notifications":
-            iconName = user?.isProvider
-              ? "calendar"
-              : "notifications";
-            break;
+case "Notifications":
+  iconName = user?.isProvider
+    ? "wallet"
+    : "notifications";
+  break;
 
           case "Profile":
             iconName = "person";
@@ -124,33 +120,34 @@ tabBarItemStyle: {
   >
     {user?.isProvider ? (
       <>
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-        />
+  <Tab.Screen
+    name="Home"
+    component={HomeScreen}
+  />
 
-        <Tab.Screen
-          name="Search"
-          component={ProviderServicesScreen}
-          options={{ title: "Services" }}
-        />
+  <Tab.Screen
+    name="Search"
+    component={ProviderRequestsScreen}
+    options={{ title: "Requests" }}
+  />
 
-        <Tab.Screen
-          name="Requests"
-          component={ProviderRequestsScreen}
-        />
+  <Tab.Screen
+    name="Requests"
+    component={ProviderServicesScreen}
+    options={{ title: "Services" }}
+  />
 
-        <Tab.Screen
-          name="Notifications"
-          component={ProviderAvailabilityScreen}
-          options={{ title: "Availability" }}
-        />
+  <Tab.Screen
+    name="Notifications"
+    component={ProviderEarningsScreen}
+    options={{ title: "Earnings" }}
+  />
 
-        <Tab.Screen
-          name="Profile"
-          component={ProviderProfileScreen}
-        />
-      </>
+  <Tab.Screen
+    name="Profile"
+    component={ProviderProfileScreen}
+  />
+</>
     ) : (
       <>
         <Tab.Screen

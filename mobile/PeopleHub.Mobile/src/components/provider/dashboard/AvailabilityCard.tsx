@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Image,
   Pressable,
   StyleSheet,
   Switch,
@@ -77,7 +78,11 @@ export default function AvailabilityCard({
         />
 
         <View style={styles.imagePlaceholder}>
-          <Text style={styles.worker}>👷</Text>
+          <Image
+    source={require("../../../assets/images/provider-worker.png")}
+    style={styles.workerImage}
+    resizeMode="contain"
+/>
         </View>
       </View>
     </View>
@@ -166,4 +171,10 @@ const styles = StyleSheet.create({
   worker: {
     fontSize: 80,
   },
+
+  workerImage: {
+    width: 130,
+    height: 160,
+},
+
 });

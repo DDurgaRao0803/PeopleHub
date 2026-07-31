@@ -7,6 +7,11 @@ import {
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+import type { MainStackParamList } from "../../../navigation/MainStackNavigator";
+
 
 import {
   colors,
@@ -73,6 +78,11 @@ const getTextColor = (status: RequestStatus) => {
 };
 
 export default function RecentActivity(): React.JSX.Element {
+
+  const navigation =
+    useNavigation<
+      NativeStackNavigationProp<MainStackParamList>
+    >();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -80,7 +90,11 @@ export default function RecentActivity(): React.JSX.Element {
           Recent Requests
         </Text>
 
-        <Pressable>
+        <Pressable
+  onPress={() =>
+    navigation.navigate("ProviderRequests")
+  }
+>
           <Text style={styles.viewAll}>
             View All &gt;
           </Text>

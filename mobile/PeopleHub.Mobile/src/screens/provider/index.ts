@@ -7,3 +7,5 @@ export * from "./EditProviderServiceScreen";
 export * from "./AddProviderAvailabilityScreen";
 export * from "./EditProviderAvailabilityScreen";
 export * from "./EditProviderProfileScreen";
+export { ProviderEarningsScreen } from "./ProviderEarningsScreen";
+export { default as ProviderQuickActionsScreen } from "./ProviderQuickActionsScreen";

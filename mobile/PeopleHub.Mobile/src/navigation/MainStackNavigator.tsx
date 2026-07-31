@@ -25,6 +25,7 @@ import {
   ProviderServicesScreen,
   AddProviderAvailabilityScreen,
   EditProviderAvailabilityScreen,
+  ProviderQuickActionsScreen,
 } from "../screens/provider";
 
 export type MainStackParamList = {
@@ -48,6 +49,8 @@ export type MainStackParamList = {
   ProviderRequests: undefined;
 
   ProviderServices: undefined;
+  
+  ProviderQuickActions: undefined;
 
   AddProviderService: undefined;
 
@@ -109,7 +112,7 @@ export function MainStackNavigator(): React.JSX.Element {
   name="ProviderRequests"
   component={ProviderRequestsScreen}
   options={{
-    title: "Requests",
+    headerShown: false,
   }}
 />
 
@@ -118,6 +121,14 @@ export function MainStackNavigator(): React.JSX.Element {
   component={ProviderServicesScreen}
   options={{
     title: "Services",
+  }}
+/>
+
+<Stack.Screen
+  name="ProviderQuickActions"
+  component={ProviderQuickActionsScreen}
+  options={{
+    headerShown: false,
   }}
 />
 
