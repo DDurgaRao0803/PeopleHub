@@ -62,24 +62,9 @@ useEffect(() => {
   void loadProfile();
 }, [loadProfile]);
 
-const handleLogout = (): void => {
-  Alert.alert(
-    "Logout",
-    "Are you sure you want to logout?",
-    [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Logout",
-        style: "destructive",
-        onPress: async () => {
-          await logout();
-        },
-      },
-    ]
-  );
+const handleLogout = async (): Promise<void> => {
+ await logout();
+
 };
 
 if (loading) {

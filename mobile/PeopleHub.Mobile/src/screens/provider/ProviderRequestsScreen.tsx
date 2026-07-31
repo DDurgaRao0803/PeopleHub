@@ -1,18 +1,17 @@
-
 import React, {
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
 import {
   ActivityIndicator,
-  FlatList,
-  SectionList,
   Pressable,
   RefreshControl,
   SafeAreaView,
   ScrollView,
+  SectionList,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -28,6 +27,8 @@ import type {
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
 
+import { Ionicons } from "@expo/vector-icons";
+
 import type {
   MainStackParamList,
 } from "../../navigation/MainStackNavigator";
@@ -40,26 +41,29 @@ import type {
   ServiceRequest,
 } from "../../types";
 
-import { Ionicons } from "@expo/vector-icons";
-
 function getServiceIcon(
   title: string
 ): keyof typeof Ionicons.glyphMap {
+
   const value = title.toLowerCase();
+
+  if (value.includes("clean")) {
+    return "sparkles-outline";
+  }
 
   if (value.includes("plumb")) {
     return "construct-outline";
   }
 
-  if (
-    value.includes("electric")
-  ) {
+  if (value.includes("electric")) {
     return "flash-outline";
   }
 
-  if (
-    value.includes("garden")
-  ) {
+  if (value.includes("paint")) {
+    return "color-palette-outline";
+  }
+
+  if (value.includes("garden")) {
     return "leaf-outline";
   }
 
@@ -70,33 +74,15 @@ function getServiceIcon(
     return "snow-outline";
   }
 
-  if (
-    value.includes("clean")
-  ) {
-    return "sparkles-outline";
-  }
-
-  if (
-    value.includes("paint")
-  ) {
-    return "color-palette-outline";
-  }
-
-  if (
-    value.includes("car")
-  ) {
+  if (value.includes("car")) {
     return "car-sport-outline";
   }
 
-  if (
-    value.includes("deliver")
-  ) {
+  if (value.includes("deliver")) {
     return "bicycle-outline";
   }
 
-  if (
-    value.includes("computer")
-  ) {
+  if (value.includes("computer")) {
     return "laptop-outline";
   }
 
@@ -110,21 +96,116 @@ function getServiceIcon(
   return "construct-outline";
 }
 
+function getServiceColor(
+  title: string
+) {
+
+  const value = title.toLowerCase();
+
+  if (value.includes("clean")) {
+    return {
+      background: "#DCFCE7",
+      icon: "#16A34A",
+    };
+  }
+
+  if (value.includes("electric")) {
+    return {
+      background: "#FEF3C7",
+      icon: "#D97706",
+    };
+  }
+
+  if (value.includes("plumb")) {
+    return {
+      background: "#DBEAFE",
+      icon: "#2563EB",
+    };
+  }
+
+  if (value.includes("paint")) {
+    return {
+      background: "#F3E8FF",
+      icon: "#9333EA",
+    };
+  }
+
+  return {
+    background: "#E5E7EB",
+    icon: "#374151",
+  };
+}
+
+function getRelativeTime(
+  value?: string
+) {
+
+  if (!value) {
+    return "Just now";
+  }
+
+  const created = new Date(value);
+
+  const minutes = Math.floor(
+    (Date.now() - created.getTime()) / 60000
+  );
+
+  if (minutes < 1) {
+    return "Just now";
+  }
+
+  if (minutes < 60) {
+    return `${minutes} min ago`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+
+  if (hours < 24) {
+    return `${hours} hr ago`;
+  }
+
+  const days = Math.floor(hours / 24);
+
+  return `${days} day ago`;
+}
+
+function getStatusColor(
+  status: string
+) {
+
+  switch (status.toLowerCase()) {
+
+    case "new":
+      return "#16A34A";
+
+    case "accepted":
+      return "#2563EB";
+
+    case "completed":
+      return "#059669";
+
+    case "cancelled":
+      return "#DC2626";
+
+    default:
+      return "#6B7280";
+  }
+}
+
 export function ProviderRequestsScreen(): React.JSX.Element {
-  
-  
-  const filters = [
-  "All",
-  "New",
-  "Accepted",
-  "Completed",
-  "Cancelled",
-];
 
   const navigation =
     useNavigation<
       NativeStackNavigationProp<MainStackParamList>
     >();
+
+  const filters = [
+    "All",
+    "New",
+    "Accepted",
+    "Completed",
+    "Cancelled",
+  ];
 
   const [requests, setRequests] =
     useState<ServiceRequest[]>([]);
@@ -136,65 +217,83 @@ export function ProviderRequestsScreen(): React.JSX.Element {
     useState(false);
 
   const [selectedFilter, setSelectedFilter] =
-  useState("All");
+    useState("All");
 
   const filteredRequests =
-  selectedFilter === "All"
-    ? requests
-    : requests.filter(
-        (request) =>
+    useMemo(() => {
+
+      if (selectedFilter === "All") {
+        return requests;
+      }
+
+      return requests.filter(
+        request =>
           request.status.toLowerCase() ===
           selectedFilter.toLowerCase()
       );
 
-  const requestSections = [
-  {
-    title: "New Requests",
-    status: "New",
-    data: filteredRequests.filter(
-      (request) => request.status === "New"
-    ),
-  },
-  {
-    title: "Accepted Requests",
-    status: "Accepted",
-    data: filteredRequests.filter(
-      (request) => request.status === "Accepted"
-    ),
-  },
-  {
-    title: "Completed Requests",
-    status: "Completed",
-    data: filteredRequests.filter(
-      (request) => request.status === "Completed"
-    ),
-  },
-  {
-    title: "Cancelled Requests",
-    status: "Cancelled",
-    data: filteredRequests.filter(
-      (request) => request.status === "Cancelled"
-    ),
-  },
-];
+    }, [
+      requests,
+      selectedFilter,
+    ]);
 
+  const requestSections =
+    useMemo(
+      () => [
+        {
+          title: "New Requests",
+          status: "New",
+          data: filteredRequests.filter(
+            item => item.status === "New"
+          ),
+        },
+        {
+          title: "Accepted Requests",
+          status: "Accepted",
+          data: filteredRequests.filter(
+            item => item.status === "Accepted"
+          ),
+        },
+        {
+          title: "Completed Requests",
+          status: "Completed",
+          data: filteredRequests.filter(
+            item => item.status === "Completed"
+          ),
+        },
+        {
+          title: "Cancelled Requests",
+          status: "Cancelled",
+          data: filteredRequests.filter(
+            item => item.status === "Cancelled"
+          ),
+        },
+      ],
+      [filteredRequests]
+    );
 
-  const loadRequests = useCallback(async () => {
-    try {
-      const data =
-  await serviceRequestService.getMyProviderRequests();
+  const loadRequests =
+    useCallback(async () => {
 
-  console.log("Provider Requests:", data);
-  
+      try {
 
-setRequests(data);
-    } catch (error) {
-  setRequests([]);
-} finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  }, []);
+        const data =
+          await serviceRequestService.getMyProviderRequests();
+
+        setRequests(data);
+
+      } catch {
+
+        setRequests([]);
+
+      } finally {
+
+        setLoading(false);
+        setRefreshing(false);
+
+      }
+
+    }, []);
 
   useEffect(() => {
     void loadRequests();
@@ -202,26 +301,35 @@ setRequests(data);
 
   useFocusEffect(
     useCallback(() => {
+
       void loadRequests();
+
     }, [loadRequests])
   );
 
   const onRefresh = async () => {
+
     setRefreshing(true);
+
     await loadRequests();
+
   };
 
   if (loading) {
+
     return (
       <SafeAreaView style={styles.center}>
         <ActivityIndicator size="large" />
       </SafeAreaView>
     );
+
   }
 
   if (requests.length === 0) {
+
     return (
       <SafeAreaView style={styles.center}>
+
         <Text style={styles.emptyTitle}>
           No Provider Requests
         </Text>
@@ -229,205 +337,272 @@ setRequests(data);
         <Text style={styles.emptyText}>
           There are currently no requests assigned to you.
         </Text>
+
       </SafeAreaView>
     );
+
   }
 
-  return (
-  <SafeAreaView style={styles.container}>
+    return (
+    <SafeAreaView style={styles.container}>
 
-    <View style={styles.header}>
-      <Pressable onPress={() => navigation.goBack()}>
-        <Ionicons
-          name="arrow-back"
-          size={24}
-          color="#111827"
-        />
-      </Pressable>
+      {/* Header */}
 
-      <Text style={styles.headerTitle}>
-        Recent Requests
-      </Text>
+      <View style={styles.header}>
 
-      <Pressable>
-        <Ionicons
-          name="search-outline"
-          size={22}
-          color="#111827"
-        />
-      </Pressable>
-    </View>
-
-    {/* Filter Chips */}
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.filterContainer}
-    >
-      {filters.map((filter, index) => (
         <Pressable
-  key={filter}
-  onPress={() => setSelectedFilter(filter)}
-          style={[
-            styles.filterChip,
-            selectedFilter === filter &&
-styles.activeChip,
-          ]}
+          style={styles.headerButton}
+          onPress={() => navigation.goBack()}
         >
-          <Text
+          <Ionicons
+            name="arrow-back"
+            size={22}
+            color="#111827"
+          />
+        </Pressable>
+
+        <Text style={styles.headerTitle}>
+          Recent Requests
+        </Text>
+
+        <Pressable style={styles.headerButton}>
+          <Ionicons
+            name="search-outline"
+            size={22}
+            color="#111827"
+          />
+        </Pressable>
+
+      </View>
+
+      {/* Filters */}
+
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.filterContainer}
+      >
+        {filters.map(filter => (
+
+          <Pressable
+            key={filter}
+            onPress={() => setSelectedFilter(filter)}
             style={[
-              styles.filterText,
+              styles.filterChip,
               selectedFilter === filter &&
-styles.activeFilterText,
+                styles.activeChip,
             ]}
           >
-            {filter}
-          </Text>
-        </Pressable>
-      ))}
-    </ScrollView>
 
-<SectionList
-  sections={requestSections.filter(
-    section => section.data.length > 0
-  )}
-  keyExtractor={(item) => item.id}
-  refreshControl={
-  <RefreshControl
-    refreshing={refreshing}
-    onRefresh={onRefresh}
-  />
-}
+            <Text
+              style={[
+                styles.filterText,
+                selectedFilter === filter &&
+                  styles.activeFilterText,
+              ]}
+            >
+              {filter}
+            </Text>
 
-renderSectionHeader={({ section }) => (
-  <View style={styles.sectionHeader}>
-    <Text style={styles.sectionTitle}>
-      {section.title} ({section.data.length})
-    </Text>
+          </Pressable>
+
+        ))}
+      </ScrollView>
+
+      <SectionList
+        sections={requestSections.filter(
+          section => section.data.length > 0
+        )}
+        keyExtractor={(item) => item.id}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+
+        contentContainerStyle={{
+  paddingBottom: 25,
+}}
+
+        renderSectionHeader={({ section }) => (
+
+          <View style={styles.sectionHeader}>
+
+            <View>
+
+              <Text style={styles.sectionTitle}>
+                {section.title}
+              </Text>
+
+              <Text style={styles.sectionCount}>
+                {section.data.length} request
+                {section.data.length !== 1 ? "s" : ""}
+              </Text>
+
+            </View>
+
+            <TouchableOpacity
+              onPress={() =>
+                setSelectedFilter(section.status)
+              }
+            >
+
+              <Text style={styles.viewAllText}>
+                View All
+              </Text>
+
+            </TouchableOpacity>
+
+          </View>
+
+        )}
+
+        renderItem={({ item }) => {
+
+  const iconColors =
+    getServiceColor(item.title);
+
+  return (
 
     <TouchableOpacity
-  onPress={() => setSelectedFilter(section.status)}
->
-  <Text style={styles.viewAllText}>
-    View All
-  </Text>
-</TouchableOpacity>
-  </View>
-)}
-
-renderItem={({ item }) => (
-  <TouchableOpacity
-    style={styles.requestCard}
-    activeOpacity={0.85}
-    onPress={() =>
-      navigation.navigate("RequestDetails", {
-        requestId: item.id,
-      })
-    }
-  >
-    <View style={styles.cardHeader}>
-
-  <View style={styles.serviceIcon}>
-    <Ionicons
-  name={getServiceIcon(item.title)}
-  size={22}
-  color="#16A34A"
-/>
-  </View>
-
-  <View style={styles.locationRow}>
-  <Ionicons
-    name="location-outline"
-    size={16}
-    color="#6B7280"
-  />
-
-  <Text
-    style={styles.locationText}
-    numberOfLines={1}
-  >
-    Location unavailable
-  </Text>
-</View>
-
-<View style={styles.footerRow}>
-  <View style={styles.timeRow}>
-    <Ionicons
-      name="time-outline"
-      size={16}
-      color="#6B7280"
-    />
-
-    <Text style={styles.timeText}>
-      {new Date(item.requestedDate).toLocaleDateString()}
-    </Text>
-  </View>
-
-  <Ionicons
-    name="chevron-forward"
-    size={20}
-    color="#9CA3AF"
-  />
-</View>
-
-  <View style={styles.serviceInfo}>
-    <Text
-      style={styles.serviceTitle}
-      numberOfLines={1}
+      activeOpacity={0.85}
+      style={styles.requestCard}
+      onPress={() =>
+        navigation.navigate(
+  "RequestDetails",
+          {
+            requestId: item.id,
+          }
+        )
+      }
     >
-      {item.title}
-    </Text>
 
-    <Text
-      style={styles.serviceSubtitle}
-      numberOfLines={2}
-    >
-      {item.description}
-    </Text>
-  </View>
+      {/* Left Icon */}
 
-  <View
-    style={[
-      styles.statusBadge,
-      item.status === "New"
-        ? styles.newBadge
-        : item.status === "Accepted"
-        ? styles.acceptedBadge
-        : item.status === "Completed"
-        ? styles.completedBadge
-        : styles.cancelledBadge,
-    ]}
-  >
-        <Text style={styles.statusBadgeText}>
-      {item.status}
-    </Text>
-  </View>
+      <View
+        style={[
+          styles.serviceIcon,
+          {
+            backgroundColor:
+              iconColors.background,
+          },
+        ]}
+      >
 
-</View>
+        <Ionicons
+          name={getServiceIcon(item.title)}
+          size={20}
+          color={iconColors.icon}
+        />
 
-</TouchableOpacity>
-)}
+      </View>
 
-ListEmptyComponent={
-  <View style={styles.center}>
-    <Text style={styles.emptyTitle}>
-      No Requests Found
-    </Text>
+      {/* Middle */}
 
-    <Text style={styles.emptyText}>
-      No requests match the selected filter.
-    </Text>
-  </View>
+      <View style={styles.middleSection}>
+
+        <Text
+          numberOfLines={1}
+          style={styles.serviceTitle}
+        >
+          {item.title}
+        </Text>
+
+        <Text
+          numberOfLines={1}
+          style={styles.serviceSubtitle}
+        >
+          {item.description}
+        </Text>
+
+        <View style={styles.locationRow}>
+
+          <Ionicons
+            name="location-outline"
+            size={13}
+            color="#6B7280"
+          />
+
+          <Text
+            numberOfLines={1}
+            style={styles.locationText}
+          >
+            {item.serviceAddress}
+          </Text>
+
+        </View>
+
+      </View>
+
+      {/* Right */}
+
+      <View style={styles.rightSection}>
+
+        <View
+          style={[
+            styles.statusBadge,
+            {
+              backgroundColor:
+                getStatusColor(
+                  item.status
+                ),
+            },
+          ]}
+        >
+
+          <Text
+            style={
+              styles.statusBadgeText
+            }
+          >
+            {item.status}
+          </Text>
+
+        </View>
+
+        <Text style={styles.timeText}>
+          "Just now"
+        </Text>
+
+        <Ionicons
+          name="chevron-forward"
+          size={18}
+          color="#D1D5DB"
+        />
+
+      </View>
+
+    </TouchableOpacity>
+
+  );
+
+}}
+
+        ListEmptyComponent={
+          <View style={styles.center}>
+
+            <Text style={styles.emptyTitle}>
+              No Requests Found
+            </Text>
+
+            <Text style={styles.emptyText}>
+              No requests match the selected filter.
+            </Text>
+
+          </View>
+        }
+      />
+
+    </SafeAreaView>
+  );
+
 }
-    />
-  </SafeAreaView>
-);
-}
-
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
-    padding: 16,
+    backgroundColor: "#F8FAFC",
   },
 
   center: {
@@ -437,223 +612,185 @@ const styles = StyleSheet.create({
     padding: 24,
   },
 
-  card: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    elevation: 2,
-  },
-
-  title: {
-    fontSize: 18,
-    fontWeight: "700",
-  },
-
-  status: {
-    marginTop: 8,
-    fontWeight: "600",
-    color: "#2563EB",
-  },
-
-  description: {
-    marginTop: 8,
-    color: "#666",
-  },
-
-  date: {
-    marginTop: 12,
-    color: "#999",
-    fontSize: 12,
-  },
-
   emptyTitle: {
     fontSize: 20,
     fontWeight: "700",
+    color: "#111827",
   },
 
   emptyText: {
     marginTop: 8,
-    color: "#666",
     textAlign: "center",
+    fontSize: 14,
+    color: "#6B7280",
   },
 
   header: {
-  height: 56,
+    height: 56,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    backgroundColor: "#FFFFFF",
+  },
+
+  headerButton: {
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#111827",
+  },
+
+  filterContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+  },
+
+  filterChip: {
+    height: 36,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
+
+  activeChip: {
+    backgroundColor: "#16A34A",
+    borderColor: "#16A34A",
+  },
+
+  filterText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#6B7280",
+  },
+
+  activeFilterText: {
+    color: "#FFFFFF",
+  },
+
+    sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    marginTop: 18,
+    marginBottom: 10,
+  },
+
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#111827",
+  },
+
+  sectionCount: {
+    marginTop: 2,
+    fontSize: 12,
+    color: "#6B7280",
+  },
+
+  viewAllText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#16A34A",
+  },
+
+  requestCard: {
   flexDirection: "row",
   alignItems: "center",
-  justifyContent: "space-between",
-  paddingHorizontal: 16,
-},
-
-headerTitle: {
-  fontSize: 20,
-  fontWeight: "700",
-  color: "#111827",
-},
-
-filterContainer: {
-  paddingHorizontal: 16,
+  backgroundColor: "#FFFFFF",
+  marginHorizontal: 12,
+  marginBottom: 10,
   paddingVertical: 12,
+  paddingHorizontal: 14,
+  borderRadius: 14,
+  borderWidth: 1,
+  borderColor: "#EEF2F7",
+
+  shadowColor: "#000",
+  shadowOpacity: 0.04,
+  shadowRadius: 6,
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+
+  elevation: 2,
 },
 
-filterChip: {
-  height: 34,
-  paddingHorizontal: 16,
-  borderRadius: 17,
-  backgroundColor: "#FFFFFF",
-  borderWidth: 1,
-  borderColor: "#E5E7EB",
+  serviceIcon: {
+  width: 44,
+  height: 44,
+  borderRadius: 22,
   justifyContent: "center",
   alignItems: "center",
-  marginRight: 10,
+  marginRight: 12,
 },
 
-activeChip: {
-  backgroundColor: "#16A34A",
-  borderColor: "#16A34A",
-},
-
-filterText: {
-  color: "#64748B",
-  fontSize: 13,
-  fontWeight: "600",
-},
-
-activeFilterText: {
-  color: "#FFFFFF",
-},
-
-requestCard: {
-  backgroundColor: "#FFFFFF",
-  borderRadius: 20,
-  padding: 18,
-  marginHorizontal: 16,
-  marginBottom: 16,
-
-  borderWidth: 1,
-  borderColor: "#F1F5F9",
-
-  elevation: 3,
-},
-
-cardHeader: {
-  flexDirection: "row",
-  alignItems: "flex-start",
-},
-
-serviceIcon: {
-  width: 56,
-  height: 56,
-  borderRadius: 28,
-  backgroundColor: "#ECFDF5",
-  justifyContent: "center",
-  alignItems: "center",
-  marginRight: 16,
-},
-
-serviceInfo: {
+  middleSection: {
   flex: 1,
+  justifyContent: "center",
+  paddingRight: 8,
 },
 
-serviceTitle: {
-  fontSize: 17,
-  fontWeight: "700",
-  color: "#111827",
-},
+  serviceTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#111827",
+  },
 
-serviceSubtitle: {
+  serviceSubtitle: {
+    marginTop: 3,
+    fontSize: 13,
+    color: "#6B7280",
+  },
+
+  locationRow: {
+  flexDirection: "row",
+  alignItems: "center",
   marginTop: 4,
-  fontSize: 14,
-  lineHeight: 20,
-  color: "#6B7280",
 },
 
-statusBadge: {
-  paddingHorizontal: 12,
-  paddingVertical: 6,
-  borderRadius: 16,
-  alignSelf: "flex-start",
-},
+  locationText: {
+    flex: 1,
+    marginLeft: 5,
+    fontSize: 12,
+    color: "#6B7280",
+  },
 
-statusBadgeText: {
-  color: "#FFFFFF",
-  fontSize: 11,
-  fontWeight: "700",
-  letterSpacing: 0.5,
-  textTransform: "uppercase",
-},
-
-newBadge: {
-  backgroundColor: "#16A34A",
-},
-
-acceptedBadge: {
-  backgroundColor: "#2563EB",
-},
-
-completedBadge: {
-  backgroundColor: "#059669",
-},
-
-cancelledBadge: {
-  backgroundColor: "#DC2626",
-},
-
-locationRow: {
-  flexDirection: "row",
-  alignItems: "center",
-  marginTop: 14,
-},
-
-locationText: {
-  marginLeft: 6,
-  flex: 1,
-  color: "#6B7280",
-  fontSize: 13,
-},
-
-footerRow: {
-  flexDirection: "row",
+  rightSection: {
+  height: 54,
+  marginLeft: 8,
   justifyContent: "space-between",
-  alignItems: "center",
-  marginTop: 16,
-  paddingTop: 14,
-  borderTopWidth: 1,
-  borderTopColor: "#F3F4F6",
+  alignItems: "flex-end",
 },
 
-timeRow: {
-  flexDirection: "row",
-  alignItems: "center",
-},
+  statusBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
 
-timeText: {
-  marginLeft: 6,
-  color: "#6B7280",
-  fontSize: 13,
-},
+  statusBadgeText: {
+    color: "#FFFFFF",
+    fontSize: 10,
+    fontWeight: "700",
+  },
 
-sectionHeader: {
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginHorizontal: 16,
-  marginBottom: 14,
-  marginTop: 8,
-},
-
-sectionTitle: {
-  fontSize: 20,
-  fontWeight: "700",
-  color: "#111827",
-},
-
-viewAllText: {
-  color: "#16A34A",
-  fontSize: 14,
-  fontWeight: "600",
-},
-
+  timeText: {
+    fontSize: 11,
+    color: "#6B7280",
+  },
 
 });

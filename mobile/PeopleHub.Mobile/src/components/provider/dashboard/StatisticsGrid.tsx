@@ -95,23 +95,28 @@ export default function StatisticsGrid({
 
 const styles = StyleSheet.create({
   row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 28,
-  },
+  flexDirection: "row",
+  flexWrap: "wrap",
+  justifyContent: "space-between",
+  marginBottom: 28,
+},
 
   card: {
-    width: "23%",
-    borderRadius: 22,
-    paddingVertical: 22,
-    alignItems: "center",
-  },
+  width: "48%",
+  borderRadius: 20,
+  paddingVertical: 22,
+  paddingHorizontal: 12,
+  marginBottom: 14,
+  alignItems: "center",
+},
 
   title: {
-    marginTop: 10,
-    fontSize: 13,
-    color: "#374151",
-  },
+  marginTop: 10,
+  fontSize: 15,
+  fontWeight: "600",
+  color: "#374151",
+  textAlign: "center",
+},
 
   value: {
     marginTop: 12,
@@ -121,8 +126,9 @@ const styles = StyleSheet.create({
   },
 
   subtitle: {
-    marginTop: 8,
-    fontSize: 12,
-    color: "#6B7280",
-  },
+  marginTop: 8,
+  fontSize: 13,
+  color: "#6B7280",
+  textAlign: "center",
+},
 });
